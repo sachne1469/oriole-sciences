@@ -563,6 +563,43 @@ function initPageHeroCanvas(colors) {
   draw();
 }
 
+/* ── Section Dividers ───────────────────────────────────── */
+function initSectionDividers() {
+  function rgbToHex(rgb) {
+    var m = rgb && rgb.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
+    if (!m) return null;
+    if (m[4] !== undefined && parseFloat(m[4]) < 0.05) return null;
+    return '#' + [m[1],m[2],m[3]].map(function(v){
+      return ('0'+parseInt(v).toString(16)).slice(-2);
+    }).join('').toLowerCase();
+  }
+  var els = Array.from(document.body.children).filter(function(el){
+    if (el.id === 'site-nav' || el.id === 'site-footer') return false;
+    if (el.classList.contains('site-nav') || el.classList.contains('site-footer')) return false;
+    if (el.tagName === 'SCRIPT' || el.tagName === 'STYLE') return false;
+    if (el.classList.contains('sect-divider')) return false;
+    return true;
+  });
+  var insertions = [], dir = 0;
+  for (var i = 0; i < els.length - 1; i++) {
+    var a = els[i], b = els[i+1];
+    if (b.id === 'site-footer' || b.classList.contains('site-footer')) continue;
+    var cA = rgbToHex(getComputedStyle(a).backgroundColor);
+    var cB = rgbToHex(getComputedStyle(b).backgroundColor);
+    if (cA && cB && cA !== cB) {
+      insertions.push({before: b, cA: cA, cB: cB, dir: dir++});
+    }
+  }
+  insertions.forEach(function(ins){
+    var pts = ins.dir % 2 === 0 ? '0,0 0,70 1920,70' : '1920,0 0,70 1920,70';
+    var d = document.createElement('div');
+    d.className = 'sect-divider';
+    d.style.cssText = 'height:70px;background:'+ins.cA+';overflow:hidden;position:relative;z-index:1;';
+    d.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 70" preserveAspectRatio="none" style="display:block;width:100%;height:70px;"><polygon points="'+pts+'" fill="'+ins.cB+'"/></svg>';
+    ins.before.parentNode.insertBefore(d, ins.before);
+  });
+}
+
 /* ── Master Init ────────────────────────────────────────── */
 function initSite(page) {
   initNav(page || '');
@@ -572,4 +609,5 @@ function initSite(page) {
   initCounters();
   initHeroCanvas();
   initRotatingText();
+  initSectionDividers();
 }

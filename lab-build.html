@@ -12,14 +12,14 @@
 /* Laboratory Engagements tiles */
 .labs-optimize-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 8px;
 }
 .lab-tile {
   background: white;
   border: 1px solid rgba(46,49,53,0.07);
   border-radius: 12px;
-  padding: 18px 20px;
+  padding: 14px 18px;
   position: relative;
   overflow: hidden;
   display: flex;
@@ -233,49 +233,60 @@
   <div class="blob blob-gold b-md" style="top:-60px;right:40px;opacity:.18;z-index:0;"></div>
   <div style="position:relative;z-index:1;">
     <h2 class="reveal" style="color:var(--carbon);margin-bottom:40px;">Laboratory <em>Engagements</em></h2>
-    <div class="labs-optimize-grid">
+    <div style="display:grid;grid-template-columns:1fr auto;gap:56px;align-items:start;">
+      <div class="reveal" style="padding-top:4px;">
+        <p style="font-size:16px;line-height:1.85;color:rgba(46,49,53,0.58);font-weight:300;margin-bottom:20px;">Molecular programs don't look the same across care settings — a reference lab has different throughput, payer mix, and documentation demands than an urgent care or OBGYN practice.</p>
+        <p style="font-size:16px;line-height:1.85;color:rgba(46,49,53,0.58);font-weight:300;">We've built and optimized programs across the full spectrum of laboratory settings — each engagement sized and configured to the specific population, volume, and reimbursement environment of that setting.</p>
+      </div>
+      <div class="labs-optimize-grid" style="grid-template-columns:repeat(3,210px)!important;flex-shrink:0;">
 
       <div class="lab-tile" data-i="0">
-        <span class="lab-tile-name">Urgent Care Laboratories</span>
+        <span class="lab-tile-name">Reference Laboratories</span>
         <div class="lab-tile-bar"></div>
       </div>
 
       <div class="lab-tile" data-i="1">
-        <span class="lab-tile-name">OBGYN Laboratories</span>
-        <div class="lab-tile-bar"></div>
-      </div>
-
-      <div class="lab-tile" data-i="2">
-        <span class="lab-tile-name">Urology Laboratories</span>
-        <div class="lab-tile-bar"></div>
-      </div>
-
-      <div class="lab-tile" data-i="3">
-        <span class="lab-tile-name">Podiatry Laboratories</span>
-        <div class="lab-tile-bar"></div>
-      </div>
-
-      <div class="lab-tile" data-i="4">
-        <span class="lab-tile-name">Gastroenterology Laboratories</span>
-        <div class="lab-tile-bar"></div>
-      </div>
-
-      <div class="lab-tile" data-i="5">
-        <span class="lab-tile-name">Primary Care Laboratories</span>
-        <div class="lab-tile-bar"></div>
-      </div>
-
-      <div class="lab-tile" data-i="6">
         <span class="lab-tile-name">Hospital Laboratories</span>
         <div class="lab-tile-bar"></div>
       </div>
 
+      <div class="lab-tile" data-i="2">
+        <span class="lab-tile-name">OBGYN Laboratories</span>
+        <div class="lab-tile-bar"></div>
+      </div>
+
+      <div class="lab-tile" data-i="3">
+        <span class="lab-tile-name">Urgent Care Laboratories</span>
+        <div class="lab-tile-bar"></div>
+      </div>
+
+      <div class="lab-tile" data-i="4">
+        <span class="lab-tile-name">Primary Care Laboratories</span>
+        <div class="lab-tile-bar"></div>
+      </div>
+
+      <div class="lab-tile" data-i="5">
+        <span class="lab-tile-name">Urology Laboratories</span>
+        <div class="lab-tile-bar"></div>
+      </div>
+
+      <div class="lab-tile" data-i="6">
+        <span class="lab-tile-name">Gastroenterology Laboratories</span>
+        <div class="lab-tile-bar"></div>
+      </div>
+
       <div class="lab-tile" data-i="7">
+        <span class="lab-tile-name">Podiatry Laboratories</span>
+        <div class="lab-tile-bar"></div>
+      </div>
+
+      <div class="lab-tile" data-i="8">
         <span class="lab-tile-name">Academic Laboratories</span>
         <div class="lab-tile-bar"></div>
       </div>
 
-    </div>
+      </div><!-- end labs-optimize-grid -->
+    </div><!-- end split -->
   </div>
 </section>
 
