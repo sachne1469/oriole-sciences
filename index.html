@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Oriole Sciences — Molecular Diagnostics Solutions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="site.css" />
+<link id="gfont-Manrope" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&amp;display=swap">
+<link id="gfont-DM-Sans" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&amp;display=swap">
+</head>
+<body style="font-family: Manrope">
+
+<!-- ── INTRO OVERLAY ─────────────────────────────────────── -->
+<style>
+.il{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(64px,11vw,168px);color:#2E3135;line-height:1;letter-spacing:0.22em;opacity:0;display:inline-flex;align-items:center;will-change:transform,opacity;}
+.il-mark{display:inline-flex;flex-direction:column;justify-content:space-between;height:0.7em;padding:0 clamp(6px,0.8vw,12px);}
+.il-bar{display:block;width:clamp(18px,2.6vw,40px);height:clamp(2px,0.3vw,4px);background:#8f5b3e;}
+</style>
+<div id="intro-overlay" style="position:fixed;inset:0;z-index:9999;background:#E8E7E3;pointer-events:none;overflow:hidden;">
+  <div id="intro-stage" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-54%);">
+    <div style="display:flex;align-items:center;justify-content:center;line-height:1;">
+      <span class="il" data-di="0">O</span><span class="il" data-di="1">R</span><span class="il" data-di="2">I</span><span class="il" data-di="3">O</span><span class="il" data-di="4">L</span>
+      <div class="il il-mark" data-di="5"><span class="il-bar"></span><span class="il-bar"></span><span class="il-bar"></span></div>
+    </div>
+    <div id="intro-sci" style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:16px;opacity:0;transition:opacity 0.5s ease;">
+      <span id="isl-l" style="display:block;height:1px;width:0;background:#8f5b3e;transition:width 0.7s ease 0.1s;"></span>
+      <span style="font-family:'DM Sans',sans-serif;font-weight:400;font-size:clamp(10px,1.3vw,15px);letter-spacing:0.38em;color:#8f5b3e;text-transform:uppercase;">SCIENCES</span>
+      <span id="isl-r" style="display:block;height:1px;width:0;background:#8f5b3e;transition:width 0.7s ease 0.1s;"></span>
+    </div>
+  </div>
+</div>
+
+<template id="__bundler_thumbnail"><svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="140" fill="#F3F1ED"/><text x="100" y="58" font-family="serif" font-size="28" font-weight="300" letter-spacing="8" text-anchor="middle" fill="#2E3135">ORIOLE</text><line x1="52" y1="75" x2="80" y2="75" stroke="#8f5b3e" stroke-width="1"/><text x="100" y="80" font-family="sans-serif" font-size="9" letter-spacing="4" text-anchor="middle" fill="#8f5b3e">SCIENCES</text><line x1="120" y1="75" x2="148" y2="75" stroke="#8f5b3e" stroke-width="1"/></svg></template>
+
+<nav class="site-nav" id="site-nav"></nav>
+
+<!-- ── HERO ─────────────────────────────────────────────── -->
+<section class="hero" style="min-height:auto;">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-gradient"></div>
+  <div class="hero-content intro-mode" style="max-width:none;display:flex;flex-direction:column;padding:80px 64px 56px;">
+    <div style="max-width:680px">
+      <h1 style="font-family:'Cormorant Garamond'">Complex Testing.<br><em><span style="color:#8f5b3e;white-space:nowrap">Complete Infrastructure.</span></em></h1>
+      <div class="hero-ctas" style="margin-top:32px">
+        <a href="about.html#contact-form" style="display:inline-flex;align-items:center;gap:8px;background:var(--blackberry);color:var(--sandstone);border:1px solid rgba(80,108,139,0.4);padding:13px 26px;border-radius:var(--r-sm);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;text-decoration:none;">Request a Consultation</a>
+        <a href="solutions.html" style="display:inline-flex;align-items:center;gap:8px;background:var(--blackberry);color:var(--fog);border:1px solid rgba(232,231,227,0.12);padding:13px 26px;border-radius:var(--r-sm);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;text-decoration:none;">Explore Solutions →</a>
+      </div>
+    </div>
+    <div class="intro-mode-panel" style="margin-top:48px;text-align:center;width:100%;">
+      <div style="display:inline-flex;align-items:baseline;gap:14px;font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;">
+        <span style="font-size:55px;color:var(--carbon);opacity:0.62;letter-spacing:0.01em;white-space:nowrap;">Molecular Solutions Purpose Built For</span>
+        <span id="rotating-word" class="rotating-word" style="font-size:75px;font-style:italic;">Reference Labs</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── OVERVIEW TILES ───────────────────────────────────── -->
+<section class="section s-carbon">
+  <div class="blob blob-gold b-lg" style="top:-80px;right:60px;opacity:.75"></div>
+  <div class="blob blob-blackberry b-md" style="bottom:-60px;left:160px;opacity:.8"></div>
+  <h2 class="mb-24 reveal" style="white-space:nowrap;">Oriole Ties It <em>All Together.</em></h2>
+  <p class="reveal" style="font-family:'Cormorant Garamond',serif;font-size:clamp(18px,2vw,28px);font-weight:300;line-height:1.75;color:rgba(46,49,53,0.68);margin-bottom:40px;">A molecular lab is a hundred moving parts — workflow, equipment, staffing, coding, denials, revenue cycle — and most operators are left to wire it together alone.</p>
+  <div class="grid-4">
+    <div class="glass-card glass-card-p reveal d1">
+      <div class="tile-num">01</div>
+      <h3 class="tile-h">Consultation Services</h3>
+      <p class="tile-p">Expert guidance from program design through go-live. Every decision, start to finish.</p>
+      <div style="margin-top:24px"><a href="about.html" style="font-size:12px;color:var(--gold);font-weight:500;letter-spacing:.05em">Learn more →</a></div>
+    </div>
+    <div class="glass-card glass-card-p reveal d2">
+      <div class="tile-num">02</div>
+      <h3 class="tile-h">Lab Build</h3>
+      <p class="tile-p">Empty room to operational program. Sized to your market.</p>
+      <div style="margin-top:24px"><a href="pillars.html" style="font-size:12px;color:var(--gold);font-weight:500;letter-spacing:.05em">Learn more →</a></div>
+    </div>
+    <div class="glass-card glass-card-p reveal d3">
+      <div class="tile-num">03</div>
+      <h3 class="tile-h">Revenue Recapture</h3>
+      <p class="tile-p">Denial patterns turned into a recovery roadmap.</p>
+      <div style="margin-top:24px"><a href="pillars.html" style="font-size:12px;color:var(--gold);font-weight:500;letter-spacing:.05em">Learn more →</a></div>
+    </div>
+    <div class="glass-card glass-card-p reveal d4">
+      <div class="tile-num">04</div>
+      <h3 class="tile-h">Payer Strategy</h3>
+      <p class="tile-p">The operational standard. Built to hold up in front of payers, auditors, and regulators.</p>
+      <div style="margin-top:24px"><a href="defensible-pcr.html" style="font-size:12px;color:var(--gold);font-weight:500;letter-spacing:.05em">Learn more →</a></div>
+    </div>
+  </div>
+  <div style="margin-top:56px;">
+    <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(16px,1.6vw,22px);font-weight:300;line-height:1.75;color:rgba(46,49,53,0.55);text-align:right;margin-bottom:16px;">We see which workflows hold up, which codes survive an audit, and where the margin leaks — then build or rebuild the lab around what the data says. Intelligence no equipment vendor or billing shop can give you.</p>
+    <h2 class="reveal" style="white-space:nowrap;text-align:right;">One Partner. <em>Every Lab Solution.</em></h2>
+  </div>
+</section>
+
+<!-- ── MARKET CONTEXT ───────────────────────────────────── -->
+<section class="section s-carbon-dk">
+  <div class="blob blob-sage b-lg" style="top:-40px;right:-80px;opacity:.65"></div>
+
+  <h2 class="reveal" style="font-size:clamp(48px,7vw,108px);letter-spacing:-0.035em;line-height:1.0;margin-bottom:48px;text-align:center;">Because no two organizations<br><em>are the same.</em></h2>
+
+  <!-- Centered supporting paragraph -->
+  <div class="reveal" style="margin:40px 0 64px;text-align:center;">
+    
+    <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(20px,2.2vw,32px);font-weight:300;line-height:1.75;color:rgba(46,49,53,0.68);">Oriole Sciences delivers customized molecular solutions designed around each client’s unique clinical, operational, and strategic needs. Rather than offering one-size-fits-all products, we partner with clients to design, develop, and support purpose-built molecular solutions that with your testing strategy, workflow, instrumentation, regulatory requirements, and long-term objectives.</p>
+  </div>
+
+  >
+
+<!-- ── MARKET / QUADRANT ─────────────────────────────────── -->
+<section class="section s-carbon">
+  <div class="blob blob-gold b-md" style="top:-60px;left:50%;transform:translateX(-50%);opacity:.5"></div>
+  <h2 class="mb-32 reveal" style="text-align:center;font-size:clamp(28px,5vw,80px);letter-spacing:-0.03em;line-height:1.0;">This isn't theory. <em>It's deployed.</em></h2>
+
+  <div class="reveal" style="display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px 4px;text-align:center;margin-bottom:40px;">
+    <span style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:rgba(46,49,53,0.42);">Operating across diverse clinical environments</span>
+    <span style="color:var(--gold);margin:0 12px;font-size:14px;">&middot;</span>
+    <span style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:rgba(46,49,53,0.42);">Supporting leading health institutions</span>
+  </div>
+
+  <div class="stats-row reveal">
+    <div class="stat-cell">
+      <div class="stat-num"><span class="gold-accent" data-count="100">0</span><span class="gold-accent">+</span></div>
+      <div class="stat-lbl">Labs Deployed</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num"><span data-count="27">0</span></div>
+      <div class="stat-lbl">States Operating</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num">
+        <span class="gold-accent" id="rev-prefix">$</span><span class="gold-accent" data-count="10" id="rev-num">0</span><span class="gold-accent" id="rev-suffix">&nbsp;MIL</span>
+      </div>
+      <div class="stat-lbl">Revenue Recovered</div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ── CLIENT REFERENCES ────────────────────────────────── -->
+<section class="section" style="background:var(--carbon);padding-top:96px;padding-bottom:96px;position:relative;overflow:hidden;">
+  <div class="blob blob-blackberry b-lg" style="top:-80px;left:-60px;opacity:.5"></div>
+  <div class="blob blob-blackberry b-md" style="bottom:-40px;right:80px;opacity:.3"></div>
+
+  <!-- Header row -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:end;margin-bottom:56px;">
+    <div>
+      <h2 class="reveal" style="font-size:clamp(32px,4vw,58px);line-height:1.1;color:var(--fog);">The market changed.<br>Most lab programs <em style="color:var(--gold);">didn&rsquo;t.</em></h2>
+    </div>
+    <div class="reveal">
+      <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(22px,2.4vw,34px);font-weight:300;font-style:italic;line-height:1.4;color:rgba(232,231,227,0.78);">Oriole Sciences integrates laboratory strategy, assay development, validation services, revenue cycle optimization, workflow engineering, and data intelligence into one coordinated partnership.</p>
+    </div>
+  </div>
+
+  <!-- 4 Abstract Interactive Cards — half height, big text -->
+  <div class="reveal" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
+
+    <div class="iq-card" data-idx="0" style="position:relative;height:160px;border-radius:14px;overflow:hidden;cursor:pointer;background:#1a1e22;">
+      <canvas class="iq-canvas" style="position:absolute;inset:0;width:100%;height:100%;"></canvas>
+      <div class="iq-body" style="position:absolute;inset:0;padding:24px 22px;display:flex;flex-direction:column;justify-content:space-between;transition:transform 0.4s cubic-bezier(0.22,1,0.36,1);">
+        <div class="iq-bar" style="height:2px;width:28px;background:#8f5b3e;transition:width 0.4s cubic-bezier(0.22,1,0.36,1);"></div>
+        <div>
+          <h3 class="iq-title" style="font-family:'Cormorant Garamond',serif;font-size:clamp(18px,1.8vw,26px);font-weight:400;color:var(--fog);margin-bottom:6px;line-height:1.15;">Integrated<br>Strategy</h3>
+          <p class="iq-text" style="font-size:12px;color:rgba(232,231,227,0.0);line-height:1.5;font-weight:300;transition:color 0.35s ease;">Every variable. One system.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="iq-card" data-idx="1" style="position:relative;height:160px;border-radius:14px;overflow:hidden;cursor:pointer;background:#1a1e22;">
+      <canvas class="iq-canvas" style="position:absolute;inset:0;width:100%;height:100%;"></canvas>
+      <div class="iq-body" style="position:absolute;inset:0;padding:24px 22px;display:flex;flex-direction:column;justify-content:space-between;transition:transform 0.4s cubic-bezier(0.22,1,0.36,1);">
+        <div class="iq-bar" style="height:2px;width:28px;background:#506c8b;transition:width 0.4s cubic-bezier(0.22,1,0.36,1);"></div>
+        <div>
+          <h3 class="iq-title" style="font-family:'Cormorant Garamond',serif;font-size:clamp(18px,1.8vw,26px);font-weight:400;color:var(--fog);margin-bottom:6px;line-height:1.15;">Operational<br>Intelligence</h3>
+          <p class="iq-text" style="font-size:12px;color:rgba(232,231,227,0.0);line-height:1.5;font-weight:300;transition:color 0.35s ease;">Data that moves the margin.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="iq-card" data-idx="2" style="position:relative;height:160px;border-radius:14px;overflow:hidden;cursor:pointer;background:#1a1e22;">
+      <canvas class="iq-canvas" style="position:absolute;inset:0;width:100%;height:100%;"></canvas>
+      <div class="iq-body" style="position:absolute;inset:0;padding:24px 22px;display:flex;flex-direction:column;justify-content:space-between;transition:transform 0.4s cubic-bezier(0.22,1,0.36,1);">
+        <div class="iq-bar" style="height:2px;width:28px;background:#506c8b;transition:width 0.4s cubic-bezier(0.22,1,0.36,1);"></div>
+        <div>
+          <h3 class="iq-title" style="font-family:'Cormorant Garamond',serif;font-size:clamp(18px,1.8vw,26px);font-weight:400;color:var(--fog);margin-bottom:6px;line-height:1.15;">Built for<br>Your Reality</h3>
+          <p class="iq-text" style="font-size:12px;color:rgba(232,231,227,0.0);line-height:1.5;font-weight:300;transition:color 0.35s ease;">No template. Your market, your program.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="iq-card" data-idx="3" style="position:relative;height:160px;border-radius:14px;overflow:hidden;cursor:pointer;background:#1a1e22;">
+      <canvas class="iq-canvas" style="position:absolute;inset:0;width:100%;height:100%;"></canvas>
+      <div class="iq-body" style="position:absolute;inset:0;padding:24px 22px;display:flex;flex-direction:column;justify-content:space-between;transition:transform 0.4s cubic-bezier(0.22,1,0.36,1);">
+        <div class="iq-bar" style="height:2px;width:28px;background:#8f5b3e;transition:width 0.4s cubic-bezier(0.22,1,0.36,1);"></div>
+        <div>
+          <h3 class="iq-title" style="font-family:'Cormorant Garamond',serif;font-size:clamp(18px,1.8vw,26px);font-weight:400;color:var(--fog);margin-bottom:6px;line-height:1.15;">Sustainable<br>Performance</h3>
+          <p class="iq-text" style="font-size:12px;color:rgba(232,231,227,0.0);line-height:1.5;font-weight:300;transition:color 0.35s ease;">Scales profitably. Survives any audit.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+.iq-card:hover .iq-text { color: rgba(232,231,227,0.55) !important; }
+.iq-card:hover .iq-bar  { width: 72px !important; }
+.iq-card:hover .iq-body { transform: translateY(-4px); }
+</style>
+
+<script>
+(function(){
+  var palettes = [
+    ['#8f5b3e','#b07555','#1c1512'],
+    ['#506c8b','#6a8aaa','#111620'],
+    ['#506c8b','#334e6a','#111620'],
+    ['#8f5b3e','#506c8b','#1a1410'],
+  ];
+  document.querySelectorAll('.iq-card').forEach(function(card, ci) {
+    var canvas = card.querySelector('.iq-canvas');
+    var ctx = canvas.getContext('2d');
+    var w, h, frame = 0, animId, isHovered = false;
+    var pal = palettes[ci];
+    var particles = [];
+    function resize() {
+      var r = canvas.getBoundingClientRect();
+      w = canvas.width = Math.floor(r.width);
+      h = canvas.height = Math.floor(r.height);
+      particles = [];
+      for (var i = 0; i < 20; i++) {
+        particles.push({
+          x: Math.random()*w, y: Math.random()*h,
+          vx:(Math.random()-0.5)*0.35, vy:(Math.random()-0.5)*0.35,
+          r: 1.2+Math.random()*2.2,
+          col: pal[Math.floor(Math.random()*2)],
+          a: Math.random()
+        });
+      }
+    }
+    function draw() {
+      ctx.clearRect(0,0,w,h);
+      var grd = ctx.createLinearGradient(0,0,w,h);
+      grd.addColorStop(0, pal[2]); grd.addColorStop(1,'#0f1114');
+      ctx.fillStyle=grd; ctx.fillRect(0,0,w,h);
+      if (isHovered) {
+        for (var i=0;i<particles.length;i++) {
+          for (var j=i+1;j<particles.length;j++) {
+            var dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y;
+            var dist=Math.sqrt(dx*dx+dy*dy);
+            if (dist<75){ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);ctx.strokeStyle=pal[0];ctx.globalAlpha=(1-dist/75)*0.22;ctx.lineWidth=0.7;ctx.stroke();ctx.globalAlpha=1;}
+          }
+        }
+      }
+      particles.forEach(function(p){
+        p.x+=p.vx*(isHovered?2.5:1); p.y+=p.vy*(isHovered?2.5:1);
+        if(p.x<0)p.x=w;if(p.x>w)p.x=0;if(p.y<0)p.y=h;if(p.y>h)p.y=0;
+        p.a=0.25+0.4*Math.sin(frame*0.02+p.x*0.04);
+        ctx.beginPath();ctx.arc(p.x,p.y,p.r*(isHovered?1.6:1),0,Math.PI*2);
+        ctx.fillStyle=p.col;ctx.globalAlpha=p.a;ctx.fill();ctx.globalAlpha=1;
+      });
+      frame++;
+      animId=requestAnimationFrame(draw);
+    }
+    card.addEventListener('mouseenter',function(){isHovered=true;});
+    card.addEventListener('mouseleave',function(){isHovered=false;});
+    resize();
+    window.addEventListener('resize',function(){cancelAnimationFrame(animId);resize();animId=requestAnimationFrame(draw);},{passive:true});
+    draw();
+  });
+})();
+</script>
+
+<!-- ── STATS ─────────────────────────────────────────────── -->
+<section class="section s-blackberry" style="padding-left:0;padding-right:0;overflow:hidden;">
+  <div class="blob blob-gold b-md" style="top:-80px;left:40%;opacity:.4"></div>
+  <div style="text-align:center;padding:0 64px;margin-bottom:40px;">
+    <h2 class="reveal" style="font-size:clamp(32px,4vw,60px);letter-spacing:-0.02em;line-height:1.1;">What Our Partners Say</h2>
+  </div>
+
+  <style>
+    @keyframes quote-scroll { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+    .quote-track-outer { overflow:hidden; width:100%; }
+    .quote-track-outer:hover .quote-track { animation-play-state:paused; }
+    .quote-track {
+      display:flex; gap:24px; width:max-content;
+      animation:quote-scroll 28s linear infinite;
+      padding:4px 0 12px;
+    }
+    .quote-slide {
+      width:400px; flex-shrink:0;
+      background:rgba(255,255,255,0.10);
+      backdrop-filter:blur(24px);
+      -webkit-backdrop-filter:blur(24px);
+      border:1px solid rgba(232,231,227,0.09);
+      border-top-color:rgba(232,231,227,0.16);
+      border-radius:var(--r-lg);
+      padding:36px 32px;
+      box-shadow:0 4px 28px rgba(0,0,0,0.18);
+    }
+  </style>
+
+  <div class="quote-track-outer">
+    <div class="quote-track">
+      <div class="quote-slide">
+        <div class="gold-rule"></div>
+        <p class="quote-text" style="font-size:17px;margin-bottom:16px">&ldquo;Partner quote will go here &mdash; setting &middot; challenge &middot; what we built &middot; result.&rdquo;</p>
+        <div class="quote-attr">Partner Name &middot; Title &middot; Organization<br><span style="color:rgba(232,231,227,0.18);font-style:italic">Source from Jeremy / Steve</span></div>
+      </div>
+      <div class="quote-slide">
+        <div class="gold-rule"></div>
+        <p class="quote-text" style="font-size:17px;margin-bottom:16px">&ldquo;Partner quote will go here &mdash; setting &middot; challenge &middot; what we built &middot; result.&rdquo;</p>
+        <div class="quote-attr">Partner Name &middot; Title &middot; Organization<br><span style="color:rgba(232,231,227,0.18);font-style:italic">Source from Jeremy / Steve</span></div>
+      </div>
+      <div class="quote-slide">
+        <div class="gold-rule"></div>
+        <p class="quote-text" style="font-size:17px;margin-bottom:16px">&ldquo;Partner quote will go here &mdash; setting &middot; challenge &middot; what we built &middot; result.&rdquo;</p>
+        <div class="quote-attr">Partner Name &middot; Title &middot; Organization<br><span style="color:rgba(232,231,227,0.18);font-style:italic">Source from Jeremy / Steve</span></div>
+      </div>
+      <!-- Duplicated set for seamless loop -->
+      <div class="quote-slide">
+        <div class="gold-rule"></div>
+        <p class="quote-text" style="font-size:17px;margin-bottom:16px">&ldquo;Partner quote will go here &mdash; setting &middot; challenge &middot; what we built &middot; result.&rdquo;</p>
+        <div class="quote-attr">Partner Name &middot; Title &middot; Organization<br><span style="color:rgba(232,231,227,0.18);font-style:italic">Source from Jeremy / Steve</span></div>
+      </div>
+      <div class="quote-slide">
+        <div class="gold-rule"></div>
+        <p class="quote-text" style="font-size:17px;margin-bottom:16px">&ldquo;Partner quote will go here &mdash; setting &middot; challenge &middot; what we built &middot; result.&rdquo;</p>
+        <div class="quote-attr">Partner Name &middot; Title &middot; Organization<br><span style="color:rgba(232,231,227,0.18);font-style:italic">Source from Jeremy / Steve</span></div>
+      </div>
+      <div class="quote-slide">
+        <div class="gold-rule"></div>
+        <p class="quote-text" style="font-size:17px;margin-bottom:16px">&ldquo;Partner quote will go here &mdash; setting &middot; challenge &middot; what we built &middot; result.&rdquo;</p>
+        <div class="quote-attr">Partner Name &middot; Title &middot; Organization<br><span style="color:rgba(232,231,227,0.18);font-style:italic">Source from Jeremy / Steve</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA BAND ──────────────────────────────────────────── -->
+<section class="cta-band" id="cta-band"></section>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+
+<script src="site.js"></script>
+<script>initSite('home');</script>
+
+<script>
+/* ── Letter Assembly Intro ───────────────────────────────── */
+(function() {
+  var ov = document.getElementById('intro-overlay');
+  if (!ov) return;
+  var letters = Array.prototype.slice.call(document.querySelectorAll('.il'));
+  var sciRow  = document.getElementById('intro-sci');
+  var isl_l   = document.getElementById('isl-l');
+  var isl_r   = document.getElementById('isl-r');
+  if (!letters.length) return;
+
+  letters.forEach(function(el, i) {
+    var angle = (i / letters.length) * Math.PI * 2 * 1.3 + 0.4;
+    var dist  = 600 + Math.random() * 500;
+    el.style.transition = 'none';
+    el.style.transform  = 'translate('+Math.round(Math.cos(angle)*dist)+'px,'+Math.round(Math.sin(angle)*dist)+'px) scale(0.6)';
+    el.style.opacity    = '0';
+  });
+
+  var FLY = 100;
+  setTimeout(function() {
+    letters.forEach(function(el, i) {
+      el.style.transition = 'transform 0.85s cubic-bezier(0.22,1,0.36,1) '+(i*85)+'ms, opacity 0.45s ease '+(i*85)+'ms';
+      el.style.transform  = 'translate(0,0) scale(1)';
+      el.style.opacity    = '1';
+    });
+  }, FLY);
+
+  var SCI = FLY + letters.length * 85 + 700;
+  setTimeout(function() {
+    sciRow.style.opacity = '1';
+    isl_l.style.width = '52px';
+    isl_r.style.width = '52px';
+  }, SCI);
+
+  var SCAT = SCI + 1100;
+  setTimeout(function() {
+    sciRow.style.transition = 'opacity 0.35s ease';
+    sciRow.style.opacity = '0';
+    letters.forEach(function(el, i) {
+      var a = Math.random() * Math.PI * 2;
+      var d = 700 + Math.random() * 600;
+      el.style.transition = 'transform 0.85s cubic-bezier(0.6,0,1,0.6) '+(i*45)+'ms, opacity 0.6s ease '+(i*45)+'ms';
+      el.style.transform  = 'translate('+Math.round(Math.cos(a)*d)+'px,'+Math.round(Math.sin(a)*d)+'px) scale(0.5)';
+      el.style.opacity    = '0';
+    });
+  }, SCAT);
+
+  var FADE = SCAT + 750;
+  setTimeout(function() {
+    ov.style.transition = 'opacity 0.6s ease';
+    ov.style.opacity    = '0';
+    document.querySelectorAll('.hero-content, .intro-mode-panel').forEach(function(el) { el.classList.add('revealed'); });
+  }, FADE);
+
+  setTimeout(function() { ov.style.display = 'none'; }, FADE + 700);
+  setTimeout(function() {
+    ov.style.display = 'none';
+    document.querySelectorAll('.hero-content, .intro-mode-panel').forEach(function(el) { el.classList.add('revealed'); });
+  }, 6500);
+
+  // dummy refs to prevent reference errors in old code below — replaced
+  var cv = null;
+  var itxt  = document.getElementById('intro-text');
+  var iflash= document.getElementById('intro-flash');
+  var dl    = document.getElementById('intro-dl');
+  var dr2   = document.getElementById('intro-dr');
+  if (!ov || !cv) return;
+
+  var W = cv.width  = window.innerWidth;
+  var H = cv.height = window.innerHeight;
+  cv.style.width  = W + 'px';
+  cv.style.height = H + 'px';
+  var ctx = cv.getContext('2d');
+
+  /* Fibonacci/sunflower spiral — matches the logo dot pattern */
+  var GOLDEN = 2.39996323;
+  var NUM    = 140;
+  var maxR   = Math.min(W, H) * 0.27;
+  var CX     = W * 0.50;
+  var CY     = H * 0.40;
+
+  var dots = [];
+  for (var i = 1; i <= NUM; i++) {
+    var r    = maxR * Math.sqrt(i / NUM);
+    var phi  = i * GOLDEN;
+    var disp = phi - 1.18;
+    var x    = CX + r * Math.cos(disp);
+    var y    = CY + r * Math.sin(disp) * 0.90;
+    var ca   = ((phi * 180 / Math.PI) % 360 + 360) % 360;
+    var col  = ca < 108 || ca > 308 ? '#8f5b3e'
+             : ca < 205             ? '#6b3048'
+             :                        '#4F695B';
+    dots.push({ x:x, y:y, r: 2.5 + (i/NUM)*10, col:col, r0:r, phi0:disp });
+  }
+
+  var T1=1900, T2=2950, T3=3650, T4=5200, T5=6300;
+  var t0=null, rafId, dashDone=false, flashDone=false;
+  function ei3(t){ return t*t*t; }
+  function eo2(t){ return 1-(1-t)*(1-t); }
+
+  function tick(ts) {
+    if (!t0) t0 = ts;
+    var t = ts - t0;
+    ctx.clearRect(0, 0, W, H);
+
+    if (t <= T1) {
+      /* Phase 1: Spiral draws in */
+      var p = t / T1;
+      var n = Math.floor(p * NUM);
+      for (var i = 0; i < n; i++) {
+        var d  = dots[i];
+        var dp = Math.min(1, (p * NUM - i) * 2.2);
+        ctx.beginPath(); ctx.arc(d.x, d.y, d.r * dp, 0, Math.PI*2);
+        ctx.fillStyle = d.col; ctx.globalAlpha = dp * 0.93; ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+
+    } else if (t <= T2) {
+      /* Phase 2: Hollywood text reveal */
+      var tp  = (t - T1) / (T2 - T1);
+      var etp = eo2(tp);
+      var pulse = 1 + 0.012 * Math.sin(t * 0.0045);
+      for (var i = 0; i < NUM; i++) {
+        var d = dots[i];
+        ctx.beginPath(); ctx.arc(d.x, d.y, d.r * pulse, 0, Math.PI*2);
+        ctx.fillStyle = d.col; ctx.globalAlpha = 0.93; ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+      if (!flashDone && iflash) {
+        iflash.style.background = 'rgba(143,91,62,0.13)';
+        iflash.style.transition = 'background 0.55s ease';
+        setTimeout(function(){ if(iflash) iflash.style.background='rgba(143,91,62,0)'; }, 60);
+        flashDone = true;
+      }
+      if (itxt) {
+        itxt.style.opacity   = Math.min(1, tp * 2.4);
+        itxt.style.transform = 'scale(' + (1.07 - etp * 0.07) + ')';
+      }
+      if (tp > 0.58 && !dashDone) {
+        if (dl)  { dl.style.transition  = 'width 0.75s ease'; dl.style.width  = '80px'; }
+        if (dr2) { dr2.style.transition = 'width 0.75s ease'; dr2.style.width = '80px'; }
+        dashDone = true;
+      }
+
+    } else if (t <= T3) {
+      /* Phase 3: Hold / breathe */
+      var pulse = 1 + 0.015 * Math.sin(t * 0.0038);
+      for (var i = 0; i < NUM; i++) {
+        var d = dots[i];
+        ctx.beginPath(); ctx.arc(d.x, d.y, d.r * pulse, 0, Math.PI*2);
+        ctx.fillStyle = d.col; ctx.globalAlpha = 0.93; ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+      if (itxt) { itxt.style.opacity = '1'; itxt.style.transform = 'scale(1)'; }
+
+    } else if (t <= T4) {
+      /* Phase 4: Vortex */
+      var vt = (t - T3) / (T4 - T3);
+      if (itxt) {
+        itxt.style.opacity   = Math.max(0, 1 - vt * 3);
+        itxt.style.transform = 'scale(' + (1 - vt*0.14) + ') translateY(' + (vt*55) + 'px)';
+      }
+      for (var i = 0; i < NUM; i++) {
+        var d    = dots[i];
+        var iN   = i / NUM;
+        var dVt  = Math.max(0, Math.min(1, vt * 1.45 - iN * 0.38));
+        var dE   = dVt * dVt * dVt;
+        var curR = d.r0 * (1 - dE);
+        var curA = d.phi0 + dE * Math.PI * 10 * (i%2===0?1:-0.8);
+        var drop = dE * dE * H * 0.58;
+        var nx   = CX + curR * Math.cos(curA);
+        var ny   = CY + drop + curR * Math.sin(curA);
+        var dotR = d.r * Math.max(0, 1 - dE);
+        if (dotR < 0.2) continue;
+        ctx.beginPath(); ctx.arc(nx, ny, dotR, 0, Math.PI*2);
+        ctx.fillStyle = d.col; ctx.globalAlpha = 0.93*(1-dE); ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+
+    } else if (t <= T5) {
+      /* Phase 5: Fade and hero reveal */
+      var ft = (t - T4) / (T5 - T4);
+      ov.style.opacity = Math.max(0, 1 - ft);
+      if (itxt) itxt.style.opacity = '0';
+      if (ft > 0.42) {
+        document.querySelectorAll('.hero-content, .intro-mode-panel').forEach(function(el) {
+          if (!el.classList.contains('revealed')) el.classList.add('revealed');
+        });
+      }
+
+    } else {
+      ov.style.display = 'none';
+      document.querySelectorAll('.hero-content, .intro-mode-panel').forEach(function(el) {
+        el.classList.add('revealed');
+      });
+      return;
+    }
+    rafId = requestAnimationFrame(tick);
+  }
+})();
+</script>
+
+<script type="text/babel">
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "revenueFigure": "$10 MIL",
+  "heroAccent": "Gold",
+  "headlineVariant": "Infrastructure"
+}/*EDITMODE-END*/;
+
+const revenueMap = {
+  "$5 MIL":  { prefix: '$', count: 5,  suffix: ' MIL' },
+  "$10 MIL": { prefix: '$', count: 10, suffix: ' MIL' },
+  "$25 MIL": { prefix: '$', count: 25, suffix: ' MIL' },
+  "$50 MIL+":{ prefix: '$', count: 50, suffix: ' MIL+' },
+};
+
+function animateCount(el, target, dur = 1200) {
+  const t0 = performance.now();
+  const tick = now => {
+    const pct = Math.min((now - t0) / dur, 1);
+    const ease = 1 - Math.pow(1 - pct, 3);
+    el.textContent = Math.round(target * ease);
+    if (pct < 1) requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+
+function IndexTweaks() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+
+  React.useEffect(() => {
+    // Revenue figure
+    const { prefix, count, suffix } = revenueMap[t.revenueFigure] || revenueMap['$10 MIL'];
+    const pre = document.getElementById('rev-prefix');
+    const num = document.getElementById('rev-num');
+    const suf = document.getElementById('rev-suffix');
+    if (pre) pre.textContent = prefix;
+    if (suf) suf.innerHTML = '&nbsp;' + suffix.replace('+','') + (suffix.includes('+') ? '+' : '');
+    if (num) animateCount(num, count, 900);
+
+    // Hero accent color
+    const accentColor = t.heroAccent === 'Gold' ? 'var(--gold)' : 'var(--scarlet)';
+    const heroH1 = document.querySelector('.hero h1');
+    if (heroH1) {
+      const headlines = {
+        'Infrastructure': `Complex Testing.<br><em style="color:${accentColor};font-style:italic;white-space:nowrap">Complete Infrastructure.</em>`,
+        'Puzzle':         `Everyone solves<br>a piece. We solve<br><em style="color:${accentColor};font-style:italic">the puzzle.</em>`,
+      };
+      heroH1.innerHTML = headlines[t.headlineVariant] || headlines['Puzzle'];
+    }
+  }, [t]);
+
+  return (
+    <TweaksPanel title="Tweaks">
+      <TweakSection label="Stats" />
+      <TweakSelect label="Revenue Recovered" value={t.revenueFigure}
+        options={['$5 MIL','$10 MIL','$25 MIL','$50 MIL+']}
+        onChange={v => setTweak('revenueFigure', v)} />
+
+      <TweakSection label="Hero" />
+      <TweakRadio label="Accent color" value={t.heroAccent}
+        options={['Scarlet','Gold']}
+        onChange={v => setTweak('heroAccent', v)} />
+      <TweakRadio label="Headline" value={t.headlineVariant}
+        options={['Puzzle','Infrastructure']}
+        onChange={v => setTweak('headlineVariant', v)} />
+    </TweaksPanel>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<IndexTweaks />);
+</script>
+
+
+
+</body>
+</html>

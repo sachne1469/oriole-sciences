@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Solutions · Oriole Sciences</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="site.css" />
+</head>
+<body>
+
+<nav class="site-nav" id="site-nav"></nav>
+
+<!-- ── PAGE HERO ────────────────────────────────────────── -->
+<section class="page-hero" style="background:var(--carbon-dk);overflow:hidden;position:relative;margin-top:var(--nav-h);padding-top:72px;min-height:78vh;">
+  <canvas id="network-hero-canvas" style="position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;background:linear-gradient(to right,rgba(30,33,37,0.97) 0%,rgba(30,33,37,0.80) 52%,rgba(30,33,37,0) 100%);"></div>
+  <div class="blob blob-gold b-lg" style="top:-60px;right:80px;opacity:.35;z-index:0;"></div>
+  <div class="page-hero-eyebrow eyebrow reveal" style="position:relative;z-index:1;">Molecular Lab Solutions</div>
+  <h1 class="reveal" style="position:relative;z-index:1;color:var(--fog);">Everyone solves<br>a piece. We solve<br><em style="color:#b07555;">the puzzle.</em></h1>
+  <p class="page-hero-sub reveal" style="margin-top:20px;position:relative;z-index:1;color:rgba(232,231,227,0.62);">Most vendors solve one piece. We engineer the entire molecular lab program — from build to billing.</p>
+
+  <!-- What We Solve For — tiles -->
+  <style>
+    .solve-tile {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(232,231,227,0.14);
+      border-radius: 12px;
+      padding: 16px 18px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      opacity: 0;
+      transform: translateY(14px);
+      transition: background 0.25s, border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+    }
+    .solve-tile.st-in { opacity: 1; transform: translateY(0); transition: background 0.25s, border-color 0.25s, transform 0.25s, box-shadow 0.25s; }
+    .solve-tile:hover { background: rgba(255,255,255,0.13); border-color: rgba(143,91,62,0.42); transform: translateY(-3px); box-shadow: 0 8px 28px rgba(0,0,0,0.3); }
+    .solve-tile-name { font-family:'Cormorant Garamond',serif; font-size:19px; font-weight:400; color:rgba(232,231,227,1); line-height:1.2; margin-bottom:5px; letter-spacing:-0.01em; }
+    .solve-tile-desc { font-size:11px; color:rgba(232,231,227,0.46); font-weight:300; line-height:1.5; }
+    .solve-tile-rule { width:20px; height:1px; background:var(--gold); opacity:0.7; margin-bottom:10px; }
+  </style>
+  <div style="position:absolute;bottom:0;left:0;right:0;z-index:1;padding:0 64px 36px;">
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;" id="solve-tiles">
+      <div class="solve-tile">
+        <div class="solve-tile-rule"></div>
+        <div class="solve-tile-name">Reimbursement</div>
+        <p class="solve-tile-desc">Defensible before the first claim</p>
+      </div>
+      <div class="solve-tile">
+        <div class="solve-tile-rule"></div>
+        <div class="solve-tile-name">Workflow</div>
+        <p class="solve-tile-desc">End-to-end, not assembled</p>
+      </div>
+      <div class="solve-tile">
+        <div class="solve-tile-rule"></div>
+        <div class="solve-tile-name">Cost Control</div>
+        <p class="solve-tile-desc">Sized to your market, not the catalog</p>
+      </div>
+      <div class="solve-tile">
+        <div class="solve-tile-rule"></div>
+        <div class="solve-tile-name">Efficiencies</div>
+        <p class="solve-tile-desc">Throughput by design</p>
+      </div>
+      <div class="solve-tile">
+        <div class="solve-tile-rule"></div>
+        <div class="solve-tile-name">Validations</div>
+        <p class="solve-tile-desc">Audit-ready from standup</p>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function(){
+      var tiles = document.querySelectorAll('#solve-tiles .solve-tile');
+      tiles.forEach(function(t,i){ setTimeout(function(){ t.classList.add('st-in'); }, 400 + i*110); });
+    })();
+  </script>
+</section>
+
+<!-- ── SOLUTIONS INTRO ──────────────────────────────────── -->
+<section class="section s-carbon">
+  <div class="blob blob-sage b-lg" style="top:-80px;right:-60px;opacity:.6"></div>
+  <div class="split-40-60 reveal">
+    <div>
+      <div class="eyebrow mb-24">The Problem</div>
+      <h2>Labs don't have <em>one challenge.</em></h2>
+    </div>
+    <div>
+      <p class="text-muted mb-24" style="font-size:17px;line-height:1.8">Equipment vendors can spec the machine. Billing companies can chase denials. Staffing agencies can fill the bench. But none of them see the whole system — and the whole system is exactly where molecular programs fail.</p>
+      <p class="text-muted" style="font-size:17px;line-height:1.8">Oriole Sciences builds and operates complete molecular lab programs. Every decision — how the lab is sized, how workflows are validated, how reimbursement is defended — engineered as part of the same program.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 6 PROGRAMS ──────────────────────────────────────── -->
+<section class="section s-carbon-dk">
+  <div class="blob blob-gold b-md" style="top:-60px;left:100px;opacity:.5"></div>
+  <div class="eyebrow mb-48 reveal">Our Programs</div>
+  <div class="grid-3" style="gap:16px">
+    <div class="glass-card glass-card-p reveal d1">
+      <div class="tile-num">01</div>
+      <h3 class="tile-h">Lab Build &amp; Optimization</h3>
+      <p class="tile-p mb-20">From empty room to operational program. Equipment, workflow, and capacity sized to your market — not a sales forecast.</p>
+      <a href="lab-build.html" style="font-size:12px;color:var(--gold);font-weight:500;letter-spacing:.05em">Learn more →</a>
+    </div>
+    <div class="glass-card glass-card-p reveal d2">
+      <div class="tile-num">02</div>
+      <h3 class="tile-h">Revenue Cycle Recovery</h3>
+      <p class="tile-p mb-20">Denial patterns are data. Reimbursement infrastructure built upstream — before the claim is ever at risk.</p>
+      <a href="revenue-cycle.html" style="font-size:12px;color:var(--gold);font-weight:500;letter-spacing:.05em">Learn more →</a>
+    </div>
+    <div class="glass-card glass-card-p reveal d3">
+      <div class="tile-num">03</div>
+      <h3 class="tile-h">Assay Strategy</h3>
+      <p class="tile-p mb-20">Panel breadth and configuration informed by real prevalence data. Which assays hold up — operationally and financially.</p>
+      <a href="assay-strategy.html" style="font-size:12px;color:var(--gold);font-weight:500;letter-spacing:.05em">Learn more →</a>
+    </div>
+    <div class="glass-card glass-card-p reveal d4">
+      <div class="tile-num">04</div>
+      <h3 class="tile-h">Data Analytics</h3>
+      <p class="tile-p mb-20">Volume forecasting, throughput modeling, and prevalence banding. Every program decision backed by the data your market is already showing.</p>
+      <a href="data-analytics.html" style="font-size:12px;color:var(--gold);font-weight:500;letter-spacing:.05em">Learn more →</a>
+    </div>
+    <div class="glass-card glass-card-p reveal d5">
+      <div class="tile-num">05</div>
+      <h3 class="tile-h">Workflow Efficiencies</h3>
+      <p class="tile-p mb-20">End-to-end operational verification — sample handling, LIS/EMR integration, throughput, and documentation. Audit-ready before the auditor arrives.</p>
+      <a href="workflow-efficiencies.html" style="font-size:12px;color:var(--gold);font-weight:500;letter-spacing:.05em">Learn more →</a>
+    </div>
+    <div class="glass-card glass-card-p reveal d5">
+      <div class="tile-num">06</div>
+      <h3 class="tile-h">Validation Services</h3>
+      <p class="tile-p mb-20">Method validation, QC protocol design, and regulatory compliance documentation. Every assay defensible before it's run.</p>
+      <a href="validation-services.html" style="font-size:12px;color:var(--gold);font-weight:500;letter-spacing:.05em">Learn more →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ───────────────────────────────────────────────── -->
+<section class="cta-band" id="cta-band"></section>
+<footer class="site-footer" id="site-footer"></footer>
+
+<script src="site.js"></script>
+<script>initSite('solutions');</script>
+<script>initNetworkHeroCanvas(true);</script>
+</body>
+</html>

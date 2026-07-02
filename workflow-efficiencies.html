@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Workflow Efficiencies · Oriole Sciences</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="site.css" />
+<style>
+/* ── Comparison Table ────────────────────────────────────── */
+.wf-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(232,231,227,0.08);
+}
+.wf-compare-cell {
+  padding: 18px 22px;
+  border-bottom: 1px solid rgba(232,231,227,0.06);
+  font-size: 13px; line-height: 1.55; font-weight: 300;
+}
+.wf-compare-cell:nth-child(3n+1) { border-right: 1px solid rgba(232,231,227,0.06); }
+.wf-compare-cell:nth-child(3n+2) { border-right: 1px solid rgba(232,231,227,0.06); }
+.wf-compare-cell:nth-last-child(-n+3) { border-bottom: none; }
+.wf-hdr { background: rgba(46,49,53,0.9); }
+.wf-hdr-trad {
+  background: rgba(46,49,53,0.75);
+  font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase; color: rgba(232,231,227,0.35);
+  display: flex; align-items: center;
+}
+.wf-hdr-opt {
+  background: rgba(143,91,62,0.12);
+  border-top: 2px solid rgba(143,91,62,0.55) !important;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--gold);
+  display: flex; align-items: center;
+}
+.wf-label {
+  background: rgba(46,49,53,0.5);
+  font-size: 10px; font-weight: 700; letter-spacing: 0.13em;
+  text-transform: uppercase; color: rgba(232,231,227,0.45);
+  display: flex; align-items: center;
+}
+.wf-trad {
+  background: rgba(46,49,53,0.3);
+  color: rgba(232,231,227,0.38);
+  font-size: 13px;
+}
+.wf-opt {
+  background: rgba(143,91,62,0.06);
+  color: rgba(232,231,227,0.82);
+  font-size: 13px; font-weight: 400;
+}
+
+/* ── Time Comparison ─────────────────────────────────────── */
+.time-split {
+  display: grid; grid-template-columns: 1fr 280px; gap: 32px; align-items: start;
+}
+.time-table {
+  border-radius: 14px; overflow: hidden;
+  border: 1px solid rgba(46,49,53,0.08);
+}
+.time-row {
+  display: grid; grid-template-columns: 160px 1fr 1fr;
+  border-bottom: 1px solid rgba(46,49,53,0.06);
+}
+.time-row:last-child { border-bottom: none; }
+.time-row-hdr { background: var(--carbon); }
+.time-cell {
+  padding: 14px 18px;
+  font-size: 13px; line-height: 1.4;
+}
+.time-cell-label { font-weight: 400; color: rgba(46,49,53,0.7); }
+.time-cell-label small { display: block; font-size: 11px; color: rgba(46,49,53,0.4); margin-top: 2px; }
+.time-hdr-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.13em;
+  text-transform: uppercase; color: rgba(232,231,227,0.35);
+  background: rgba(46,49,53,0.85);
+  padding: 12px 18px; display: flex; align-items: center;
+}
+.time-hdr-trad {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.13em;
+  text-transform: uppercase; color: rgba(46,49,53,0.42);
+  background: rgba(46,49,53,0.04); border-left: 1px solid rgba(46,49,53,0.08);
+  padding: 12px 18px; display: flex; align-items: center;
+}
+.time-hdr-opt {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.13em;
+  text-transform: uppercase; color: var(--gold);
+  background: rgba(143,91,62,0.05);
+  border-left: 1px solid rgba(143,91,62,0.15);
+  border-top: 2px solid rgba(143,91,62,0.45);
+  padding: 12px 18px; display: flex; align-items: center;
+}
+.time-cell-trad {
+  color: rgba(46,49,53,0.38); font-weight: 300;
+  border-left: 1px solid rgba(46,49,53,0.06);
+  background: rgba(46,49,53,0.02);
+}
+.time-cell-opt {
+  color: var(--gold-dk); font-weight: 500;
+  border-left: 1px solid rgba(143,91,62,0.12);
+  background: rgba(143,91,62,0.03);
+}
+.time-row-total { background: rgba(46,49,53,0.03); }
+.time-cell-total-label { font-weight: 600; color: var(--carbon); font-size: 12px; }
+.time-cell-total-trad { color: rgba(46,49,53,0.4); font-weight: 400; font-size: 13px; }
+.time-cell-total-opt { color: var(--gold-dk); font-weight: 600; font-size: 13px; }
+
+.time-impact-card {
+  background: var(--carbon); border-radius: 16px;
+  padding: 32px 28px; color: var(--fog);
+}
+.time-impact-label {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--gold);
+  margin-bottom: 20px; opacity: 0.8;
+}
+.time-impact-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 52px; font-weight: 300; line-height: 1;
+  color: var(--fog); letter-spacing: -0.03em; margin-bottom: 4px;
+}
+.time-impact-unit { font-size: 13px; color: rgba(232,231,227,0.4); margin-bottom: 16px; }
+.time-impact-vs { font-size: 10px; color: rgba(232,231,227,0.25); letter-spacing: 0.1em; margin-bottom: 4px; }
+.time-impact-trad {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px; font-weight: 300; color: rgba(232,231,227,0.3);
+  letter-spacing: -0.02em; text-decoration: line-through; text-decoration-color: rgba(143,91,62,0.4);
+}
+.time-impact-divider { height: 1px; background: rgba(232,231,227,0.07); margin: 20px 0; }
+.time-impact-steps-label { font-size: 10px; color: rgba(232,231,227,0.3); letter-spacing: 0.1em; margin-bottom: 8px; }
+.time-steps-row { display: flex; align-items: baseline; gap: 10px; }
+.time-steps-opt { font-family: 'Cormorant Garamond', serif; font-size: 38px; font-weight: 300; color: var(--gold); letter-spacing: -0.02em; }
+.time-steps-vs { font-size: 11px; color: rgba(232,231,227,0.28); }
+.time-steps-trad { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300; color: rgba(232,231,227,0.25); text-decoration: line-through; text-decoration-color: rgba(143,91,62,0.3); }
+
+/* ── Throughput Table ────────────────────────────────────── */
+.plex-wrap {
+  display: grid; grid-template-columns: 1fr 240px; gap: 40px; align-items: center;
+}
+.plex-table {
+  border-radius: 14px; overflow: hidden;
+  border: 1px solid rgba(46,49,53,0.08);
+}
+.plex-row {
+  display: grid; grid-template-columns: 1fr 1fr 1fr 1fr;
+  border-bottom: 1px solid rgba(46,49,53,0.06);
+}
+.plex-row:last-child { border-bottom: none; }
+.plex-cell {
+  padding: 13px 16px; font-size: 13px;
+  border-right: 1px solid rgba(46,49,53,0.06);
+  text-align: center;
+}
+.plex-cell:last-child { border-right: none; }
+.plex-hdr-cell {
+  padding: 12px 16px; font-size: 10px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  text-align: center; border-right: 1px solid rgba(46,49,53,0.06);
+}
+.plex-hdr-cell:last-child { border-right: none; }
+.plex-hdr-label { color: rgba(46,49,53,0.45); background: rgba(46,49,53,0.04); }
+.plex-hdr-single { color: rgba(46,49,53,0.42); background: rgba(46,49,53,0.02); }
+.plex-hdr-dual { color: rgba(46,49,53,0.42); background: rgba(46,49,53,0.02); }
+.plex-hdr-quad {
+  color: var(--gold); background: rgba(143,91,62,0.05);
+  border-top: 2px solid rgba(143,91,62,0.45);
+}
+.plex-cell-label { color: rgba(46,49,53,0.65); font-weight: 400; text-align: left; padding-left: 18px; }
+.plex-cell-label strong { font-weight: 600; color: var(--carbon); font-size: 15px; }
+.plex-cell-label span { font-size: 11px; color: rgba(46,49,53,0.4); }
+.plex-cell-single { color: rgba(46,49,53,0.38); }
+.plex-cell-dual { color: rgba(46,49,53,0.42); }
+.plex-cell-quad { color: var(--gold-dk); font-weight: 600; background: rgba(143,91,62,0.04); }
+.plex-stat-card {
+  background: var(--carbon); border-radius: 16px;
+  padding: 36px 30px; text-align: center;
+}
+.plex-stat-up { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(232,231,227,0.3); margin-bottom: 8px; }
+.plex-stat-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 72px; font-weight: 300; color: var(--fog);
+  line-height: 1; letter-spacing: -0.04em; margin-bottom: 4px;
+}
+.plex-stat-unit { font-size: 13px; color: var(--gold); font-weight: 500; margin-bottom: 16px; }
+.plex-stat-divider { height: 1px; background: rgba(232,231,227,0.07); margin: 16px 0; }
+.plex-stat-sub { font-size: 12px; color: rgba(232,231,227,0.35); line-height: 1.6; font-weight: 300; }
+</style>
+<template id="__bundler_thumbnail">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120">
+  <rect width="160" height="120" fill="#1e2125"/>
+  <rect x="24" y="28" width="52" height="6" rx="2" fill="rgba(232,231,227,0.15)"/>
+  <rect x="24" y="40" width="80" height="10" rx="2" fill="rgba(232,231,227,0.55)"/>
+  <rect x="24" y="56" width="60" height="4" rx="1" fill="rgba(232,231,227,0.12)"/>
+  <rect x="24" y="66" width="52" height="28" rx="4" fill="rgba(143,91,62,0.18)" stroke="rgba(143,91,62,0.4)" stroke-width="1"/>
+  <text x="50" y="85" font-family="serif" font-size="18" fill="rgba(232,231,227,0.85)" text-anchor="middle">2–4×</text>
+</svg>
+</template>
+</head>
+<body>
+<nav class="site-nav" id="site-nav"></nav>
+
+<!-- ── HERO ───────────────────────────────────────────────── -->
+<section class="page-hero" style="min-height:62vh;overflow:hidden;position:relative;">
+  <canvas id="page-hero-canvas" style="position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;background:linear-gradient(to right,rgba(243,241,237,0.97) 0%,rgba(243,241,237,0.82) 55%,rgba(243,241,237,0) 100%);"></div>
+  <div class="blob blob-sage b-lg" style="top:-60px;right:80px;opacity:.45;z-index:0;"></div>
+  <div class="page-hero-eyebrow eyebrow reveal" style="position:relative;z-index:1;"><a href="solutions.html" style="color:var(--gold);text-decoration:none;font-style:normal;">← Solutions</a></div>
+  <h1 class="reveal" style="position:relative;z-index:1;">Workflow<br>Efficiencies.<br><em>Every step, optimized.</em></h1>
+  <p class="page-hero-sub reveal" style="margin-top:20px;position:relative;z-index:1;">End-to-end operational workflow design — fewer steps, higher throughput, and documentation built to survive any audit. Labs that run better financially run better clinically.</p>
+</section>
+
+<!-- ── OPTIMIZED VS TRADITIONAL ─────────────────────────── -->
+<section class="section" style="background:var(--carbon);overflow:hidden;position:relative;">
+  <div class="blob blob-gold b-lg" style="top:-80px;left:-40px;opacity:.1;z-index:0;"></div>
+  <div style="position:relative;z-index:1;">
+    <div class="eyebrow mb-16 reveal" style="color:var(--gold);">The Workflow Gap</div>
+    <h2 class="reveal" style="color:var(--fog);margin-bottom:12px;">Less staff. Fewer consumables.<br><em>Lower cost. More revenue.</em></h2>
+    <p class="reveal" style="font-size:16px;color:rgba(232,231,227,0.45);max-width:580px;line-height:1.75;margin-bottom:0;font-weight:300;">The gap between traditional molecular lab workflows and optimized configurations is measurable at every level. Oriole Sciences consults on workflow architecture that closes that gap — systematically, not incrementally.</p>
+  </div>
+</section>
+
+<!-- ── TIME REDUCTION DATA ───────────────────────────────── -->
+<section class="section s-carbon">
+  <div class="blob blob-sage b-md" style="top:-60px;right:-40px;opacity:.5;z-index:0;"></div>
+  <div style="position:relative;z-index:1;">
+    <div class="eyebrow mb-16 reveal">Workflow Time Analysis</div>
+    <h2 class="reveal" style="margin-bottom:12px;">Cut testing time <em>by more than 50%.</em></h2>
+    <p class="reveal text-muted" style="font-size:16px;max-width:560px;line-height:1.75;margin-bottom:40px;">Fewer steps and faster workflows aren't aspirational — they're measurable outcomes of intentional workflow architecture. The difference between traditional and optimized approaches is visible at every phase of the run.</p>
+    <div class="time-split reveal" style="grid-template-columns:1fr 340px;">
+      <!-- Condensed supporting table -->
+      <div class="time-table">
+        <div class="plex-row" style="grid-template-columns:1fr 1fr 1fr;">
+          <div class="time-hdr-label">Step</div>
+          <div class="time-hdr-trad">Traditional</div>
+          <div class="time-hdr-opt">Optimized</div>
+        </div>
+        <div class="plex-row" style="grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid rgba(46,49,53,0.06);">
+          <div class="plex-cell plex-cell-label" style="text-align:left;">Incubation</div>
+          <div class="plex-cell time-cell-trad">~75 min</div>
+          <div class="plex-cell time-cell-opt">~20 min</div>
+        </div>
+        <div class="plex-row" style="grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid rgba(46,49,53,0.06);">
+          <div class="plex-cell plex-cell-label" style="text-align:left;">Prep</div>
+          <div class="plex-cell time-cell-trad">30–60+ min</div>
+          <div class="plex-cell time-cell-opt">0–15 min</div>
+        </div>
+        <div class="plex-row" style="grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid rgba(46,49,53,0.06);">
+          <div class="plex-cell plex-cell-label" style="text-align:left;">Sample Pipette</div>
+          <div class="plex-cell time-cell-trad">45–60 min</div>
+          <div class="plex-cell time-cell-opt">35–55 min</div>
+        </div>
+        <div class="plex-row" style="grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid rgba(46,49,53,0.06);">
+          <div class="plex-cell plex-cell-label" style="text-align:left;">Amplification</div>
+          <div class="plex-cell time-cell-trad">~120 min</div>
+          <div class="plex-cell time-cell-opt">~55 min</div>
+        </div>
+        <div class="plex-row" style="grid-template-columns:1fr 1fr 1fr;background:rgba(46,49,53,0.03);">
+          <div class="plex-cell plex-cell-label" style="text-align:left;font-weight:600;color:var(--carbon);">Total</div>
+          <div class="plex-cell time-cell-total-trad">~240–310 min</div>
+          <div class="plex-cell time-cell-total-opt">~110–145 min</div>
+        </div>
+      </div>
+      <!-- Prominent impact card -->
+      <div class="time-impact-card" style="padding:44px 36px;">
+        <div class="time-impact-label">Total Testing Time</div>
+        <div class="time-impact-num" style="font-size:80px;">~145</div>
+        <div class="time-impact-unit" style="font-size:15px;margin-bottom:20px;">minutes · optimized</div>
+        <div class="time-impact-vs" style="font-size:12px;">vs.</div>
+        <div class="time-impact-trad" style="font-size:44px;">~310 min</div>
+        <div class="time-impact-divider"></div>
+        <div class="time-impact-steps-label" style="font-size:11px;">Total Steps</div>
+        <div class="time-steps-row">
+          <div class="time-steps-opt" style="font-size:56px;">~10</div>
+          <div class="time-steps-vs">vs.</div>
+          <div class="time-steps-trad" style="font-size:38px;">~29</div>
+        </div>
+        <div style="font-size:11px;color:rgba(232,231,227,0.28);margin-top:10px;font-weight:300;">steps per run · optimized vs. traditional</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── THROUGHPUT BY CONFIGURATION ──────────────────────── -->
+<section class="section s-carbon-dk">
+  <div class="blob blob-gold b-md" style="top:-60px;right:80px;opacity:.18;z-index:0;"></div>
+  <div style="position:relative;z-index:1;">
+    <div style="display:grid;grid-template-columns:1fr 320px;gap:48px;align-items:center;" class="reveal">
+      <div>
+        <div class="eyebrow mb-16">Throughput by Configuration</div>
+        <h2 style="margin-bottom:20px;">More patients per run.<br><em>Every panel defensible.</em></h2>
+        <p class="text-muted" style="font-size:16px;line-height:1.75;">Multiplex configuration is a throughput lever that most labs leave on the table. The right configuration strategy increases patients per run 2–4× without adding audit risk.</p>
+      </div>
+      <div class="plex-stat-card" style="padding:48px 40px;text-align:center;">
+        <div class="plex-stat-up" style="font-size:16px;letter-spacing:0.14em;color:var(--fog);opacity:1;font-weight:300;margin-bottom:4px;">Up to</div>
+        <div class="plex-stat-num" style="font-size:100px;">2–4×</div>
+        <div class="plex-stat-unit" style="font-size:15px;font-weight:500;margin-bottom:20px;">more patients per run</div>
+        <div class="plex-stat-divider"></div>
+        <div class="plex-stat-sub" style="font-size:12px;color:rgba(232,231,227,0.38);line-height:1.75;">Scale without increasing staff, instruments, or audit risk. Zero orphan targets — every result clinically justified.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── WHY IT MATTERS ─────────────────────────────────────── -->
+<section class="section s-carbon">
+  <div class="blob blob-blackberry b-lg" style="top:-60px;right:-40px;opacity:.6;z-index:0;"></div>
+  <div class="split-40-60 reveal" style="position:relative;z-index:1;">
+    <div>
+      <div class="eyebrow mb-24">Why It Matters</div>
+      <h2>Inefficient workflows <em>drain margin and create risk.</em></h2>
+    </div>
+    <div style="padding-top:8px;">
+      <p class="text-muted mb-24" style="font-size:17px;line-height:1.8;">Workflow inefficiencies compound. Slow sample handling reduces throughput. LIS/EMR misalignment creates documentation gaps. Poorly configured multiplex panels limit patients per run. Each problem is manageable in isolation — together, they erode the program's financial foundation.</p>
+      <p class="text-muted" style="font-size:17px;line-height:1.8;">Oriole Sciences rebuilds workflows around efficiency. Sample handling, LIS/EMR integration, multiplex configuration, QC documentation — optimized as an integrated system, not patched individually.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW WE OPTIMIZE ───────────────────────────────────── -->
+<section class="section s-carbon-dk">
+  <div class="blob blob-sage b-lg" style="top:-80px;right:60px;opacity:.22;z-index:0;"></div>
+  <div class="eyebrow mb-48 reveal">How We Optimize</div>
+  <div class="grid-3 reveal" style="gap:20px;position:relative;z-index:1;">
+    <div class="solid-card">
+      <div class="proof-label">Sample Handling</div>
+      <h3 class="tile-h" style="margin-bottom:16px;">Chain of custody, intact.</h3>
+      <p class="tile-p">Sample collection, transport, accessioning, and processing protocols verified and optimized — from collection point through instrument and result delivery. No gaps, no manual workarounds.</p>
+    </div>
+    <div class="solid-card">
+      <div class="proof-label">LIS/EMR Integration</div>
+      <h3 class="tile-h" style="margin-bottom:16px;">No translation loss.</h3>
+      <p class="tile-p">LIS and EMR integration validated for order accuracy, result delivery, and documentation completeness — eliminating the gaps that create both operational failures and audit exposure.</p>
+    </div>
+    <div class="solid-card">
+      <div class="proof-label">QC &amp; Documentation</div>
+      <h3 class="tile-h" style="margin-bottom:16px;">Audit-ready by design.</h3>
+      <p class="tile-p">QC protocols and result documentation embedded in workflow from standup. Built to satisfy regulatory and payer requirements — not assembled under audit pressure.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band" id="cta-band"></section>
+<footer class="site-footer" id="site-footer"></footer>
+<script src="site.js"></script>
+<script>initSite('workflow');</script>
+<script>initPageHeroCanvas(['#4F695B','#506c8b','#8f5b3e']);</script>
+</body>
+</html>

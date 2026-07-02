@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Blog · Oriole Sciences</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="site.css" />
+</head>
+<body>
+
+<nav class="site-nav" id="site-nav"></nav>
+
+<!-- ── PAGE HERO ────────────────────────────────────────── -->
+<section class="page-hero" style="background:var(--carbon-dk);overflow:hidden;position:relative;min-height:60vh;margin-top:var(--nav-h);padding-top:72px;">
+  <canvas id="network-hero-canvas" style="position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;background:linear-gradient(to right,rgba(30,33,37,0.97) 0%,rgba(30,33,37,0.80) 52%,rgba(30,33,37,0) 100%);"></div>
+  <div class="blob blob-gold b-lg" style="top:-80px;right:100px;opacity:.35;z-index:0;"></div>
+  <div class="page-hero-eyebrow eyebrow reveal" style="position:relative;z-index:1;">Insights</div>
+  <h1 class="reveal" style="position:relative;z-index:1;color:var(--fog);">Perspectives That Move<br><em style="color:#b07555;">Healthcare Forward.</em></h1>
+  <p class="page-hero-sub reveal" style="margin-top:20px;position:relative;z-index:1;color:rgba(232,231,227,0.62);">Published when it’s worth publishing.</p>
+</section>
+
+<!-- ── COMING SOON ───────────────────────────────────────── -->
+<section class="section s-carbon" style="min-height:50vh;display:flex;align-items:center">
+  <div class="blob blob-sage b-lg" style="top:0;right:-60px;opacity:.5"></div>
+  <div style="width:100%">
+    <div class="split-40-60 reveal">
+      <div>
+        <div class="eyebrow mb-24">Coming Soon</div>
+        <h2>When it's ready, <em>it'll be worth reading.</em></h2>
+        <p class="text-muted mt-40" style="font-size:16px;line-height:1.8">No filler. No content marketing calendar. We publish when there's something worth saying about molecular diagnostics, reimbursement, or operational intelligence.</p>
+        <p class="text-muted" style="font-size:16px;line-height:1.8;margin-top:16px">Expect market signals, payer analysis, prevalence data, and operational frameworks — the kind of intelligence that actually changes how a lab runs.</p>
+      </div>
+      <div>
+        <div class="glass-card glass-card-p">
+          <div class="eyebrow mb-24">Get notified when we publish.</div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <input type="text" placeholder="Your name" style="background:rgba(56,60,65,.55);border:1px solid rgba(232,231,227,.09);border-radius:8px;padding:13px 16px;color:#E8E7E3;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:300;outline:none;width:100%" />
+            <input type="email" placeholder="Your email" style="background:rgba(56,60,65,.55);border:1px solid rgba(232,231,227,.09);border-radius:8px;padding:13px 16px;color:#E8E7E3;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:300;outline:none;width:100%" />
+            <select style="background:rgba(56,60,65,.55);border:1px solid rgba(232,231,227,.09);border-radius:8px;padding:13px 16px;color:rgba(232,231,227,.6);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:300;outline:none;width:100%;appearance:none">
+              <option>I work at a Reference Lab</option>
+              <option>I work at a Hospital</option>
+              <option>I work at a Provider / Clinic</option>
+              <option>I'm in lab finance / billing</option>
+              <option>Other</option>
+            </select>
+            <button class="btn-primary" style="align-self:flex-start;margin-top:4px">Notify Me</button>
+          </div>
+          <p style="font-size:11px;color:rgba(232,231,227,.2);margin-top:16px;font-style:italic">We don't send newsletters. Only the real stuff.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- What's coming -->
+    <div style="margin-top:80px" class="reveal">
+      <div class="eyebrow mb-32">What to expect</div>
+      <div class="grid-3" style="gap:14px">
+        <div class="solid-card">
+          <div class="tile-num">Topic Area</div>
+          <h3 class="tile-h">Payer Analysis</h3>
+          <p class="tile-p">How payer behavior is changing — which denial patterns are rising, which codes are under pressure, and what the data shows about where reimbursement is heading.</p>
+        </div>
+        <div class="solid-card">
+          <div class="tile-num">Topic Area</div>
+          <h3 class="tile-h">Prevalence Intelligence</h3>
+          <p class="tile-p">Regional prevalence data, care-setting-specific patterns, and what shifting prevalence means for panel design and lab program sizing.</p>
+        </div>
+        <div class="solid-card">
+          <div class="tile-num">Topic Area</div>
+          <h3 class="tile-h">Operational Frameworks</h3>
+          <p class="tile-p">How high-performing molecular labs are structured — workflow architecture, documentation discipline, and what separates programs that hold up from those that don't.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ───────────────────────────────────────────────── -->
+<section class="cta-band" id="cta-band"></section>
+<footer class="site-footer" id="site-footer"></footer>
+
+<script src="site.js"></script>
+<script>initSite('blog');</script>
+<script>initNetworkHeroCanvas(true);</script>
+</body>
+</html>

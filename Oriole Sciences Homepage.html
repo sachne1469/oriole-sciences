@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Oriole Sciences — 3 Homepage Layout Options</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="design-canvas.jsx"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #1c1c1c; font-family: 'DM Sans', sans-serif; }
+
+/* ── Brand Tokens ─────────────────────────────── */
+:root {
+  --carbon:    #2E3135;
+  --blackberry:#3E2331;
+  --sage:      #4F695B;
+  --fog:       #E8E7E3;
+  --sandstone: #D5CCBC;
+  --gold:      #C9A24A;
+  --gold-lt:   #dbb96a;
+  --carbon-dk: #1e2125;
+  --carbon-md: #383c41;
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+
+/* ══════════════════════════════════════════════
+   SHARED: LOGO SVG
+   ══════════════════════════════════════════════ */
+function OrioleLogo({ size = 56, textColor = "#E8E7E3", goldColor = "#C9A24A" }) {
+  // Dot ring — approximate the brand spiral
+  const cx = size / 2, cy = size / 2, r = size * 0.38;
+  const dots = [];
+  const count = 36;
+  // Color stops around the ring: sage → blackberry → gold → gold → sage
+  const colorStops = [
+    { a: 0,   c: "#C9A24A", s: 0.95 }, // gold right
+    { a: 45,  c: "#d4a94e", s: 0.85 },
+    { a: 90,  c: "#C9A24A", s: 1.0  }, // gold top
+    { a: 120, c: "#b89040", s: 0.8  },
+    { a: 150, c: "#8a7040", s: 0.65 },
+    { a: 180, c: "#4F695B", s: 0.85 }, // sage left
+    { a: 210, c: "#4F695B", s: 0.75 },
+    { a: 240, c: "#3E2331", s: 0.9  }, // blackberry
+    { a: 270, c: "#4a2a3a", s: 0.7  },
+    { a: 300, c: "#3E2331", s: 0.8  },
+    { a: 330, c: "#6b4a28", s: 0.75 },
+    { a: 360, c: "#C9A24A", s: 0.95 },
+  ];
+
+  function lerpColor(a, b, t) {
+    const hr = (h) => parseInt(h.slice(1,3),16);
+    const hg = (h) => parseInt(h.slice(3,5),16);
+    const hb = (h) => parseInt(h.slice(5,7),16);
+    const r = Math.round(hr(a) + (hr(b)-hr(a))*t);
+    const g = Math.round(hg(a) + (hg(b)-hg(a))*t);
+    const bv = Math.round(hb(a) + (hb(b)-hb(a))*t);
+    return `rgb(${r},${g},${bv})`;
+  }
+  function getColorAtAngle(deg) {
+    for (let i = 0; i < colorStops.length-1; i++) {
+      if (deg >= colorStops[i].a && deg < colorStops[i+1].a) {
+        const t = (deg - colorStops[i].a) / (colorStops[i+1].a - colorStops[i].a);
+        return { c: lerpColor(colorStops[i].c, colorStops[i+1].c, t), s: colorStops[i].s + (colorStops[i+1].s - colorStops[i].s)*t };
+      }
+    }
+    return { c: colorStops[0].c, s: colorStops[0].s };
+  }
+
+  for (let i = 0; i < count; i++) {
+    const angleDeg = (i / count) * 360;
+    const angleRad = (angleDeg - 90) * Math.PI / 180;
+    const { c, s } = getColorAtAngle(angleDeg);
+    const dotR = size * 0.032 * (0.7 + 0.6 * s);
+    dots.push(
+      <circle
+        key={i}
+        cx={cx + r * Math.cos(angleRad)}
+        cy={cy + r * Math.sin(angleRad)}
+        r={dotR}
+        fill={c}
+        opacity={0.5 + 0.5 * s}
+      />
+    );
+  }
+
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} fill="none">
+      {dots}
+    </svg>
+  );
+}
+
+function OtextLogo({ color = "#E8E7E3", gold = "#C9A24A", size = "lg" }) {
+  const fs = size === "lg" ? 22 : size === "sm" ? 14 : 17;
+  const sub = size === "lg" ? 11 : size === "sm" ? 8 : 9;
+  return (
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 3 }}>
+      <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 500, fontSize: fs, letterSpacing: "0.22em", color, textTransform: "uppercase" }}>
+        ORIOL<span style={{ color: gold }}>E</span>
+      </div>
+      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+        <div style={{ width: 24, height: 1, background: gold, opacity: 0.7 }}></div>
+        <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 400, fontSize: sub, letterSpacing: "0.28em", color, opacity: 0.7, textTransform: "uppercase" }}>SCIENCES</div>
+        <div style={{ width: 24, height: 1, background: gold, opacity: 0.7 }}></div>
+      </div>
+    </div>
+  );
+}
+
+function NavLogo({ dark = false }) {
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+      <OrioleLogo size={36} />
+      <OtextLogo color={dark ? "#2E3135" : "#E8E7E3"} size="sm" />
+    </div>
+  );
+}
+
+/* placeholder stripe */
+function ImgPlaceholder({ w, h, label, dark = false }) {
+  const bg = dark
+    ? "repeating-linear-gradient(45deg,rgba(255,255,255,0.03) 0,rgba(255,255,255,0.03) 1px,transparent 1px,transparent 9px)"
+    : "repeating-linear-gradient(45deg,rgba(46,49,53,0.06) 0,rgba(46,49,53,0.06) 1px,transparent 1px,transparent 9px)";
+  return (
+    <div style={{ width: w, height: h, background: bg, border: `1px solid ${dark ? "rgba(255,255,255,0.08)" : "rgba(46,49,53,0.1)"}`, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+      <span style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 12, color: dark ? "rgba(232,231,227,0.25)" : "rgba(46,49,53,0.3)", textAlign: "center", padding: "0 16px" }}>{label}</span>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   OPTION A — Deep Carbon / Dark Premium
+   ══════════════════════════════════════════════ */
+const aS = {
+  wrap:    { background: "var(--carbon-dk)", color: "var(--fog)", fontFamily: "'DM Sans',sans-serif", width: 1440 },
+  nav:     { display:"flex", alignItems:"center", justifyContent:"space-between", padding:"20px 72px", borderBottom:"1px solid rgba(232,231,227,0.06)" },
+  navLinks:{ display:"flex", gap:32 },
+  navLink: { fontSize:14, color:"rgba(232,231,227,0.45)", textDecoration:"none", fontWeight:400, letterSpacing:"0.02em" },
+  navCta:  { background:"var(--gold)", color:"var(--carbon-dk)", border:"none", padding:"10px 22px", borderRadius:4, fontSize:13, fontWeight:600, fontFamily:"'DM Sans',sans-serif", letterSpacing:"0.06em", textTransform:"uppercase", cursor:"pointer" },
+
+  hero:    { padding:"110px 72px 80px", textAlign:"center" },
+  heroEye: { display:"inline-flex", alignItems:"center", gap:8, border:"1px solid rgba(201,162,74,0.3)", borderRadius:2, padding:"6px 16px", fontSize:11, color:"var(--gold)", fontWeight:500, letterSpacing:"0.12em", textTransform:"uppercase", marginBottom:40 },
+  heroH1:  { fontFamily:"'Cormorant Garamond',serif", fontWeight:300, fontSize:86, lineHeight:1.0, letterSpacing:"-0.01em", maxWidth:820, margin:"0 auto 28px", color:"var(--fog)" },
+  heroEm:  { color:"var(--gold)", fontStyle:"italic" },
+  heroSub: { fontSize:18, color:"rgba(232,231,227,0.5)", maxWidth:520, margin:"0 auto 20px", fontWeight:300, lineHeight:1.65 },
+  heroRot: { fontSize:14, color:"rgba(232,231,227,0.3)", letterSpacing:"0.08em", textTransform:"uppercase", marginBottom:48 },
+  heroCtas:{ display:"flex", justifyContent:"center", gap:14 },
+  btnPri:  { background:"var(--gold)", color:"var(--carbon-dk)", border:"none", padding:"14px 32px", borderRadius:4, fontSize:14, fontWeight:600, fontFamily:"'DM Sans',sans-serif", letterSpacing:"0.06em", textTransform:"uppercase", cursor:"pointer" },
+  btnGhost:{ background:"transparent", color:"rgba(232,231,227,0.6)", border:"1px solid rgba(232,231,227,0.18)", padding:"14px 32px", borderRadius:4, fontSize:14, fontWeight:400, fontFamily:"'DM Sans',sans-serif", cursor:"pointer" },
+  divLine: { width:1, height:64, background:"linear-gradient(to bottom, rgba(201,162,74,0.4),transparent)", margin:"56px auto 0" },
+
+  tiles:   { display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:1, background:"rgba(232,231,227,0.05)", margin:"0 72px", borderRadius:8, overflow:"hidden" },
+  tile:    { background:"#252830", padding:"36px 32px" },
+  tileNum: { fontSize:11, fontWeight:600, color:"var(--gold)", letterSpacing:"0.12em", textTransform:"uppercase", marginBottom:20 },
+  tileH:   { fontSize:20, fontWeight:500, color:"var(--fog)", marginBottom:10, letterSpacing:"-0.02em", lineHeight:1.2 },
+  tileP:   { fontSize:13, color:"rgba(232,231,227,0.4)", lineHeight:1.7, fontWeight:300 },
+
+  market:  { padding:"96px 72px", display:"grid", gridTemplateColumns:"5fr 7fr", gap:80, alignItems:"start" },
+  mktH2:   { fontFamily:"'Cormorant Garamond',serif", fontWeight:300, fontSize:52, letterSpacing:"-0.01em", lineHeight:1.05, color:"var(--fog)" },
+  mktEm:   { color:"var(--gold)", fontStyle:"italic" },
+  mktP:    { fontSize:16, color:"rgba(232,231,227,0.45)", lineHeight:1.8, fontWeight:300, paddingTop:8 },
+
+  stats:   { display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:1, background:"rgba(232,231,227,0.05)", margin:"0 72px 96px", borderRadius:8, overflow:"hidden" },
+  stat:    { background:"#252830", padding:"48px 40px", textAlign:"center" },
+  statN:   { fontFamily:"'Cormorant Garamond',serif", fontWeight:300, fontSize:72, color:"var(--fog)", letterSpacing:"-0.03em", lineHeight:1 },
+  statNg:  { color:"var(--gold)" },
+  statL:   { fontSize:12, color:"rgba(232,231,227,0.35)", marginTop:10, textTransform:"uppercase", letterSpacing:"0.1em", fontWeight:500 },
+  statNo:  { fontSize:11, color:"rgba(232,231,227,0.2)", marginTop:4 },
+
+  quote:   { margin:"0 72px 96px", border:"1px solid rgba(201,162,74,0.15)", borderRadius:8, padding:"64px 72px", background:"rgba(201,162,74,0.03)" },
+  quoteP:  { fontFamily:"'Cormorant Garamond',serif", fontWeight:300, fontSize:28, lineHeight:1.6, color:"rgba(232,231,227,0.75)", fontStyle:"italic", marginBottom:24 },
+  quoteA:  { fontSize:13, color:"rgba(232,231,227,0.3)", fontWeight:400, letterSpacing:"0.04em" },
+
+  cta:     { margin:"0 72px 96px", background:"var(--blackberry)", borderRadius:8, padding:"64px 72px", display:"flex", alignItems:"center", justifyContent:"space-between", gap:48 },
+  ctaH:    { fontFamily:"'Cormorant Garamond',serif", fontWeight:300, fontSize:44, color:"var(--fog)", letterSpacing:"-0.01em", lineHeight:1.2, maxWidth:520 },
+  ctaEm:   { color:"var(--gold)", fontStyle:"italic" },
+};
+
+function OptionA() {
+  return (
+    <div style={aS.wrap}>
+      <nav style={aS.nav}>
+        <NavLogo />
+        <div style={aS.navLinks}>
+          {["Solutions","5 Pillars","Defensible PCR","Insights","About"].map(l=>(
+            <a key={l} href="#" style={aS.navLink}>{l}</a>
+          ))}
+        </div>
+        <button style={aS.navCta}>Request a Consultation</button>
+      </nav>
+
+      <div style={aS.hero}>
+        <div style={aS.heroEye}>Molecular Diagnostics · End-to-End Solutions</div>
+        <h1 style={aS.heroH1}>
+          Everyone solves a piece.<br/>
+          We solve <em style={aS.heroEm}>the puzzle.</em>
+        </h1>
+        <div style={aS.heroSub}>Complex molecular solutions purpose-built for reference labs, hospitals, providers, and clinics.</div>
+        <div style={aS.heroRot}>One partner. Every decision. Built to hold up.</div>
+        <div style={aS.heroCtas}>
+          <button style={aS.btnPri}>Request a Consultation</button>
+          <button style={aS.btnGhost}>Explore Our Solutions →</button>
+        </div>
+        <div style={aS.divLine}></div>
+      </div>
+
+      <div style={aS.tiles}>
+        {[
+          ["01","Lab Build","Empty room to operational program. Sized to your market."],
+          ["02","Revenue Recapture","Denial patterns turned into a recovery roadmap."],
+          ["03","Defensible PCR","The operational standard. Built to hold up."],
+          ["04","Launch Your Lab","90 days. Prevalence-informed. Audit-ready."],
+        ].map(([n,t,d])=>(
+          <div key={n} style={aS.tile}>
+            <div style={aS.tileNum}>{n}</div>
+            <h3 style={aS.tileH}>{t}</h3>
+            <p style={aS.tileP}>{d}</p>
+          </div>
+        ))}
+      </div>
+
+      <div style={aS.market}>
+        <h2 style={aS.mktH2}>The market changed.<br/>Most lab programs<br/><em style={aS.mktEm}>didn't.</em></h2>
+        <p style={aS.mktP}>A molecular lab is a hundred moving parts — workflow, equipment, staffing, coding, denials, revenue cycle — and most operators are left to wire it together alone. Molecular intelligence ties it into one system. We see which workflows hold up, which codes survive an audit, and where the margin leaks — then build or rebuild the lab around what the data says.</p>
+      </div>
+
+      <div style={aS.stats}>
+        {[
+          ["100","+","Labs Deployed",null],
+          ["27",null,"States Operating",null],
+          ["—",null,"Revenue Recovered","Confirm figures with Jeremy"],
+        ].map(([n,s,l,note])=>(
+          <div key={l} style={aS.stat}>
+            <div style={aS.statN}><span style={aS.statNg}>{n}</span>{s}</div>
+            <div style={aS.statL}>{l}</div>
+            {note && <div style={aS.statNo}>{note}</div>}
+          </div>
+        ))}
+      </div>
+
+      <div style={aS.quote}>
+        <p style={aS.quoteP}>"Partner quote will go here — setting · challenge · what we built · result."</p>
+        <div style={aS.quoteA}>Partner Name · Title · Organization — Source from Jeremy / Steve</div>
+      </div>
+
+      <div style={aS.cta}>
+        <h2 style={aS.ctaH}>Ready to build a program that <em style={aS.ctaEm}>holds up?</em></h2>
+        <button style={aS.btnPri}>Request a Consultation</button>
+      </div>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   OPTION B — Fog / Light Editorial
+   ══════════════════════════════════════════════ */
+const bS = {
+  wrap:    { background:"var(--fog)", color:"var(--carbon)", fontFamily:"'DM Sans',sans-serif", width:1440 },
+  nav:     { display:"flex", alignItems:"center", justifyContent:"space-between", padding:"20px 72px", borderBottom:"1px solid rgba(46,49,53,0.08)" },
+  navLinks:{ display:"flex", gap:32 },
+  navLink: { fontSize:14, color:"rgba(46,49,53,0.45)", textDecoration:"none", fontWeight:400 },
+  navCta:  { background:"var(--carbon)", color:"var(--fog)", border:"none", padding:"10px 22px", borderRadius:4, fontSize:13, fontWeight:600, fontFamily:"'DM Sans',sans-serif", letterSpacing:"0.06em", textTransform:"uppercase", cursor:"pointer" },
+
+  hero:    { display:"grid", gridTemplateColumns:"1fr 1fr", minHeight:560, borderBottom:"1px solid rgba(46,49,53,0.08)" },
+  heroL:   { padding:"80px 72px 80px", display:"flex", flexDirection:"column", justifyContent:"center", borderRight:"1px solid rgba(46,49,53,0.08)" },
+  heroEye: { fontSize:11, fontWeight:600, letterSpacing:"0.14em", textTransform:"uppercase", color:"var(--sage)", marginBottom:28 },
+  heroH1:  { fontFamily:"'Cormorant Garamond',serif", fontWeight:300, fontSize:72, lineHeight:1.0, letterSpacing:"-0.01em", color:"var(--carbon)", marginBottom:28 },
+  heroEm:  { color:"var(--gold)", fontStyle:"italic" },
+  heroSub: { fontSize:17, color:"rgba(46,49,53,0.55)", lineHeight:1.7, fontWeight:300, marginBottom:40, maxWidth:420 },
+  heroCtas:{ display:"flex", gap:14 },
+  btnPri:  { background:"var(--carbon)", color:"var(--fog)", border:"none", padding:"14px 28px", borderRadius:4, fontSize:14, fontWeight:500, fontFamily:"'DM Sans',sans-serif", letterSpacing:"0.05em", textTransform:"uppercase", cursor:"pointer" },
+  btnGhost:{ background:"transparent", color:"var(--carbon)", border:"1px solid rgba(46,49,53,0.25)", padding:"14px 28px", borderRadius:4, fontSize:14, fontWeight:400, fontFamily:"'DM Sans',sans-serif", cursor:"pointer" },
+  heroR:   { background:"var(--sandstone)", display:"flex", alignItems:"center", justifyContent:"center" },
+
+  tiles:   { display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:0, borderBottom:"1px solid rgba(46,49,53,0.08)" },
+  tile:    { padding:"40px 36px", borderRight:"1px solid rgba(46,49,53,0.08)" },
+  tileNum: { fontSize:11, fontWeight:600, color:"var(--gold)", letterSpacing:"0.12em", textTransform:"uppercase", marginBottom:18 },
+  tileH:   { fontSize:20, fontWeight:500, color:"var(--carbon)", marginBottom:10, letterSpacing:"-0.02em", lineHeight:1.2 },
+  tileP:   { fontSize:13, color:"rgba(46,49,53,0.5)", lineHeight:1.7, fontWeight:300 },
+
+  market:  { background:"var(--carbon)", padding:"96px 72px", display:"grid", gridTemplateColumns:"5fr 7fr", gap:80 },
+  mktH2:   { fontFamily:"'Cormorant Garamond',serif", fontWeight:300, fontSize:52, letterSpacing:"-0.01em", lineHeight:1.05, color:"var(--fog)" },
+  mktEm:   { color:"var(--gold)", fontStyle:"italic" },
+  mktP:    { fontSize:16, color:"rgba(232,231,227,0.45)", lineHeight:1.8, fontWeight:300, paddingTop:8 },
+
+  stats:   { display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:0, borderBottom:"1px solid rgba(46,49,53,0.08)", background:"var(--fog)" },
+  stat:    { padding:"56px 48px", borderRight:"1px solid rgba(46,49,53,0.08)" },
+  statLine:{ width:40, height:2, background:"var(--gold)", marginBottom:20 },
+  statN:   { fontFamily:"'Cormorant Garamond',serif", fontWeight:300, fontSize:68, color:"var(--carbon)", letterSpacing:"-0.03em", lineHeight:1 },
+  statL:   { fontSize:13, color:"rgba(46,49,53,0.45)", marginTop:8, textTransform:"uppercase", letterSpacing:"0.08em", fontWeight:500 },
+  statNo:  { fontSize:11, color:"rgba(46,49,53,0.28)", marginTop:4 },
+
+  quote:   { background:"var(--sandstone)", padding:"80px 72px", display:"grid", gridTemplateColumns:"auto 1fr", gap:64, alignItems:"start" },
+  quoteBar:{ width:3, background:"var(--gold)", borderRadius:2, minHeight:100 },
+  quoteP:  { fontFamily:"'Cormorant Garamond',serif", fontWeight:300, fontSize:28, lineHeight:1.6, color:"rgba(46,49,53,0.8)", fontStyle:"italic", marginBottom:20 },
+  quoteA:  { fontSize:13, color:"rgba(46,49,53,0.4)", fontWeight:400, letterSpacing:"0.04em" },
+
+  cta:     { background:"var(--blackberry)", padding:"80px 72px", display:"flex", alignItems:"center", justifyContent:"space-between", gap:48 },
+  ctaH:    { fontFamily:"'Cormorant Garamond',serif", fontWeight:300, fontSize:48, color:"var(--fog)", letterSpacing:"-0.01em", lineHeight:1.15, maxWidth:540 },
+  ctaEm:   { color:"var(--gold)", fontStyle:"italic" },
+  ctaBtn:  { background:"var(--gold)", color:"var(--carbon-dk)", border:"none", padding:"16px 36px", borderRadius:4, fontSize:14, fontWeight:600, fontFamily:"'DM Sans',sans-serif", letterSpacing:"0.06em", textTransform:"uppercase", cursor:"pointer", whiteSpace:"nowrap" },
+};
+
+function OptionB() {
+  return (
+    <div style={bS.wrap}>
+      <nav style={bS.nav}>
+        <NavLogo dark />
+        <div style={bS.navLinks}>
+          {["Solutions","5 Pillars","Defensible PCR","Insights","About"].map(l=>(
+            <a key={l} href="#" style={bS.navLink}>{l}</a>
+          ))}
+        </div>
+        <button style={bS.navCta}>Request a Consultation</button>
+      </nav>
+
+      <div style={bS.hero}>
+        <div style={bS.heroL}>
+          <div style={bS.heroEye}>Molecular Diagnostics · End-to-End</div>
+          <h1 style={bS.heroH1}>Complex Testing.<br/><em style={bS.heroEm}>Complete</em><br/>Infrastructure.</h1>
+          <div style={bS.heroSub}>One partner. Every decision. Built to hold up — for reference labs, hospitals, providers, and clinics.</div>
+          <div style={bS.heroCtas}>
+            <button style={bS.btnPri}>Request a Consultation</button>
+            <button style={bS.btnGhost}>Our Solutions →</button>
+          </div>
+        </div>
+        <div style={bS.heroR}>
+          <ImgPlaceholder w={480} h={420} label="Lab infrastructure / hero visual" dark={false} />
+        </div>
+      </div>
+
+      <div style={bS.tiles}>
+        {[
+          ["01","Lab Build","Empty room to operational program. Sized to your market."],
+          ["02","Revenue Recapture","Denial patterns turned into a recovery roadmap."],
+          ["03","Defensible PCR","The operational standard. Built to hold up."],
+          ["04","Launch Your Lab","90 days. Prevalence-informed. Audit-ready."],
+        ].map(([n,t,d])=>(
+          <div key={n} style={bS.tile}>
+            <div style={bS.tileNum}>{n}</div>
+            <h3 style={bS.tileH}>{t}</h3>
+            <p style={bS.tileP}>{d}</p>
+          </div>
+        ))}
+      </div>
+
+      <div style={bS.market}>
+        <h2 style={bS.mktH2}>The market changed.<br/>Most lab programs<br/><em style={bS.mktEm}>didn't.</em></h2>
+        <p style={bS.mktP}>A molecular lab is a hundred moving parts — workflow, equipment, staffing, coding, denials, revenue cycle — and most operators are left to wire it together alone. Molecular intelligence ties it into one system. We see which workflows hold up, which codes survive an audit, and where the margin leaks — then build or rebuild the lab around what the data says.</p>
+      </div>
+
+      <div style={bS.stats}>
+        {[
+          ["100+","Labs Deployed",null],
+          ["27","States Operating",null],
+          ["—","Revenue Recovered","Confirm figures with Jeremy"],
+        ].map(([n,l,note])=>(
+          <div key={l} style={bS.stat}>
+            <div style={bS.statLine}></div>
+            <div style={bS.statN}>{n}</div>
+            <div style={bS.statL}>{l}</div>
+            {note && <div style={bS.statNo}>{note}</div>}
+          </div>
+        ))}
+      </div>
+
+      <div style={bS.quote}>
+        <div style={bS.quoteBar}></div>
+        <div>
+          <p style={bS.quoteP}>"Partner quote will go here — setting · challenge · what we built · result."</p>
+          <div style={bS.quoteA}>Partner Name · Title · Organization — Source from Jeremy / Steve</div>
+        </div>
+      </div>
+
+      <div style={bS.cta}>
+        <h2 style={bS.ctaH}>Ready to build a program that <em style={bS.ctaEm}>holds up?</em></h2>
+        <button style={bS.ctaBtn}>Request a Consultation</button>
+      </div>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   OPTION C — Warm Sandstone + Bento Modular
+   ══════════════════════════════════════════════ */
+const cS = {
+  wrap:    { background:"#ece9e2", color:"var(--carbon)", fontFamily:"'DM Sans',sans-serif", width:1440 },
+  nav:     { display:"flex", alignItems:"center", justifyContent:"space-between", padding:"20px 64px", background:"var(--carbon-dk)" },
+  navLinks:{ display:"flex", gap:32 },
+  navLink: { fontSize:14, color:"rgba(232,231,227,0.45)", textDecoration:"none", fontWeight:400 },
+  navCta:  { background:"transparent", color:"var(--gold)", border:"1px solid rgba(201,162,74,0.4)", padding:"10px 22px", borderRadius:4, fontSize:13, fontWeight:500, fontFamily:"'DM Sans',sans-serif", letterSpacing:"0.06em", textTransform:"uppercase", cursor:"pointer" },
+
+  heroWrap:{ padding:"72px 64px 56px" },
+  heroEye: { display:"flex", alignItems:"center", gap:12, marginBottom:32 },
+  eyeLine: { width:32, height:1, background:"var(--gold)", opacity:0.7 },
+  eyeText: { fontSize:11, fontWeight:600, letterSpacing:"0.14em", textTransform:"uppercase", color:"var(--sage)" },
+  heroH1:  { fontFamily:"'Cormorant Garamond',serif", fontWeight:300, fontSize:88, lineHeight:0.95, letterSpacing:"-0.02em", color:"var(--carbon)", maxWidth:900, marginBottom:0 },
+  heroEm:  { fontStyle:"italic", color:"var(--gold)" },
+  heroBottom:{ display:"flex", alignItems:"flex-end", justifyContent:"space-between", marginTop:32 },
+  heroSub: { fontSize:17, color:"rgba(46,49,53,0.5)", lineHeight:1.65, fontWeight:300, maxWidth:420 },
+  heroCtas:{ display:"flex", gap:12, flexShrink:0 },
+  btnPri:  { background:"var(--carbon-dk)", color:"var(--fog)", border:"none", padding:"14px 28px", borderRadius:4, fontSize:14, fontWeight:500, fontFamily:"'DM Sans',sans-serif", letterSpacing:"0.05em", textTransform:"uppercase", cursor:"pointer" },
+  btnGold: { background:"var(--gold)", color:"var(--carbon-dk)", border:"none", padding:"14px 28px", borderRadius:4, fontSize:14, fontWeight:600, fontFamily:"'DM Sans',sans-serif", letterSpacing:"0.05em", textTransform:"uppercase", cursor:"pointer" },
+
+  bento:   { display:"grid", gridTemplateColumns:"repeat(12,1fr)", gridTemplateRows:"auto auto", gap:10, padding:"0 64px 64px" },
+  tile:    { borderRadius:6, padding:"36px 32px" },
+
+  // tile theming
+  tileLight: { background:"#fff", border:"1px solid rgba(46,49,53,0.07)" },
+  tileDark:  { background:"var(--carbon-dk)", color:"var(--fog)" },
+  tileGold:  { background:"var(--gold)", color:"var(--carbon-dk)" },
+  tileSage:  { background:"var(--sage)", color:"var(--fog)" },
+  tileBlk:   { background:"var(--blackberry)", color:"var(--fog)" },
+
+  tileNum:  { fontSize:11, fontWeight:600, letterSpacing:"0.12em", textTransform:"uppercase", marginBottom:18, opacity:0.5 },
+  tileH:    { fontSize:19, fontWeight:500, letterSpacing:"-0.02em", lineHeight:1.2, marginBottom:10 },
+  tileP:    { fontSize:13, lineHeight:1.65, fontWeight:300, opacity:0.65 },
+
+  statBig:  { fontFamily:"'Cormorant Garamond',serif", fontWeight:300, fontSize:64, letterSpacing:"-0.04em", lineHeight:1 },
+  statLbl:  { fontSize:12, textTransform:"uppercase", letterSpacing:"0.1em", fontWeight:500, marginTop:8, opacity:0.6 },
+  statNote: { fontSize:11, marginTop:4, opacity:0.35 },
+
+  mktH2:    { fontFamily:"'Cormorant Garamond',serif", fontWeight:300, fontSize:38, letterSpacing:"-0.01em", lineHeight:1.1, marginBottom:16 },
+  mktEm:    { fontStyle:"italic", color:"var(--gold)" },
+  mktP:     { fontSize:14, lineHeight:1.75, fontWeight:300, opacity:0.55 },
+
+  quote:    { margin:"0 64px 64px", display:"grid", gridTemplateColumns:"1fr 1fr", background:"var(--carbon-dk)", borderRadius:6, overflow:"hidden" },
+  quoteL:   { padding:"56px 56px", display:"flex", flexDirection:"column", justifyContent:"center" },
+  quoteP:   { fontFamily:"'Cormorant Garamond',serif", fontWeight:300, fontSize:26, lineHeight:1.65, color:"rgba(232,231,227,0.75)", fontStyle:"italic", marginBottom:20 },
+  quoteA:   { fontSize:12, color:"rgba(232,231,227,0.3)", letterSpacing:"0.04em" },
+  quoteR:   { background:"var(--blackberry)", padding:"56px", display:"flex", flexDirection:"column", justifyContent:"center", gap:32 },
+  quoteRStat:{ borderTop:"1px solid rgba(232,231,227,0.1)", paddingTop:24 },
+
+  cta:      { margin:"0 64px 96px", background:"var(--gold)", borderRadius:6, padding:"60px 64px", display:"flex", alignItems:"center", justifyContent:"space-between" },
+  ctaH:     { fontFamily:"'Cormorant Garamond',serif", fontWeight:300, fontSize:46, color:"var(--carbon-dk)", letterSpacing:"-0.01em", lineHeight:1.15, maxWidth:520 },
+  ctaBtn:   { background:"var(--carbon-dk)", color:"var(--fog)", border:"none", padding:"16px 36px", borderRadius:4, fontSize:14, fontWeight:600, fontFamily:"'DM Sans',sans-serif", letterSpacing:"0.06em", textTransform:"uppercase", cursor:"pointer", whiteSpace:"nowrap" },
+};
+
+function OptionC() {
+  return (
+    <div style={cS.wrap}>
+      <nav style={cS.nav}>
+        <NavLogo />
+        <div style={cS.navLinks}>
+          {["Solutions","5 Pillars","Defensible PCR","Insights","About"].map(l=>(
+            <a key={l} href="#" style={cS.navLink}>{l}</a>
+          ))}
+        </div>
+        <button style={cS.navCta}>Request a Consultation</button>
+      </nav>
+
+      <div style={cS.heroWrap}>
+        <div style={cS.heroEye}>
+          <div style={cS.eyeLine}></div>
+          <span style={cS.eyeText}>Molecular Diagnostics · End-to-End Solutions</span>
+        </div>
+        <h1 style={cS.heroH1}>
+          Everyone solves a piece.<br/>
+          We solve <em style={cS.heroEm}>the puzzle.</em>
+        </h1>
+        <div style={cS.heroBottom}>
+          <div style={cS.heroSub}>Complex molecular solutions purpose-built for reference labs, hospitals, providers, and clinics. One partner. Every decision.</div>
+          <div style={cS.heroCtas}>
+            <button style={cS.btnPri}>See Our Solutions →</button>
+            <button style={cS.btnGold}>Request a Consultation</button>
+          </div>
+        </div>
+      </div>
+
+      {/* Bento grid */}
+      <div style={cS.bento}>
+        {/* row 1: 4 solution tiles */}
+        {[
+          ["01","Lab Build","Empty room to operational program. Sized to your market."],
+          ["02","Revenue Recapture","Denial patterns turned into a recovery roadmap."],
+          ["03","Defensible PCR","The operational standard. Built to hold up."],
+          ["04","Launch Your Lab","90 days. Prevalence-informed. Audit-ready."],
+        ].map(([n,t,d])=>(
+          <div key={n} style={{...cS.tile, ...cS.tileLight, gridColumn:"span 3"}}>
+            <div style={cS.tileNum}>{n}</div>
+            <h3 style={cS.tileH}>{t}</h3>
+            <p style={cS.tileP}>{d}</p>
+          </div>
+        ))}
+
+        {/* row 2 left: market context */}
+        <div style={{...cS.tile, ...cS.tileDark, gridColumn:"span 5"}}>
+          <div style={{...cS.tileNum, color:"rgba(201,162,74,0.6)"}}>Market Context</div>
+          <h2 style={{...cS.mktH2, color:"var(--fog)"}}>The market changed.<br/>Most lab programs <em style={cS.mktEm}>didn't.</em></h2>
+          <p style={{...cS.mktP, color:"rgba(232,231,227,0.5)"}}>A molecular lab is a hundred moving parts — workflow, equipment, staffing, coding, denials, revenue cycle — and most operators are left to wire it together alone.</p>
+        </div>
+
+        {/* row 2 center: stats */}
+        <div style={{...cS.tile, ...cS.tileSage, gridColumn:"span 4", display:"flex", flexDirection:"column", justifyContent:"space-between"}}>
+          <div style={{...cS.tileNum, color:"rgba(232,231,227,0.5)"}}>This isn't theory. It's deployed.</div>
+          <div style={{display:"flex", flexDirection:"column", gap:20}}>
+            {[["100+","Labs Deployed",null],["27","States Operating",null],["—","Revenue Recovered","Confirm with Jeremy"]].map(([n,l,note])=>(
+              <div key={l}>
+                <div style={{...cS.statBig, color:"var(--fog)", fontSize:40}}>{n}</div>
+                <div style={{...cS.statLbl, color:"rgba(232,231,227,0.6)"}}>{l}</div>
+                {note&&<div style={{...cS.statNote, color:"rgba(232,231,227,0.3)"}}>{note}</div>}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* row 2 right: placeholder */}
+        <div style={{...cS.tile, ...cS.tileBlk, gridColumn:"span 3", display:"flex", alignItems:"center", justifyContent:"center"}}>
+          <ImgPlaceholder w={260} h={200} label="Partner / case study image" dark={true} />
+        </div>
+      </div>
+
+      {/* Quote + stats panel */}
+      <div style={cS.quote}>
+        <div style={cS.quoteL}>
+          <p style={cS.quoteP}>"Partner quote will go here — setting · challenge · what we built · result."</p>
+          <div style={cS.quoteA}>Partner Name · Title · Organization — Source from Jeremy / Steve</div>
+        </div>
+        <div style={cS.quoteR}>
+          {[["100+","Labs Deployed",null],["27","States Operating",null]].map(([n,l])=>(
+            <div key={l} style={cS.quoteRStat}>
+              <div style={{...cS.statBig, color:"var(--gold)", fontSize:52}}>{n}</div>
+              <div style={{...cS.statLbl, color:"rgba(232,231,227,0.5)"}}>{l}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div style={cS.cta}>
+        <h2 style={cS.ctaH}>Ready to build a program that holds up?</h2>
+        <button style={cS.ctaBtn}>Request a Consultation</button>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Root ─── */
+function App() {
+  return (
+    <DesignCanvas>
+      <DCSection id="homepage" title="Oriole Sciences — Homepage" subtitle="3 layout directions · authentic brand colors · same content">
+        <DCArtboard id="opt-a" label="A · Dark Premium" width={1440}><OptionA /></DCArtboard>
+        <DCArtboard id="opt-b" label="B · Fog Editorial" width={1440}><OptionB /></DCArtboard>
+        <DCArtboard id="opt-c" label="C · Sandstone Bento" width={1440}><OptionC /></DCArtboard>
+      </DCSection>
+    </DesignCanvas>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+<template id="__bundler_thumbnail">
+<svg viewBox="0 0 80 56" xmlns="http://www.w3.org/2000/svg">
+  <rect width="80" height="56" fill="#1e2125"/>
+  <circle cx="14" cy="14" r="7" fill="none" stroke="#C9A24A" stroke-width="1.5" stroke-dasharray="2 2"/>
+  <rect x="6" y="26" width="22" height="3" rx="1" fill="#C9A24A" opacity="0.8"/>
+  <rect x="6" y="32" width="16" height="2" rx="1" fill="white" opacity="0.3"/>
+  <rect x="34" y="8" width="20" height="3" rx="1" fill="#E8E7E3" opacity="0.7"/>
+  <rect x="34" y="14" width="32" height="8" rx="1" fill="#D5CCBC" opacity="0.5"/>
+  <rect x="34" y="26" width="14" height="5" rx="1.5" fill="#C9A24A" opacity="0.8"/>
+</svg>
+</template>
+</body>
+</html>

@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Assay Strategy · Oriole Sciences</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="site.css" />
+<style>
+/* Failure chain */
+.fail-item {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(232,231,227,0.06);
+}
+.fail-item:last-child { border-bottom: none; }
+.fail-x {
+  width: 20px; height: 20px; border-radius: 4px;
+  border: 1.5px solid rgba(143,91,62,0.45);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 2px;
+  color: var(--gold); font-size: 10px; font-weight: 700;
+}
+.fail-label {
+  font-size: 14px; font-weight: 500;
+  color: rgba(232,231,227,0.82); line-height: 1.3;
+}
+.fail-label span {
+  display: block; font-size: 12px;
+  font-weight: 300; color: rgba(232,231,227,0.38);
+  margin-top: 3px; font-family: 'DM Sans', sans-serif;
+}
+.fail-outcome {
+  margin-top: 20px; padding: 14px 18px;
+  background: rgba(143,91,62,0.08);
+  border: 1px solid rgba(143,91,62,0.2);
+  border-radius: 10px;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--gold); text-align: center;
+}
+
+/* Comparison grid */
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 56px 1fr;
+  gap: 0;
+  align-items: stretch;
+}
+.compare-col {
+  background: white;
+  border: 1px solid rgba(46,49,53,0.07);
+  border-radius: 18px;
+  padding: 36px 32px;
+}
+.compare-col-dark {
+  background: var(--carbon);
+  border-color: rgba(232,231,227,0.06);
+}
+.compare-arrow {
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; color: var(--gold); opacity: 0.6;
+}
+.compare-label {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase; margin-bottom: 20px;
+}
+.compare-label-muted { color: rgba(46,49,53,0.35); }
+.compare-label-gold { color: var(--gold); }
+.compare-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(46,49,53,0.06);
+}
+.compare-item:last-child { border-bottom: none; }
+.compare-item-dark { border-bottom-color: rgba(232,231,227,0.05); }
+.compare-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  margin-top: 7px; flex-shrink: 0;
+}
+.compare-dot-muted { background: rgba(46,49,53,0.2); }
+.compare-dot-gold { background: var(--gold); }
+.compare-text {
+  font-size: 14px; font-weight: 300; line-height: 1.5;
+}
+.compare-text-muted { color: rgba(46,49,53,0.52); }
+.compare-text-light { color: rgba(232,231,227,0.65); }
+
+/* Panel tiers */
+.tier-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+.tier-card {
+  background: white;
+  border: 1px solid rgba(46,49,53,0.07);
+  border-radius: 16px;
+  padding: 28px 22px;
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.25s, border-color 0.25s, transform 0.25s;
+}
+.tier-card:hover {
+  box-shadow: 0 8px 28px rgba(46,49,53,0.1);
+  border-color: rgba(143,91,62,0.2);
+  transform: translateY(-3px);
+}
+.tier-num {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--sandstone);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700;
+  color: var(--gold); margin-bottom: 16px;
+  transition: background 0.3s;
+}
+.tier-card:hover .tier-num { background: rgba(143,91,62,0.12); }
+.tier-name {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--gold);
+  margin-bottom: 8px;
+}
+.tier-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px; font-weight: 400;
+  color: var(--carbon); line-height: 1.2;
+  margin-bottom: 10px; letter-spacing: -0.01em;
+}
+.tier-desc {
+  font-size: 13px; color: rgba(46,49,53,0.48);
+  line-height: 1.65; font-weight: 300;
+}
+.tier-bar {
+  position: absolute; bottom: 0; left: 0;
+  height: 2px; width: 0;
+  background: linear-gradient(90deg, var(--gold-dk), var(--gold-lt));
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.tier-card:hover .tier-bar { width: 100%; }
+
+/* Strategic advantages */
+.advantage-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+}
+.adv-card {
+  background: var(--sandstone);
+  border-radius: 14px;
+  padding: 22px 20px;
+  border: 1px solid rgba(46,49,53,0.05);
+}
+.adv-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px; font-weight: 400;
+  color: var(--carbon); margin-bottom: 6px;
+  letter-spacing: -0.01em;
+}
+.adv-desc {
+  font-size: 12px; color: rgba(46,49,53,0.48);
+  line-height: 1.6; font-weight: 300;
+}
+</style>
+</head>
+<body>
+<nav class="site-nav" id="site-nav"></nav>
+
+<!-- ── HERO ───────────────────────────────────────────────── -->
+<section class="page-hero" style="min-height:62vh;overflow:hidden;position:relative;">
+  <canvas id="page-hero-canvas" style="position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;background:linear-gradient(to right,rgba(243,241,237,0.97) 0%,rgba(243,241,237,0.82) 55%,rgba(243,241,237,0) 100%);"></div>
+  <div class="blob blob-sage b-lg" style="top:-60px;right:80px;opacity:.45;z-index:0;"></div>
+  <div class="page-hero-eyebrow eyebrow reveal" style="position:relative;z-index:1;"><a href="solutions.html" style="color:var(--gold);text-decoration:none;font-style:normal;">← Solutions</a></div>
+  <h1 class="reveal" style="position:relative;z-index:1;">Assay Strategy.<br><em>Ordered right,<br>not just ordered.</em></h1>
+  <p class="page-hero-sub reveal" style="margin-top:20px;position:relative;z-index:1;">Panel breadth and configuration informed by clinical episode and patient risk state — not the vendor's catalog. Every recommendation justified by your population and defensible to your payers.</p>
+</section>
+
+<!-- ── THE PROBLEM ────────────────────────────────────────── -->
+<section class="section" style="background:var(--carbon);overflow:hidden;position:relative;">
+  <div class="blob blob-gold b-lg" style="top:-80px;left:-40px;opacity:.1;z-index:0;"></div>
+  <div class="split-40-60 reveal" style="position:relative;z-index:1;">
+    <div>
+      <div class="eyebrow mb-24" style="color:var(--gold);">The Market Problem</div>
+      <h2 style="color:var(--fog);">PCR panels built for <em>scale, not syndromes.</em></h2>
+      <p style="font-size:15px;color:rgba(232,231,227,0.45);line-height:1.8;margin-top:20px;font-weight:300;">The molecular testing market designed panels for commercial scale. Universal configurations. Pathogen-first logic. Maximum breadth sold as clinical value.</p>
+      <p style="font-size:15px;color:rgba(232,231,227,0.45);line-height:1.8;margin-top:14px;font-weight:300;">Your patient population tells a different story — and payers know it. Labs running universal panels without documented clinical justification are accumulating denial exposure they haven't measured yet.</p>
+    </div>
+    <div style="padding-top:8px;">
+      <div class="eyebrow mb-24" style="color:rgba(232,231,227,0.3);">What Universal Panels Produce</div>
+      <div class="fail-item">
+        <div class="fail-x">✕</div>
+        <div class="fail-label">Diluted Clinical Utility<span>Panels ordered without clear treatment consequence or episode alignment</span></div>
+      </div>
+      <div class="fail-item">
+        <div class="fail-x">✕</div>
+        <div class="fail-label">Missed Patient Context<span>No alignment to risk state, complexity, or care setting</span></div>
+      </div>
+      <div class="fail-item">
+        <div class="fail-x">✕</div>
+        <div class="fail-label">Medical Necessity Gaps<span>Broad target inclusion without ICD-10 specificity or documentation logic</span></div>
+      </div>
+      <div class="fail-item">
+        <div class="fail-x">✕</div>
+        <div class="fail-label">Higher Denial Exposure<span>Payers flag systematic patterns before individual claims are reviewed</span></div>
+      </div>
+      <div class="fail-outcome">Poor Reimbursement Outcomes</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── THE SHIFT ──────────────────────────────────────────── -->
+<section class="section s-carbon">
+  <div class="blob blob-sage b-md" style="top:-60px;right:-40px;opacity:.5;z-index:0;"></div>
+  <div style="position:relative;z-index:1;">
+    <div class="eyebrow mb-16 reveal">A Different Framework</div>
+    <h2 class="reveal" style="margin-bottom:12px;">From pathogen-first<br><em>to patient-first.</em></h2>
+    <p class="reveal text-muted" style="font-size:16px;max-width:560px;line-height:1.75;margin-bottom:44px;">The question isn't which pathogens should be included. It's what clinical episode are we solving — and what does that patient's risk state and treatment pathway actually require?</p>
+    <div class="compare-grid reveal">
+      <div class="compare-col">
+        <div class="compare-label compare-label-muted">The Standard Approach</div>
+        <div class="compare-item">
+          <div class="compare-dot compare-dot-muted"></div>
+          <div class="compare-text compare-text-muted">Static universal panels applied to all patients regardless of presentation</div>
+        </div>
+        <div class="compare-item">
+          <div class="compare-dot compare-dot-muted"></div>
+          <div class="compare-text compare-text-muted">Pathogen-first design — panel breadth driven by what can be detected, not what should be</div>
+        </div>
+        <div class="compare-item">
+          <div class="compare-dot compare-dot-muted"></div>
+          <div class="compare-text compare-text-muted">No ICD-10 medical necessity logic embedded in panel configuration</div>
+        </div>
+        <div class="compare-item">
+          <div class="compare-dot compare-dot-muted"></div>
+          <div class="compare-text compare-text-muted">Reimbursement treated as billing's problem — addressed after the denial</div>
+        </div>
+      </div>
+      <div class="compare-arrow">→</div>
+      <div class="compare-col compare-col-dark">
+        <div class="compare-label compare-label-gold">The Oriole Framework</div>
+        <div class="compare-item compare-item-dark">
+          <div class="compare-dot compare-dot-gold"></div>
+          <div class="compare-text compare-text-light">Tiered panel strategy calibrated to clinical presentation and patient risk state</div>
+        </div>
+        <div class="compare-item compare-item-dark">
+          <div class="compare-dot compare-dot-gold"></div>
+          <div class="compare-text compare-text-light">Episode-first design — configuration driven by treatment consequence and complexity</div>
+        </div>
+        <div class="compare-item compare-item-dark">
+          <div class="compare-dot compare-dot-gold"></div>
+          <div class="compare-text compare-text-light">ICD-10 specificity built into panel selection logic before the order is placed</div>
+        </div>
+        <div class="compare-item compare-item-dark">
+          <div class="compare-dot compare-dot-gold"></div>
+          <div class="compare-text compare-text-light">Reimbursement defensibility engineered upstream — every panel recommendation documented</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PANEL TIERING ──────────────────────────────────────── -->
+<section class="section s-carbon-dk">
+  <div class="blob blob-gold b-md" style="top:-60px;right:80px;opacity:.18;z-index:0;"></div>
+  <div style="position:relative;z-index:1;">
+    <div class="eyebrow mb-16 reveal">Panel Tiering Strategy</div>
+    <h2 class="reveal" style="margin-bottom:12px;">Risk-adaptive panels.<br><em>Built around clinical episodes.</em></h2>
+    <p class="reveal text-muted" style="font-size:16px;max-width:600px;line-height:1.75;margin-bottom:44px;">Oriole Sciences structures panel recommendations in four tiers, each calibrated to patient risk state, episode complexity, and reimbursement defensibility — not a one-size-fits-all catalog.</p>
+
+    <div class="tier-grid reveal" style="margin-bottom:40px;">
+
+      <div class="tier-card">
+        <div class="tier-num">1</div>
+        <div class="tier-name">Focused</div>
+        <div class="tier-title">Uncomplicated &amp; Low-Risk</div>
+        <p class="tier-desc">Narrow, justified panel configuration for low-complexity presentations. Every target clinically defensible. Cost-efficient without sacrificing documentation integrity.</p>
+        <div class="tier-bar"></div>
+      </div>
+
+      <div class="tier-card">
+        <div class="tier-num">2</div>
+        <div class="tier-name">Enhanced</div>
+        <div class="tier-title">Recurrent or Elevated-Risk</div>
+        <p class="tier-desc">Broader coverage with documented clinical rationale for recurring episodes or elevated patient risk. Panel depth justified by treatment consequence, not convention.</p>
+        <div class="tier-bar"></div>
+      </div>
+
+      <div class="tier-card">
+        <div class="tier-num">3</div>
+        <div class="tier-name">Expanded</div>
+        <div class="tier-title">Resistance or Treatment Escalation</div>
+        <p class="tier-desc">Configuration built for episodes where resistance patterns or treatment escalation change the clinical path. Depth aligned to decision — and documented accordingly.</p>
+        <div class="tier-bar"></div>
+      </div>
+
+      <div class="tier-card">
+        <div class="tier-num">4</div>
+        <div class="tier-name">Comprehensive</div>
+        <div class="tier-title">Complex or Immunocompromised</div>
+        <p class="tier-desc">Full diagnostic depth for complex presentations and immunocompromised patients. Maximum breadth, fully documented — every target tied to patient complexity and risk state.</p>
+        <div class="tier-bar"></div>
+      </div>
+
+    </div>
+
+    <div class="eyebrow mb-20 reveal">Strategic Advantages</div>
+    <div class="advantage-grid reveal">
+      <div class="adv-card">
+        <div class="adv-title">Clinical Presentation Alignment</div>
+        <p class="adv-desc">Testing matched to the patient's specific episode, not a universal default. Panel selection begins with clinical context, not catalog breadth.</p>
+      </div>
+      <div class="adv-card">
+        <div class="adv-title">ICD-10 Specificity</div>
+        <p class="adv-desc">Medical necessity supported by diagnosis-driven panel selection. Every tier configured with the ICD-10 logic payers require to pay the claim.</p>
+      </div>
+      <div class="adv-card">
+        <div class="adv-title">Treatment Consequence</div>
+        <p class="adv-desc">Panel depth aligned to what will actually change the treatment path. If a target doesn't affect the clinical decision, it doesn't belong in the panel.</p>
+      </div>
+      <div class="adv-card">
+        <div class="adv-title">Patient Population Depth</div>
+        <p class="adv-desc">Configuration matched to your population's actual risk distribution — not an assumed average. Prevalence data shapes every tier recommendation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── WHY IT MATTERS ─────────────────────────────────────── -->
+<section class="section s-carbon">
+  <div class="blob blob-blackberry b-lg" style="top:-60px;right:-40px;opacity:.6;z-index:0;"></div>
+  <div class="split-40-60 reveal" style="position:relative;z-index:1;">
+    <div>
+      <div class="eyebrow mb-24">Why It Matters</div>
+      <h2>Every panel recommendation backed by <em>your market data.</em></h2>
+    </div>
+    <div style="padding-top:8px;">
+      <p class="text-muted mb-24" style="font-size:17px;line-height:1.8;">Payers are no longer reimbursing broad molecular programs without documented medical necessity. Labs built around maximum panel breadth — without prevalence justification — are accumulating denial exposure they don't see yet.</p>
+      <p class="text-muted" style="font-size:17px;line-height:1.8;">Oriole Sciences structures panel strategy around what your patient population actually shows. Prevalence-banded configuration means every assay recommended is justified by your market — and every recommendation is defensible when the auditor arrives.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW WE ADVISE ──────────────────────────────────────── -->
+<section class="section s-carbon-dk">
+  <div class="blob blob-sage b-lg" style="top:-80px;right:60px;opacity:.25;z-index:0;"></div>
+  <div class="eyebrow mb-48 reveal">How We Advise</div>
+  <div class="grid-3 reveal" style="gap:20px;position:relative;z-index:1;">
+    <div class="solid-card">
+      <div class="proof-label">Prevalence-Banded Design</div>
+      <h3 class="tile-h" style="margin-bottom:16px;">Justified by your market.</h3>
+      <p class="tile-p">Panel breadth recommendations determined by what your patient population actually shows — banded by care setting, geography, and demographics. Every configuration we advise on is defensible.</p>
+    </div>
+    <div class="solid-card">
+      <div class="proof-label">Episode &amp; Risk Alignment</div>
+      <h3 class="tile-h" style="margin-bottom:16px;">Matched to clinical reality.</h3>
+      <p class="tile-p">Panel tiering strategy built around your patient risk distribution and clinical episode mix. Configuration recommendations tied to treatment consequence, not maximum breadth.</p>
+    </div>
+    <div class="solid-card">
+      <div class="proof-label">Care Setting Specificity</div>
+      <h3 class="tile-h" style="margin-bottom:16px;">Right for your setting.</h3>
+      <p class="tile-p">Assay strategy adapted to the clinical and financial realities of your specific care setting — reference lab, urgent care, hospital, or specialty practice. No assumed defaults.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band" id="cta-band"></section>
+<footer class="site-footer" id="site-footer"></footer>
+<script src="site.js"></script>
+<script>initSite('assay');</script>
+<script>initPageHeroCanvas(['#4F695B','#8f5b3e','#506c8b']);</script>
+</body>
+</html>

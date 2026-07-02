@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Revenue Cycle Recovery · Oriole Sciences</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="site.css" />
+<style>
+/* Analytical Scope tiles */
+.rcm-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+.rcm-tile {
+  background: white;
+  border: 1px solid rgba(46,49,53,0.07);
+  border-radius: 14px;
+  padding: 24px 22px 22px;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.25s, border-color 0.25s;
+}
+.rcm-tile.rt-vis {
+  opacity: 1; transform: translateY(0);
+  transition: box-shadow 0.25s, border-color 0.25s, transform 0.25s;
+}
+.rcm-tile.rt-vis:hover {
+  box-shadow: 0 8px 28px rgba(46,49,53,0.1);
+  border-color: rgba(143,91,62,0.22);
+  transform: translateY(-3px);
+}
+.rcm-accent {
+  width: 3px; height: 20px;
+  background: linear-gradient(to bottom, var(--gold-dk), var(--gold-lt));
+  border-radius: 2px; margin-bottom: 14px; opacity: 0.65;
+  transition: opacity 0.25s;
+}
+.rcm-tile.rt-vis:hover .rcm-accent { opacity: 1; }
+.rcm-tile-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px; font-weight: 400;
+  color: var(--carbon); line-height: 1.2;
+  margin-bottom: 8px; letter-spacing: -0.01em;
+  transition: color 0.25s;
+}
+.rcm-tile.rt-vis:hover .rcm-tile-name { color: var(--gold-dk); }
+.rcm-tile-desc {
+  font-size: 12px; color: rgba(46,49,53,0.46);
+  line-height: 1.65; font-weight: 300;
+}
+.rcm-bar {
+  position: absolute; bottom: 0; left: 0;
+  height: 2px; width: 0;
+  background: linear-gradient(90deg, var(--gold-dk), var(--gold-lt));
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.rcm-tile.rt-vis:hover .rcm-bar { width: 100%; }
+/* Methodology pillars */
+.meth-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: rgba(232,231,227,0.07);
+  border-radius: 18px;
+  overflow: hidden;
+}
+.meth-cell {
+  padding: 44px 40px;
+  background: rgba(46,49,53,0.98);
+}
+.meth-rule { width: 28px; height: 1px; background: var(--gold); opacity: 0.55; margin-bottom: 20px; }
+.meth-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--gold);
+  margin-bottom: 12px;
+}
+.meth-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px; font-weight: 400;
+  color: var(--fog); line-height: 1.2;
+  margin-bottom: 12px; letter-spacing: -0.01em;
+}
+.meth-body {
+  font-size: 13px; color: rgba(232,231,227,0.42);
+  line-height: 1.75; font-weight: 300;
+}
+</style>
+</head>
+<body>
+<nav class="site-nav" id="site-nav"></nav>
+
+<section class="page-hero" style="min-height:62vh;overflow:hidden;position:relative;">
+  <canvas id="page-hero-canvas" style="position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;background:linear-gradient(to right,rgba(243,241,237,0.97) 0%,rgba(243,241,237,0.82) 55%,rgba(243,241,237,0) 100%);"></div>
+  <div class="blob blob-gold b-lg" style="top:-60px;right:80px;opacity:.45;z-index:0;"></div>
+  <div class="page-hero-eyebrow eyebrow reveal" style="position:relative;z-index:1;"><a href="solutions.html" style="color:var(--gold);text-decoration:none;font-style:normal;">← Solutions</a></div>
+  <h1 class="reveal" style="position:relative;z-index:1;">Revenue Cycle<br>Recovery.<br><em>Upstream, not reactive.</em></h1>
+  <p class="page-hero-sub reveal" style="margin-top:20px;position:relative;z-index:1;">Denial patterns turned into a recovery roadmap. Reimbursement infrastructure built before the first claim goes out — so you're defending a system, not chasing individual denials.</p>
+</section>
+
+<!-- ── ANALYTICAL SCOPE ──────────────────────────────────── -->
+<section class="section" style="background:var(--fog);padding-top:80px;padding-bottom:0;">
+  <div style="position:relative;z-index:1;">
+    <div class="eyebrow mb-16 reveal">Analytical Scope</div>
+    <h2 class="reveal" style="margin-bottom:44px;">Every revenue cycle<br><em>examined completely.</em></h2>
+    <div class="rcm-grid" id="rcm-grid">
+
+      <div class="rcm-tile" data-ri="0">
+        <div class="rcm-accent"></div>
+        <div class="rcm-tile-name">Entire Revenue Cycle</div>
+        <p class="rcm-tile-desc">Charge capture through payment posting — every touchpoint audited, not sampled.</p>
+        <div class="rcm-bar"></div>
+      </div>
+
+      <div class="rcm-tile" data-ri="1">
+        <div class="rcm-accent"></div>
+        <div class="rcm-tile-name">Denial Patterns &amp; Trends</div>
+        <p class="rcm-tile-desc">835 remittance files analyzed to surface systemic issues by payer, code, and documentation gap.</p>
+        <div class="rcm-bar"></div>
+      </div>
+
+      <div class="rcm-tile" data-ri="2">
+        <div class="rcm-accent"></div>
+        <div class="rcm-tile-name">CPT/ICD-10 Configuration</div>
+        <p class="rcm-tile-desc">Code-level alignment reviewed against each payer's current LCD — not billing convention.</p>
+        <div class="rcm-bar"></div>
+      </div>
+
+      <div class="rcm-tile" data-ri="3">
+        <div class="rcm-accent"></div>
+        <div class="rcm-tile-name">Payer Contract Integrity</div>
+        <p class="rcm-tile-desc">Contracted rates benchmarked against actual reimbursement behavior to surface underpayment patterns.</p>
+        <div class="rcm-bar"></div>
+      </div>
+
+      <div class="rcm-tile" data-ri="4">
+        <div class="rcm-accent"></div>
+        <div class="rcm-tile-name">Prior Authorization Compliance</div>
+        <p class="rcm-tile-desc">Auth requirements mapped by payer and specialty — before the order, not after the denial.</p>
+        <div class="rcm-bar"></div>
+      </div>
+
+      <div class="rcm-tile" data-ri="5">
+        <div class="rcm-accent"></div>
+        <div class="rcm-tile-name">Documentation Gaps</div>
+        <p class="rcm-tile-desc">Clinical documentation reviewed against billing justification standards for every assay in your panel.</p>
+        <div class="rcm-bar"></div>
+      </div>
+
+      <div class="rcm-tile" data-ri="6">
+        <div class="rcm-accent"></div>
+        <div class="rcm-tile-name">Monthly Charge Volume</div>
+        <p class="rcm-tile-desc">Throughput trends correlated against reimbursement performance to identify revenue leakage by period.</p>
+        <div class="rcm-bar"></div>
+      </div>
+
+      <div class="rcm-tile" data-ri="7">
+        <div class="rcm-accent"></div>
+        <div class="rcm-tile-name">Payer-Specific Coverage</div>
+        <p class="rcm-tile-desc">LCD/NCD coverage policies mapped to your exact panel configuration — no assumed coverage.</p>
+        <div class="rcm-bar"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── METHODOLOGY PILLARS ───────────────────────────────── -->
+<section class="section" style="background:var(--fog);padding-top:32px;padding-bottom:80px;">
+  <div class="meth-grid reveal">
+    <div class="meth-cell">
+      <div class="meth-rule"></div>
+      <div class="meth-label">Methodology</div>
+      <div class="meth-title">Built upstream,<br>not reactive.</div>
+      <p class="meth-body">Reimbursement infrastructure is engineered before the first claim goes out — CPT/ICD-10 alignment, documentation standards, and payer-specific requirements embedded in workflow, not bolted on after denial.</p>
+    </div>
+    <div class="meth-cell">
+      <div class="meth-rule"></div>
+      <div class="meth-label">Recovery</div>
+      <div class="meth-title">Patterns first,<br>claims second.</div>
+      <p class="meth-body">Individual denials are symptoms. We trace each one to its root — payer behavior, code-level misconfiguration, documentation gap — and rebuild the system that generated them before working the backlog.</p>
+    </div>
+    <div class="meth-cell">
+      <div class="meth-rule"></div>
+      <div class="meth-label">Defensibility</div>
+      <div class="meth-title">Documentation that<br>survives audit.</div>
+      <p class="meth-body">Clinical documentation mapped to billing justification at the point of care. When a payer or auditor requests records, the defense already exists — not assembled under pressure after the fact.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section s-carbon">
+  <div class="blob blob-sage b-lg" style="top:-60px;right:-40px;opacity:.6"></div>
+  <div class="split-40-60 reveal">
+    <div>
+      <div class="eyebrow mb-24">Why It Matters</div>
+      <h2>Most billing fails because the lab <em>wasn't built for it.</em></h2>
+    </div>
+    <div style="padding-top:8px">
+      <p class="text-muted mb-24" style="font-size:17px;line-height:1.8">Payers are increasingly sophisticated. Broad molecular programs without documented justification face denial rates that billing companies can't recover from — because the problem was built into the program, not the claim.</p>
+      <p class="text-muted" style="font-size:17px;line-height:1.8">Oriole Sciences builds reimbursement infrastructure upstream. CPT/ICD-10 alignment, 835 triage, and payer-specific documentation requirements mapped before the first claim — so denials are rare, not routine.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band" id="cta-band"></section>
+<footer class="site-footer" id="site-footer"></footer>
+<script>
+(function(){
+  var tiles = document.querySelectorAll('#rcm-grid .rcm-tile');
+  if (!tiles.length) return;
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting) {
+        var t = e.target, i = parseInt(t.dataset.ri) || 0;
+        setTimeout(function(){ t.classList.add('rt-vis'); }, i * 65);
+        obs.unobserve(t);
+      }
+    });
+  }, { threshold: 0.05 });
+  tiles.forEach(function(t){ obs.observe(t); });
+})();
+</script>
+<script src="site.js"></script>
+<script>initSite('revenue');</script>
+<script>initPageHeroCanvas(['#8f5b3e','#506c8b','#4F695B']);</script>
+</body>
+</html>

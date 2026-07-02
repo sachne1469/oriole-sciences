@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Data Analytics · Oriole Sciences</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="site.css" />
+</head>
+<body>
+<nav class="site-nav" id="site-nav"></nav>
+
+<section class="page-hero" style="min-height:62vh;overflow:hidden;position:relative;">
+  <canvas id="page-hero-canvas" style="position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;background:linear-gradient(to right,rgba(243,241,237,0.97) 0%,rgba(243,241,237,0.82) 55%,rgba(243,241,237,0) 100%);"></div>
+  <div class="blob blob-blackberry b-lg" style="top:-60px;right:80px;opacity:.4;z-index:0;"></div>
+  <div class="page-hero-eyebrow eyebrow reveal" style="position:relative;z-index:1;"><a href="solutions.html" style="color:var(--gold);text-decoration:none;font-style:normal;">← Solutions</a></div>
+  <h1 class="reveal" style="position:relative;z-index:1;">Data Analytics.<br><em>Every decision, backed.</em></h1>
+  <p class="page-hero-sub reveal" style="margin-top:20px;position:relative;z-index:1;">Volume forecasting, throughput modeling, and prevalence banding. The intelligence that drives every program decision — before you build, before you bill, before you scale.</p>
+</section>
+
+<section class="section s-carbon">
+  <div class="blob blob-sage b-lg" style="top:-60px;right:-40px;opacity:.6"></div>
+  <div class="split-40-60 reveal">
+    <div>
+      <div class="eyebrow mb-24">Why It Matters</div>
+      <h2>Molecular programs fail when <em>built on assumptions.</em></h2>
+    </div>
+    <div style="padding-top:8px">
+      <p class="text-muted mb-24" style="font-size:17px;line-height:1.8">Most molecular lab programs are built on vendor projections and industry averages. Neither reflects what your specific patient population, payer mix, or care setting actually demands.</p>
+      <p class="text-muted" style="font-size:17px;line-height:1.8">Oriole Sciences backs every program decision with real data. Prevalence intelligence, throughput modeling, and volume forecasting built around your market — so equipment sizing, panel breadth, and staffing ratios reflect reality, not optimism.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section s-blackberry">
+  <div class="blob blob-gold b-lg" style="top:-80px;right:60px;opacity:.45"></div>
+  <div class="eyebrow mb-48 reveal">How We Drive It</div>
+  <div class="grid-3 reveal" style="gap:20px">
+    <div class="glass-card glass-card-p">
+      <div class="proof-label">Volume Forecasting</div>
+      <h3 style="color:var(--fog);margin-bottom:16px">Sized to what's coming.</h3>
+      <p class="tile-p">Market-specific volume forecasting based on patient population, care setting, and payer mix — so capacity decisions are grounded in what your market actually produces.</p>
+    </div>
+    <div class="glass-card glass-card-p">
+      <div class="proof-label">Throughput Modeling</div>
+      <h3 style="color:var(--fog);margin-bottom:16px">Engineered for efficiency.</h3>
+      <p class="tile-p">Workflow throughput modeled against volume targets and equipment capacity — identifying bottlenecks before they become operational constraints.</p>
+    </div>
+    <div class="glass-card glass-card-p">
+      <div class="proof-label">Prevalence Intelligence</div>
+      <h3 style="color:var(--fog);margin-bottom:16px">Data no vendor can give you.</h3>
+      <p class="tile-p">Proprietary prevalence data banded by care setting, region, and patient demographics — the intelligence layer that informs every program decision from panel design to payer strategy.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band" id="cta-band"></section>
+<footer class="site-footer" id="site-footer"></footer>
+<script src="site.js"></script>
+<script>initSite('analytics');</script>
+<script>initPageHeroCanvas(['#506c8b','#8f5b3e','#4F695B']);</script>
+</body>
+</html>

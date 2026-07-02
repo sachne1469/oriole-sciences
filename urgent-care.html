@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Urgent Care · Case Studies · Oriole Sciences</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="site.css" />
+</head>
+<body>
+<nav class="site-nav" id="site-nav"></nav>
+
+<section class="page-hero" style="min-height:56vh;overflow:hidden;position:relative;">
+  <canvas id="page-hero-canvas" style="position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;background:linear-gradient(to right,rgba(243,241,237,0.97) 0%,rgba(243,241,237,0.82) 55%,rgba(243,241,237,0) 100%);"></div>
+  <div class="blob blob-gold b-lg" style="top:-60px;right:80px;opacity:.45;z-index:0;"></div>
+  <div class="page-hero-eyebrow eyebrow reveal" style="position:relative;z-index:1;"><a href="insights.html" style="color:var(--gold);text-decoration:none;">← Case Studies</a></div>
+  <h1 class="reveal" style="position:relative;z-index:1;">Urgent Care.<br><em>Fast. Accurate. Reimbursable.</em></h1>
+  <p class="page-hero-sub reveal" style="margin-top:20px;position:relative;z-index:1;">High-volume, rapid-turnaround molecular programs designed for the economics and throughput demands of urgent care — built to run efficiently and hold up financially.</p>
+</section>
+
+<section class="section s-carbon">
+  <div class="blob blob-blackberry b-lg" style="top:-60px;right:-40px;opacity:.6"></div>
+  <div class="eyebrow mb-16 reveal">Case Studies</div>
+  <h2 class="mb-48 reveal" style="max-width:600px">Urgent care programs <em>that hold up.</em></h2>
+  <div class="grid-3 reveal" style="gap:20px">
+    <div class="insight-card">
+      <div class="insight-card-thumb"><span style="font-size:12px;color:rgba(232,231,227,0.2);font-style:italic">Case study image</span></div>
+      <div class="insight-card-body">
+        <div class="insight-tag">Lab Build</div>
+        <h4>Setting · Challenge · What we built · Result</h4>
+        <p>Full case study sourced from Jeremy / Steve. Placeholder pending compliance review.</p>
+        <div style="margin-top:20px"><a href="#" style="font-size:12px;color:var(--gold);font-weight:500;letter-spacing:.05em">Read case study →</a></div>
+      </div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-card-thumb"><span style="font-size:12px;color:rgba(232,231,227,0.2);font-style:italic">Case study image</span></div>
+      <div class="insight-card-body">
+        <div class="insight-tag">Revenue Recovery</div>
+        <h4>Setting · Challenge · What we built · Result</h4>
+        <p>Full case study sourced from Jeremy / Steve. Placeholder pending compliance review.</p>
+        <div style="margin-top:20px"><a href="#" style="font-size:12px;color:var(--gold);font-weight:500;letter-spacing:.05em">Read case study →</a></div>
+      </div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-card-thumb"><span style="font-size:12px;color:rgba(232,231,227,0.2);font-style:italic">Case study image</span></div>
+      <div class="insight-card-body">
+        <div class="insight-tag insight-tag-sage">Assay Strategy</div>
+        <h4>Setting · Challenge · What we built · Result</h4>
+        <p>Full case study sourced from Jeremy / Steve. Placeholder pending compliance review.</p>
+        <div style="margin-top:20px"><a href="#" style="font-size:12px;color:var(--gold);font-weight:500;letter-spacing:.05em">Read case study →</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band" id="cta-band"></section>
+<footer class="site-footer" id="site-footer"></footer>
+<script src="site.js"></script>
+<script>initSite('urgent-care');</script>
+<script>initPageHeroCanvas(['#8f5b3e','#506c8b','#4F695B']);</script>
+</body>
+</html>

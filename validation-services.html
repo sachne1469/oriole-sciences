@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Validation Services · Oriole Sciences</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="site.css" />
+<style>
+/* Validation failure items */
+.vfail-item {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 15px 0; border-bottom: 1px solid rgba(232,231,227,0.06);
+}
+.vfail-item:last-child { border-bottom: none; }
+.vfail-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(143,91,62,0.5); margin-top: 8px; flex-shrink: 0;
+}
+.vfail-text {
+  font-size: 15px; color: rgba(232,231,227,0.65);
+  font-weight: 300; line-height: 1.6;
+}
+.vfail-text strong { color: rgba(232,231,227,0.88); font-weight: 500; }
+
+/* 5-Phase process flow (reused pattern) */
+.val-flow { position: relative; padding-top: 24px; }
+.val-line-track {
+  position: absolute; top: 48px;
+  left: 10%; right: 10%;
+  height: 1px; background: rgba(143,91,62,0.1);
+  z-index: 0; overflow: visible;
+}
+.val-line-fill {
+  height: 1px; width: 0%;
+  background: linear-gradient(to right, var(--gold-dk), var(--gold-lt));
+  transition: width 2.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.val-line-dot {
+  position: absolute; top: -4px;
+  width: 9px; height: 9px; border-radius: 50%;
+  background: var(--gold); box-shadow: 0 0 12px rgba(143,91,62,0.6);
+  left: -4px; opacity: 0;
+  transition: left 2.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s;
+}
+.val-flow.vf-active .val-line-fill { width: 100%; }
+.val-flow.vf-active .val-line-dot { left: calc(100% - 4px); opacity: 1; }
+.val-steps {
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  gap: 14px; position: relative; z-index: 1;
+}
+.val-step { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.val-node {
+  width: 48px; height: 48px; border-radius: 50%;
+  border: 1.5px solid rgba(143,91,62,0.2);
+  background: white;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+  color: rgba(143,91,62,0.4); flex-shrink: 0;
+  transition: background 0.4s, border-color 0.4s, color 0.4s, box-shadow 0.4s, transform 0.25s;
+}
+.val-step.vs-lit .val-node {
+  background: var(--gold); border-color: var(--gold);
+  color: rgba(255,255,255,0.95);
+  box-shadow: 0 4px 18px rgba(143,91,62,0.28);
+}
+.val-step.vs-lit:hover .val-node {
+  background: var(--gold-lt); border-color: var(--gold-lt);
+  box-shadow: 0 6px 22px rgba(143,91,62,0.4);
+  transform: scale(1.1);
+}
+.val-card {
+  background: white; border: 1px solid rgba(46,49,53,0.07);
+  border-radius: 14px; padding: 20px 14px;
+  text-align: center; width: 100%;
+  opacity: 0; transform: translateY(14px);
+  transition: opacity 0.45s ease, transform 0.45s ease,
+              box-shadow 0.25s, border-color 0.25s;
+}
+.val-step.vs-lit .val-card { opacity: 1; transform: translateY(0); }
+.val-step.vs-lit:hover .val-card {
+  border-color: rgba(143,91,62,0.22);
+  box-shadow: 0 8px 28px rgba(46,49,53,0.1);
+  transform: translateY(-3px);
+}
+.val-phase-label {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 8px;
+  transition: color 0.25s;
+}
+.val-step.vs-lit:hover .val-phase-label { color: var(--gold-lt); }
+.val-card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px; font-weight: 400;
+  color: var(--carbon); line-height: 1.2;
+  margin-bottom: 9px; letter-spacing: -0.01em;
+  transition: color 0.25s;
+}
+.val-step.vs-lit:hover .val-card-title { color: var(--gold-dk); }
+.val-card-desc {
+  font-size: 11.5px; color: rgba(46,49,53,0.46);
+  line-height: 1.65; font-weight: 300;
+}
+
+/* Expertise cards */
+.expertise-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+}
+.expertise-card {
+  background: white; border: 1px solid rgba(46,49,53,0.07);
+  border-radius: 16px; padding: 30px 26px;
+  transition: box-shadow 0.25s, transform 0.25s;
+}
+.expertise-card:hover { box-shadow: 0 8px 28px rgba(46,49,53,0.09); transform: translateY(-2px); }
+.expertise-icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: var(--sandstone); margin-bottom: 18px;
+  display: flex; align-items: center; justify-content: center;
+}
+.expertise-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px; font-weight: 400;
+  color: var(--carbon); margin-bottom: 10px; line-height: 1.2;
+}
+.expertise-desc {
+  font-size: 13px; color: rgba(46,49,53,0.5);
+  line-height: 1.7; font-weight: 300;
+}
+</style>
+</head>
+<body>
+<nav class="site-nav" id="site-nav"></nav>
+
+<!-- ── HERO ───────────────────────────────────────────────── -->
+<section class="page-hero" style="min-height:62vh;overflow:hidden;position:relative;">
+  <canvas id="page-hero-canvas" style="position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;background:linear-gradient(to right,rgba(243,241,237,0.97) 0%,rgba(243,241,237,0.82) 55%,rgba(243,241,237,0) 100%);"></div>
+  <div class="blob blob-blackberry b-lg" style="top:-60px;right:80px;opacity:.4;z-index:0;"></div>
+  <div class="page-hero-eyebrow eyebrow reveal" style="position:relative;z-index:1;"><a href="solutions.html" style="color:var(--gold);text-decoration:none;font-style:normal;">← Solutions</a></div>
+  <h1 class="reveal" style="position:relative;z-index:1;">Validation<br>Services.<br><em>Audit-ready from day one.</em></h1>
+  <p class="page-hero-sub reveal" style="margin-top:20px;position:relative;z-index:1;">Method validation, QC protocol design, and regulatory compliance documentation. Every assay defensible before it's run — validation built into the program architecture, not assembled under pressure.</p>
+</section>
+
+<!-- ── WHY LABS STRUGGLE ──────────────────────────────────── -->
+<section class="section" style="background:var(--carbon);overflow:hidden;position:relative;">
+  <div class="blob blob-sage b-lg" style="top:-80px;left:-40px;opacity:.12;z-index:0;"></div>
+  <div class="split-40-60 reveal" style="position:relative;z-index:1;">
+    <div>
+      <div class="eyebrow mb-24" style="color:var(--gold);">The Validation Problem</div>
+      <h2 style="color:var(--fog);">Most labs validate <em>under pressure, not by design.</em></h2>
+      <p style="font-size:15px;color:rgba(232,231,227,0.45);line-height:1.8;margin-top:20px;font-weight:300;">Without specialized expertise, validation becomes reactive. Generic protocols, incomplete documentation, and last-minute regulatory scrambles extend timelines — and create audit exposure that persists long after the program goes live.</p>
+    </div>
+    <div style="padding-top:8px;">
+      <div class="eyebrow mb-24" style="color:rgba(232,231,227,0.3);">What Reactive Validation Produces</div>
+      <div class="vfail-item">
+        <div class="vfail-dot"></div>
+        <div class="vfail-text"><strong>Extended timelines</strong> — Incomplete study design forces re-runs, delaying program launch by months</div>
+      </div>
+      <div class="vfail-item">
+        <div class="vfail-dot"></div>
+        <div class="vfail-text"><strong>Regulatory gaps</strong> — CLIA, COLA, and CAP requirements interpreted inconsistently, creating compliance risk</div>
+      </div>
+      <div class="vfail-item">
+        <div class="vfail-dot"></div>
+        <div class="vfail-text"><strong>Documentation failures</strong> — Validation records assembled after the fact don't survive real audit scrutiny</div>
+      </div>
+      <div class="vfail-item">
+        <div class="vfail-dot"></div>
+        <div class="vfail-text"><strong>Payer exposure</strong> — Validation gaps become billing vulnerabilities when payers request documentation to support claims</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 5-PHASE PROCESS ────────────────────────────────────── -->
+<section class="section s-carbon-dk" style="padding-top:80px;padding-bottom:88px;">
+  <div class="blob blob-gold b-md" style="top:-60px;right:40px;opacity:.16;z-index:0;"></div>
+  <div style="position:relative;z-index:1;">
+    <div class="eyebrow mb-16 reveal">End-to-End Validation Support</div>
+    <h2 class="reveal" style="margin-bottom:12px;">Five phases. <em>Nothing overlooked.</em></h2>
+    <p class="reveal text-muted" style="font-size:16px;max-width:580px;line-height:1.75;margin-bottom:52px;">Our structured five-phase approach ensures every validation is compliant, efficient, and audit-ready — with dedicated support from planning through post-launch optimization.</p>
+    <div class="val-flow" id="val-flow">
+      <div class="val-line-track">
+        <div class="val-line-fill"></div>
+        <div class="val-line-dot"></div>
+      </div>
+      <div class="val-steps">
+
+        <div class="val-step" data-vs="0">
+          <div class="val-node">01</div>
+          <div class="val-card">
+            <div class="val-phase-label">Phase 1</div>
+            <div class="val-card-title">Validation Planning</div>
+            <p class="val-card-desc">Comprehensive scope assessment and strategic roadmap before a single study begins. Timeline, resource, and regulatory requirements defined upfront.</p>
+          </div>
+        </div>
+
+        <div class="val-step" data-vs="1">
+          <div class="val-node">02</div>
+          <div class="val-card">
+            <div class="val-phase-label">Phase 2</div>
+            <div class="val-card-title">Protocol Design</div>
+            <p class="val-card-desc">CLIA, COLA, and CAP-aligned study protocols written to regulatory standard. Accuracy, precision, sensitivity, specificity, and reportable range — every parameter specified.</p>
+          </div>
+        </div>
+
+        <div class="val-step" data-vs="2">
+          <div class="val-node">03</div>
+          <div class="val-card">
+            <div class="val-phase-label">Phase 3</div>
+            <div class="val-card-title">Study Execution</div>
+            <p class="val-card-desc">Systematic study execution with real-time data review. Samples, materials, and equipment managed for consistency — results documented as they are generated.</p>
+          </div>
+        </div>
+
+        <div class="val-step" data-vs="3">
+          <div class="val-node">04</div>
+          <div class="val-card">
+            <div class="val-phase-label">Phase 4</div>
+            <div class="val-card-title">Training &amp; Handoff</div>
+            <p class="val-card-desc">On-site and remote technical training for your team. Complete documentation packages structured for accreditor review, payer scrutiny, and audit pressure.</p>
+          </div>
+        </div>
+
+        <div class="val-step" data-vs="4">
+          <div class="val-node">05</div>
+          <div class="val-card">
+            <div class="val-phase-label">Phase 5</div>
+            <div class="val-card-title">Post-Validation Support</div>
+            <p class="val-card-desc">Ongoing QC protocol monitoring, performance review, and documentation maintenance. Validation defensibility maintained through every accreditation cycle.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── EXPERTISE ──────────────────────────────────────────── -->
+<section class="section s-carbon">
+  <div class="blob blob-blackberry b-lg" style="top:-60px;right:-40px;opacity:.5;z-index:0;"></div>
+  <div style="position:relative;z-index:1;">
+    <div class="eyebrow mb-16 reveal">Our Consulting Team</div>
+    <h2 class="reveal" style="margin-bottom:44px;">Validation expertise <em>built into every engagement.</em></h2>
+    <div class="expertise-grid reveal">
+
+      <div class="expertise-card">
+        <div class="expertise-icon">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="var(--gold)" stroke-width="1.4">
+            <path d="M10 2a8 8 0 1 0 0 16A8 8 0 0 0 10 2z"/><path d="M10 6v4l3 3" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="expertise-title">Regulatory Compliance Specialists</div>
+        <p class="expertise-desc">Deep expertise in CLIA, COLA, CAP, and payer-specific documentation requirements. Protocols designed to satisfy every reviewer before they ask.</p>
+      </div>
+
+      <div class="expertise-card">
+        <div class="expertise-icon">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="var(--gold)" stroke-width="1.4">
+            <circle cx="10" cy="14" r="3"/><path d="M10 11V7" stroke-linecap="round"/><path d="M7 7h6M8 7V3h4v4" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 18h12" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="expertise-title">Molecular Diagnostics Consultants</div>
+        <p class="expertise-desc">Hands-on experience with PCR platform validation across multiple care settings. Study design calibrated to your specific equipment, workflow, and patient population.</p>
+      </div>
+
+      <div class="expertise-card">
+        <div class="expertise-icon">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="var(--gold)" stroke-width="1.4">
+            <path d="M4 17L8 9l4 5 3-4 1 7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="16" cy="4" r="2"/>
+          </svg>
+        </div>
+        <div class="expertise-title">QC Protocol Architects</div>
+        <p class="expertise-desc">QC programs designed to detect performance shifts before they affect patient results — and documented to demonstrate ongoing control to any regulatory reviewer.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── WHY IT MATTERS ─────────────────────────────────────── -->
+<section class="section" style="background:var(--carbon);overflow:hidden;position:relative;">
+  <div class="blob blob-gold b-lg" style="top:-60px;right:-40px;opacity:.1;z-index:0;"></div>
+  <div class="split-40-60 reveal" style="position:relative;z-index:1;">
+    <div>
+      <div class="eyebrow mb-24" style="color:var(--gold);">Why It Matters</div>
+      <h2 style="color:var(--fog);">Validation isn't a checkbox. <em>It's a competitive advantage.</em></h2>
+    </div>
+    <div style="padding-top:8px;">
+      <p style="font-size:17px;line-height:1.8;color:rgba(232,231,227,0.52);margin-bottom:24px;">Labs that treat validation as a regulatory hurdle build programs that work — until they don't. Payers, accreditors, and auditors increasingly use validation documentation as a proxy for overall program defensibility.</p>
+      <p style="font-size:17px;line-height:1.8;color:rgba(232,231,227,0.52);">Oriole Sciences builds validation into programs from day one. Method studies, QC protocol design, and regulatory documentation that satisfies CLIA, COLA, CAP, and payer scrutiny — structured to survive any review, at any point in the program's life.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW WE STRUCTURE IT ───────────────────────────────── -->
+<section class="section s-carbon-dk">
+  <div class="blob blob-sage b-lg" style="top:-80px;right:60px;opacity:.2;z-index:0;"></div>
+  <div class="eyebrow mb-48 reveal">What We Structure</div>
+  <div class="grid-3 reveal" style="gap:20px;position:relative;z-index:1;">
+    <div class="solid-card">
+      <div class="proof-label">Method Validation</div>
+      <h3 class="tile-h" style="margin-bottom:16px;">Every assay verified.</h3>
+      <p class="tile-p">Accuracy, precision, sensitivity, specificity, and reportable range studies conducted to CLIA and CAP standards — documented in a format built to withstand regulatory review and payer requests.</p>
+    </div>
+    <div class="solid-card">
+      <div class="proof-label">QC Protocol Design</div>
+      <h3 class="tile-h" style="margin-bottom:16px;">Ongoing defensibility.</h3>
+      <p class="tile-p">QC protocols designed to detect and contain assay performance issues before they affect patient results — and documented to demonstrate ongoing program control to any reviewer.</p>
+    </div>
+    <div class="solid-card">
+      <div class="proof-label">Regulatory Documentation</div>
+      <h3 class="tile-h" style="margin-bottom:16px;">Ready before they ask.</h3>
+      <p class="tile-p">Complete validation documentation packages structured to satisfy CLIA, COLA, CAP, and payer requirements — built into program architecture, not assembled under audit pressure.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band" id="cta-band"></section>
+<footer class="site-footer" id="site-footer"></footer>
+<script>
+(function(){
+  var flow = document.getElementById('val-flow');
+  if (!flow) return;
+  var steps = flow.querySelectorAll('.val-step');
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting) {
+        flow.classList.add('vf-active');
+        steps.forEach(function(step, i){
+          setTimeout(function(){ step.classList.add('vs-lit'); }, 100 + i * 400);
+        });
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  obs.observe(flow);
+})();
+</script>
+<script src="site.js"></script>
+<script>initSite('validation');</script>
+<script>initPageHeroCanvas(['#506c8b','#4F695B','#8f5b3e']);</script>
+</body>
+</html>

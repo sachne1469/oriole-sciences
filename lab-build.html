@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lab Build &amp; Optimization · Oriole Sciences</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="site.css" />
+<style>
+/* Laboratory Engagements tiles */
+.labs-optimize-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.lab-tile {
+  background: white;
+  border: 1px solid rgba(46,49,53,0.07);
+  border-radius: 12px;
+  padding: 18px 20px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.24s ease;
+}
+.lab-tile.lt-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: box-shadow 0.24s ease, transform 0.24s ease, border-color 0.24s ease;
+}
+.lab-tile.lt-visible:hover {
+  box-shadow: 0 6px 20px rgba(46,49,53,0.1);
+  border-color: rgba(143,91,62,0.22);
+  transform: translateY(-2px);
+}
+.lab-tile-name {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px; font-weight: 400;
+  color: rgba(46,49,53,0.65);
+  line-height: 1.35;
+  transition: color 0.24s;
+}
+.lab-tile.lt-visible:hover .lab-tile-name { color: var(--carbon); }
+.lab-tile-bar {
+  position: absolute; bottom: 0; left: 0;
+  height: 2px; width: 0;
+  background: linear-gradient(90deg, var(--gold-dk), var(--gold-lt));
+  transition: width 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.lab-tile.lt-visible .lab-tile-bar { width: 100%; }
+@keyframes lt-bar-replay {
+  0%   { width: 100%; }
+  32%  { width: 0%; }
+  100% { width: 100%; }
+}
+.lab-tile.lt-visible:hover .lab-tile-bar {
+  animation: lt-bar-replay 0.55s ease forwards;
+}
+
+/* Build Process Flow */
+.process-flow { position: relative; padding-top: 24px; }
+.process-line-track {
+  position: absolute; top: 48px;
+  left: 8.333%; right: 8.333%;
+  height: 1px; background: rgba(143,91,62,0.1);
+  z-index: 0; overflow: visible;
+}
+.process-line-fill {
+  height: 1px; width: 0%;
+  background: linear-gradient(to right, var(--gold-dk), var(--gold-lt));
+  transition: width 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.process-line-dot {
+  position: absolute; top: -4px;
+  width: 9px; height: 9px; border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 12px rgba(143,91,62,0.6);
+  left: -4px; opacity: 0;
+  transition: left 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s;
+}
+.process-flow.pf-active .process-line-fill { width: 100%; }
+.process-flow.pf-active .process-line-dot { left: calc(100% - 4px); opacity: 1; }
+.process-steps {
+  display: grid; grid-template-columns: repeat(6, 1fr);
+  gap: 14px; position: relative; z-index: 1;
+}
+.process-step { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.process-node {
+  width: 48px; height: 48px; border-radius: 50%;
+  border: 1.5px solid rgba(143,91,62,0.2);
+  background: white;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+  color: rgba(143,91,62,0.4); flex-shrink: 0;
+  transition: background 0.35s, border-color 0.35s, color 0.35s, box-shadow 0.35s, transform 0.25s;
+}
+.process-step.pf-lit .process-node {
+  background: var(--gold); border-color: var(--gold);
+  color: rgba(255,255,255,0.95);
+  box-shadow: 0 4px 18px rgba(143,91,62,0.28);
+}
+.process-step.pf-lit:hover .process-node {
+  background: var(--gold-lt); border-color: var(--gold-lt);
+  box-shadow: 0 6px 24px rgba(143,91,62,0.42);
+  transform: scale(1.1);
+}
+.process-card {
+  background: white; border: 1px solid rgba(46,49,53,0.07);
+  border-radius: 14px; padding: 20px 14px;
+  text-align: center; width: 100%;
+  opacity: 0; transform: translateY(14px);
+  transition: opacity 0.45s ease, transform 0.45s ease,
+              box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.process-step.pf-lit .process-card { opacity: 1; transform: translateY(0); }
+.process-step.pf-lit:hover .process-card {
+  border-color: rgba(143,91,62,0.22);
+  box-shadow: 0 8px 28px rgba(46,49,53,0.1);
+  transform: translateY(-3px);
+}
+.process-step-num {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 8px;
+  transition: color 0.25s;
+}
+.process-step.pf-lit:hover .process-step-num { color: var(--gold-lt); }
+.process-card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px; font-weight: 400;
+  color: var(--carbon); line-height: 1.2;
+  margin-bottom: 10px; letter-spacing: -0.01em;
+  transition: color 0.25s;
+}
+.process-step.pf-lit:hover .process-card-title { color: var(--gold-dk); }
+.process-card-desc {
+  font-size: 12px; color: rgba(46,49,53,0.48);
+  line-height: 1.65; font-weight: 300;
+}
+</style>
+</head>
+<body>
+<nav class="site-nav" id="site-nav"></nav>
+
+<section class="page-hero" style="min-height:62vh;overflow:hidden;position:relative;">
+  <canvas id="page-hero-canvas" style="position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;background:linear-gradient(to right,rgba(243,241,237,0.97) 0%,rgba(243,241,237,0.82) 55%,rgba(243,241,237,0) 100%);"></div>
+  <div class="blob blob-gold b-lg" style="top:-60px;right:80px;opacity:.45;z-index:0;"></div>
+  <div class="page-hero-eyebrow eyebrow reveal" style="position:relative;z-index:1;"><a href="solutions.html" style="color:var(--gold);text-decoration:none;font-style:normal;">← Solutions</a></div>
+  <h1 class="reveal" style="position:relative;z-index:1;">Lab Build<br>&amp; Optimization.<br><em>Built to your market.</em></h1>
+  <p class="page-hero-sub reveal" style="margin-top:20px;position:relative;z-index:1;">From empty room to operational molecular lab program. Equipment selection, bench design, and workflow architecture sized to your patient population — not a sales forecast.</p>
+</section>
+
+<!-- ── BUILD PROCESS ─────────────────────────────────────── -->
+<section class="section s-carbon-dk" style="padding-top:80px;padding-bottom:96px;">
+  <div class="blob blob-gold b-lg" style="top:-80px;right:-40px;opacity:.16;z-index:0;"></div>
+  <div style="position:relative;z-index:1;">
+    <div class="eyebrow mb-16 reveal">Our Process</div>
+    <h2 class="reveal" style="margin-bottom:56px;">From discovery<br>to <em>launch.</em></h2>
+    <div class="process-flow" id="process-flow">
+      <div class="process-line-track">
+        <div class="process-line-fill"></div>
+        <div class="process-line-dot"></div>
+      </div>
+      <div class="process-steps">
+
+        <div class="process-step" data-ps="0">
+          <div class="process-node">01</div>
+          <div class="process-card">
+            <div class="process-step-num">Discovery</div>
+            <div class="process-card-title">Assessment Call</div>
+            <p class="process-card-desc">We map your market, patient population, and existing infrastructure before recommending a single piece of equipment.</p>
+          </div>
+        </div>
+
+        <div class="process-step" data-ps="1">
+          <div class="process-node">02</div>
+          <div class="process-card">
+            <div class="process-step-num">Financials</div>
+            <div class="process-card-title">ROI &amp; Reimbursement Modeling</div>
+            <p class="process-card-desc">Custom return on investment and reimbursement analysis built around your volume, payer mix, and specialty — not industry averages.</p>
+          </div>
+        </div>
+
+        <div class="process-step" data-ps="2">
+          <div class="process-node">03</div>
+          <div class="process-card">
+            <div class="process-step-num">Infrastructure</div>
+            <div class="process-card-title">Lab Design &amp; Build</div>
+            <p class="process-card-desc">Equipment selection, bench layout, and workflow architecture engineered to your throughput and patient population.</p>
+          </div>
+        </div>
+
+        <div class="process-step" data-ps="3">
+          <div class="process-node">04</div>
+          <div class="process-card">
+            <div class="process-step-num">Compliance</div>
+            <div class="process-card-title">CLIA&thinsp;/&thinsp;COLA Credentialing</div>
+            <p class="process-card-desc">Navigate certification with documentation built in from day one. Audit-ready before the first inspector arrives.</p>
+          </div>
+        </div>
+
+        <div class="process-step" data-ps="4">
+          <div class="process-node">05</div>
+          <div class="process-card">
+            <div class="process-step-num">People</div>
+            <div class="process-card-title">Staffing &amp; Recruiting</div>
+            <p class="process-card-desc">Source and place the right lab personnel for your throughput and specialty mix. Experienced, not just available.</p>
+          </div>
+        </div>
+
+        <div class="process-step" data-ps="5">
+          <div class="process-node">06</div>
+          <div class="process-card">
+            <div class="process-step-num">Go-Live</div>
+            <div class="process-card-title">Training &amp; Launch</div>
+            <p class="process-card-desc">On-site and remote training. First sample runs correctly. Program launches operationally sound from day one.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── LABORATORY ENGAGEMENTS ─────────────────────────────── -->
+<section class="section s-carbon" style="padding-top:72px;padding-bottom:80px;">
+  <div class="blob blob-gold b-md" style="top:-60px;right:40px;opacity:.18;z-index:0;"></div>
+  <div style="position:relative;z-index:1;">
+    <h2 class="reveal" style="color:var(--carbon);margin-bottom:40px;">Laboratory <em>Engagements</em></h2>
+    <div class="labs-optimize-grid">
+
+      <div class="lab-tile" data-i="0">
+        <span class="lab-tile-name">Urgent Care Laboratories</span>
+        <div class="lab-tile-bar"></div>
+      </div>
+
+      <div class="lab-tile" data-i="1">
+        <span class="lab-tile-name">OBGYN Laboratories</span>
+        <div class="lab-tile-bar"></div>
+      </div>
+
+      <div class="lab-tile" data-i="2">
+        <span class="lab-tile-name">Urology Laboratories</span>
+        <div class="lab-tile-bar"></div>
+      </div>
+
+      <div class="lab-tile" data-i="3">
+        <span class="lab-tile-name">Podiatry Laboratories</span>
+        <div class="lab-tile-bar"></div>
+      </div>
+
+      <div class="lab-tile" data-i="4">
+        <span class="lab-tile-name">Gastroenterology Laboratories</span>
+        <div class="lab-tile-bar"></div>
+      </div>
+
+      <div class="lab-tile" data-i="5">
+        <span class="lab-tile-name">Primary Care Laboratories</span>
+        <div class="lab-tile-bar"></div>
+      </div>
+
+      <div class="lab-tile" data-i="6">
+        <span class="lab-tile-name">Hospital Laboratories</span>
+        <div class="lab-tile-bar"></div>
+      </div>
+
+      <div class="lab-tile" data-i="7">
+        <span class="lab-tile-name">Academic Laboratories</span>
+        <div class="lab-tile-bar"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── WHY IT MATTERS ─────────────────────────────────────── -->
+<section class="section" style="background:var(--carbon);overflow:hidden;position:relative;">
+  <div class="blob blob-gold b-lg" style="top:-60px;right:-40px;opacity:.12;z-index:0;"></div>
+  <div class="split-40-60 reveal" style="position:relative;z-index:1;">
+    <div>
+      <div class="eyebrow mb-24">Why It Matters</div>
+      <h2 style="color:var(--fog);">Your market is<br><em>the blueprint.</em></h2>
+    </div>
+    <div style="padding-top:8px">
+      <p style="font-size:17px;line-height:1.8;color:rgba(232,231,227,0.52);margin-bottom:24px;">Most molecular lab programs are assembled, not designed. Equipment is spec'd by vendors optimizing their margins. Staffing is filled by agencies that don't know your workflow. No one owns the whole system — and the whole system is exactly where programs fail.</p>
+      <p style="font-size:17px;line-height:1.8;color:rgba(232,231,227,0.52);">Oriole Sciences starts with a single brief: what does your patient population actually show? Prevalence-informed capacity, workflow architecture built for your throughput, and equipment selection validated against your market — not a forecast.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW WE BUILD IT ────────────────────────────────────── -->
+<section class="section s-carbon-dk">
+  <div class="blob blob-gold b-lg" style="top:-80px;right:60px;opacity:.3;z-index:0;"></div>
+  <div class="eyebrow mb-48 reveal">How We Build It</div>
+  <div class="grid-3 reveal" style="gap:20px">
+    <div class="solid-card">
+      <div class="proof-label">Capacity Planning</div>
+      <h3 class="tile-h" style="margin-bottom:16px;">Sized to your volume.</h3>
+      <p class="tile-p">Prevalence-banded volume forecasting determines equipment needs, staffing ratios, and physical layout — before the first piece of equipment is purchased.</p>
+    </div>
+    <div class="solid-card">
+      <div class="proof-label">Workflow Architecture</div>
+      <h3 class="tile-h" style="margin-bottom:16px;">Built for throughput.</h3>
+      <p class="tile-p">Sample handling, LIS/EMR integration, bench design, and QC protocol — engineered as an integrated workflow, not assembled from vendor recommendations.</p>
+    </div>
+    <div class="solid-card">
+      <div class="proof-label">Standup to Operations</div>
+      <h3 class="tile-h" style="margin-bottom:16px;">Audit-ready from day one.</h3>
+      <p class="tile-p">Documentation, chain-of-custody, and QC records built into the program from standup — not retrofitted when the first audit arrives.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band" id="cta-band"></section>
+<footer class="site-footer" id="site-footer"></footer>
+<script>
+(function(){
+  var tiles = document.querySelectorAll('.lab-tile');
+  if (!tiles.length) return;
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting) {
+        var t = e.target, i = parseInt(t.dataset.i) || 0;
+        setTimeout(function(){ t.classList.add('lt-visible'); }, i * 60);
+        obs.unobserve(t);
+      }
+    });
+  }, { threshold: 0.05 });
+  tiles.forEach(function(t){ obs.observe(t); });
+})();
+// Build process animation
+(function(){
+  var flow = document.getElementById('process-flow');
+  if (!flow) return;
+  var steps = flow.querySelectorAll('.process-step');
+  var obs2 = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting) {
+        flow.classList.add('pf-active');
+        steps.forEach(function(step, i){
+          setTimeout(function(){ step.classList.add('pf-lit'); }, 120 + i * 390);
+        });
+        obs2.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  obs2.observe(flow);
+})();
+</script>
+<script src="site.js"></script>
+<script>initSite('lab-build');</script>
+<script>initPageHeroCanvas(['#8f5b3e','#4F695B','#506c8b']);</script>
+</body>
+</html>
