@@ -8,51 +8,193 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="site.css" />
+<style>
+a{color:inherit;}a:hover{color:var(--gold-lt);}
+--ac:#506c8b; --ac-lt:#6a8aaa;
+.cs-section{padding:96px 64px;position:relative;overflow:hidden;}
+@media(max-width:768px){.cs-section{padding:64px 24px;}}
+.cs-badge{display:inline-flex;align-items:center;gap:10px;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(232,231,227,.35);margin-bottom:20px;}
+.cs-badge-num{width:26px;height:26px;border-radius:50%;background:var(--blackberry);color:var(--fog);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;}
+.cs-headline{font-family:'DM Sans',sans-serif;font-size:clamp(26px,3.4vw,48px);font-weight:700;line-height:1.04;letter-spacing:-.025em;text-transform:uppercase;color:var(--fog);margin-bottom:10px;}
+.cs-headline em{color:var(--blackberry-lt);font-style:normal;}
+.cs-substat{font-size:15px;color:rgba(232,231,227,.4);margin-bottom:48px;font-weight:300;}
+.cs-substat strong{color:rgba(232,231,227,.75);font-weight:500;}
+.cs-reveal{opacity:0;transform:translateY(28px);transition:opacity .75s ease,transform .75s ease;}
+.cs-reveal.visible{opacity:1;transform:translateY(0);}
+.cs-reveal.d1{transition-delay:.08s;}.cs-reveal.d2{transition-delay:.16s;}.cs-reveal.d3{transition-delay:.24s;}.cs-reveal.d4{transition-delay:.32s;}
+
+/* ── Stepper ─────────────────────────────────────────── */
+.stepper{display:grid;grid-template-columns:260px 1fr;gap:3px;border-radius:18px;overflow:hidden;min-height:400px;}
+@media(max-width:900px){.stepper{grid-template-columns:1fr;}}
+.stepper-nav{background:rgba(232,231,227,.03);display:flex;flex-direction:column;padding:10px 0;}
+.stepper-nav-item{display:flex;align-items:center;gap:14px;padding:13px 22px;cursor:pointer;border:none;background:none;text-align:left;width:100%;transition:background .2s;}
+.stepper-nav-item:hover{background:rgba(232,231,227,.05);}
+.stepper-nav-item.active{background:rgba(80,108,139,.18);}
+.sni-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;background:rgba(232,231,227,.08);color:rgba(232,231,227,.35);flex-shrink:0;transition:all .2s;}
+.stepper-nav-item.active .sni-num{background:var(--blackberry);color:var(--fog);}
+.sni-label{font-size:13px;font-weight:400;color:rgba(232,231,227,.38);line-height:1.3;transition:color .2s;}
+.stepper-nav-item.active .sni-label{color:var(--fog);font-weight:500;}
+.stepper-panel{background:rgba(232,231,227,.04);display:flex;flex-direction:column;position:relative;overflow:hidden;}
+.stepper-content{flex:1;padding:40px 44px;display:none;flex-direction:column;animation:stepIn .35s ease;}
+.stepper-content.active{display:flex;}
+@keyframes stepIn{from{opacity:0;transform:translateX(14px);}to{opacity:1;transform:translateX(0);}}
+.stepper-deco{font-family:'Cormorant Garamond',serif;font-size:140px;font-weight:300;line-height:1;color:rgba(232,231,227,.04);position:absolute;top:10px;right:24px;user-select:none;pointer-events:none;}
+.stepper-stat{font-family:'Cormorant Garamond',serif;font-size:62px;font-weight:300;line-height:1;color:var(--blackberry-lt);margin-bottom:4px;}
+.stepper-stat-sub{font-size:12px;color:rgba(232,231,227,.32);letter-spacing:.05em;margin-bottom:24px;}
+.stepper-title{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--fog);margin-bottom:12px;}
+.stepper-text{font-size:15px;font-weight:300;color:rgba(232,231,227,.58);line-height:1.72;flex:1;}
+.stepper-footer{padding:0 44px 28px;display:flex;flex-direction:column;gap:12px;}
+.stepper-prog-track{height:2px;background:rgba(232,231,227,.07);border-radius:1px;overflow:hidden;}
+.stepper-prog-fill{height:100%;background:var(--blackberry-lt);border-radius:1px;width:0;transition:width .08s linear;}
+.stepper-controls{display:flex;align-items:center;gap:14px;}
+.stepper-btn{width:34px;height:34px;border-radius:8px;background:rgba(232,231,227,.07);border:none;cursor:pointer;color:rgba(232,231,227,.45);font-size:15px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.stepper-btn:hover{background:var(--blackberry);color:var(--fog);}
+.stepper-ctr{font-size:12px;color:rgba(232,231,227,.28);letter-spacing:.06em;flex:1;}
+.stepper-auto{font-size:10px;color:rgba(232,231,227,.22);background:none;border:none;cursor:pointer;letter-spacing:.1em;text-transform:uppercase;transition:color .2s;}
+.stepper-auto:hover,.stepper-auto.paused{color:rgba(232,231,227,.5);}
+
+/* ── Proforma ─────────────────────────────────────────── */
+#cs-proforma{background:#191c20;}
+.pf-year-tabs{display:flex;gap:2px;background:rgba(232,231,227,.05);border-radius:10px;padding:3px;width:fit-content;margin-bottom:32px;}
+.pf-year-tab{padding:10px 26px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(232,231,227,.35);background:none;border:none;border-radius:7px;cursor:pointer;transition:all .2s;}
+.pf-year-tab.active{background:var(--blackberry);color:var(--fog);}
+.pf-year-tab:hover:not(.active){color:rgba(232,231,227,.65);}
+.pf-hero{display:flex;align-items:baseline;gap:18px;flex-wrap:wrap;margin-bottom:36px;}
+.pf-hero-label{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(232,231,227,.28);}
+.pf-hero-num{font-family:'Cormorant Garamond',serif;font-size:68px;font-weight:300;line-height:1;color:var(--fog);}
+.pf-hero-ctx{font-size:13px;color:rgba(232,231,227,.22);align-self:flex-end;padding-bottom:8px;}
+.pf-bars{display:flex;flex-direction:column;gap:14px;margin-bottom:44px;max-width:620px;}
+.pf-bar-row{display:grid;grid-template-columns:110px 1fr 120px;gap:16px;align-items:center;}
+.pf-bar-lbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(232,231,227,.28);text-align:right;}
+.pf-bar-track{height:8px;background:rgba(232,231,227,.06);border-radius:4px;overflow:hidden;}
+.pf-bar-fill{height:100%;border-radius:4px;width:0;transition:width .9s cubic-bezier(.16,1,.3,1);}
+.pf-bar-fill.rev{background:var(--blackberry-lt);}
+.pf-bar-fill.exp{background:rgba(193,53,53,.55);}
+.pf-bar-fill.net{background:rgba(79,105,91,.85);}
+.pf-bar-val{font-size:13px;color:rgba(232,231,227,.55);}
+.pf-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.pf-table{width:100%;border-collapse:collapse;min-width:600px;}
+.pf-table th{font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:12px 18px 10px;border-bottom:1px solid rgba(232,231,227,.08);text-align:right;color:rgba(232,231,227,.32);}
+.pf-table th:first-child{text-align:left;}
+.pf-table th.th-total{background:var(--blackberry);color:var(--fog);border-radius:8px 8px 0 0;}
+.pf-table td{padding:10px 18px;font-size:14px;font-weight:300;text-align:right;border-bottom:1px solid rgba(232,231,227,.04);color:rgba(232,231,227,.48);}
+.pf-table td:first-child{text-align:left;color:rgba(232,231,227,.32);font-size:13px;}
+.pf-table td.td-total{background:rgba(80,108,139,.12);color:rgba(232,231,227,.65);font-weight:400;}
+.pf-table td.neg{color:rgba(193,53,53,.65);}
+.pf-table td.zero{color:rgba(79,105,91,.75);font-weight:500;}
+.pf-row-highlight td{background:rgba(80,108,139,.1);color:var(--fog);font-weight:500;border-bottom:1px solid rgba(80,108,139,.15);}
+.pf-row-highlight td:first-child{color:var(--fog);font-size:14px;}
+.pf-row-highlight td.td-total{background:rgba(80,108,139,.2);}
+.pf-row-highlight td.neg{color:rgba(220,100,100,.8);}
+.pf-row-income td{background:var(--blackberry);color:var(--fog);font-weight:600;border-bottom:none;font-size:15px;}
+.pf-row-income td.td-total{background:rgba(80,108,139,.65);}
+.pf-section-gap td{padding-top:18px;border-top:1px solid rgba(232,231,227,.05);}
+.pf-table tr:last-child td{border-bottom:none;}
+
+/* active year column */
+.pf-table[data-active="1"] td.col-y1{background:rgba(80,108,139,.16);color:var(--fog);}
+.pf-table[data-active="1"] td.col-y1.neg{color:rgba(220,100,100,.85);}
+.pf-table[data-active="1"] td.col-y1.zero{color:rgba(79,105,91,.85);}
+.pf-table[data-active="2"] td.col-y2{background:rgba(80,108,139,.16);color:var(--fog);}
+.pf-table[data-active="2"] td.col-y2.neg{color:rgba(220,100,100,.85);}
+.pf-table[data-active="2"] td.col-y2.zero{color:rgba(79,105,91,.85);}
+.pf-table[data-active="3"] td.col-y3{background:rgba(80,108,139,.16);color:var(--fog);}
+.pf-table[data-active="3"] td.col-y3.neg{color:rgba(220,100,100,.85);}
+.pf-table[data-active="total"] td.col-total{background:rgba(80,108,139,.22);color:var(--fog);}
+.pf-table[data-active="total"] td.col-total.neg{color:rgba(220,100,100,.85);}
+.pf-table[data-active="1"] th.col-y1,
+.pf-table[data-active="2"] th.col-y2,
+.pf-table[data-active="3"] th.col-y3{color:var(--fog);}
+.pf-table[data-active="total"] th.col-total{color:var(--fog);}
+.pf-footnote{font-size:12px;font-style:italic;color:rgba(232,231,227,.18);margin-top:20px;}
+</style>
 </head>
 <body>
 <nav class="site-nav" id="site-nav"></nav>
 
-<section class="page-hero" style="min-height:56vh;overflow:hidden;position:relative;">
+<section class="page-hero" style="min-height:52vh;overflow:hidden;position:relative;">
   <canvas id="page-hero-canvas" style="position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
   <div style="position:absolute;inset:0;z-index:0;pointer-events:none;background:linear-gradient(to right,rgba(243,241,237,0.97) 0%,rgba(243,241,237,0.82) 55%,rgba(243,241,237,0) 100%);"></div>
   <div class="blob blob-blackberry b-lg" style="top:-60px;right:80px;opacity:.4;z-index:0;"></div>
   <div class="page-hero-eyebrow eyebrow reveal" style="position:relative;z-index:1;"><a href="insights.html" style="color:var(--gold);text-decoration:none;">← Case Studies</a></div>
   <h1 class="reveal" style="position:relative;z-index:1;">Hospital.<br><em>Integrated. Defensible.</em></h1>
-  <p class="page-hero-sub reveal" style="margin-top:20px;position:relative;z-index:1;">Enterprise molecular programs that hold up in complex hospital environments — workflow, billing, and documentation aligned to hospital operations and payer requirements.</p>
+  <p class="page-hero-sub reveal" style="margin-top:20px;position:relative;z-index:1;">Enterprise molecular programs aligned to hospital operations — workflow, billing, and documentation built for complex payer environments.</p>
 </section>
 
-<section class="section s-carbon">
-  <div class="blob blob-sage b-lg" style="top:-60px;right:-40px;opacity:.6"></div>
-  <div class="eyebrow mb-16 reveal">Case Studies</div>
-  <h2 class="mb-48 reveal" style="max-width:600px">Hospital programs that <em>hold up.</em></h2>
-  <div class="grid-3 reveal" style="gap:20px">
-    <div class="insight-card">
-      <div class="insight-card-thumb"><span style="font-size:12px;color:rgba(232,231,227,0.2);font-style:italic">Case study image</span></div>
-      <div class="insight-card-body">
-        <div class="insight-tag">Lab Build</div>
-        <h4>Setting · Challenge · What we built · Result</h4>
-        <p>Full case study sourced from Jeremy / Steve. Placeholder pending compliance review.</p>
-        <div style="margin-top:20px"><a href="#" style="font-size:12px;color:var(--gold);font-weight:500;letter-spacing:.05em">Read case study →</a></div>
+<!-- ── CASE STUDY ── -->
+<section class="cs-section" style="background:#1e2126;" data-screen-label="Case Study">
+  <div class="cs-badge cs-reveal"><span class="cs-badge-num">CS</span> Case Study</div>
+  <div class="cs-headline cs-reveal d1">27 Location <em>Hospital System</em></div>
+  <p class="cs-substat cs-reveal d1">Key financial &amp; operational assumptions — click through each one below.</p>
+
+  <div class="stepper cs-reveal d2" id="stepper">
+    <nav class="stepper-nav" id="stepper-nav"></nav>
+    <div class="stepper-panel" id="stepper-panel">
+      <div id="stepper-contents"></div>
+      <div class="stepper-footer">
+        <div class="stepper-prog-track"><div class="stepper-prog-fill" id="prog-fill"></div></div>
+        <div class="stepper-controls">
+          <button class="stepper-btn" id="s-prev">←</button>
+          <span class="stepper-ctr" id="s-ctr"></span>
+          <button class="stepper-btn" id="s-next">→</button>
+          <button class="stepper-auto" id="s-auto">⏸ Pause</button>
+        </div>
       </div>
     </div>
-    <div class="insight-card">
-      <div class="insight-card-thumb"><span style="font-size:12px;color:rgba(232,231,227,0.2);font-style:italic">Case study image</span></div>
-      <div class="insight-card-body">
-        <div class="insight-tag">Workflow Efficiencies</div>
-        <h4>Setting · Challenge · What we built · Result</h4>
-        <p>Full case study sourced from Jeremy / Steve. Placeholder pending compliance review.</p>
-        <div style="margin-top:20px"><a href="#" style="font-size:12px;color:var(--gold);font-weight:500;letter-spacing:.05em">Read case study →</a></div>
-      </div>
-    </div>
-    <div class="insight-card">
-      <div class="insight-card-thumb"><span style="font-size:12px;color:rgba(232,231,227,0.2);font-style:italic">Case study image</span></div>
-      <div class="insight-card-body">
-        <div class="insight-tag insight-tag-sage">Payer Strategy</div>
-        <h4>Setting · Challenge · What we built · Result</h4>
-        <p>Full case study sourced from Jeremy / Steve. Placeholder pending compliance review.</p>
-        <div style="margin-top:20px"><a href="#" style="font-size:12px;color:var(--gold);font-weight:500;letter-spacing:.05em">Read case study →</a></div>
-      </div>
-    </div>
+  </div>
+</section>
+
+<div style="height:1px;background:rgba(232,231,227,0.05);"></div>
+
+<!-- ── PROFORMA ── -->
+<section class="cs-section" id="cs-proforma" data-screen-label="36-Month Proforma">
+  <div class="cs-badge cs-reveal"><span class="cs-badge-num" style="background:var(--blackberry);">PF</span> Proforma</div>
+  <div class="cs-headline cs-reveal d1">36-Month Summary</div>
+  <p class="cs-substat cs-reveal d1" style="margin-bottom:36px;">27-location hospital system — select a year to explore.</p>
+
+  <div class="pf-year-tabs cs-reveal d2" id="pf-tabs">
+    <button class="pf-year-tab active" data-year="1">Year 1</button>
+    <button class="pf-year-tab" data-year="2">Year 2</button>
+    <button class="pf-year-tab" data-year="3">Year 3</button>
+    <button class="pf-year-tab" data-year="total">3-Year Total</button>
+  </div>
+
+  <div class="pf-hero cs-reveal d2">
+    <div class="pf-hero-label">Net Income</div>
+    <div class="pf-hero-num" id="pf-net-num">$17,451,339</div>
+    <div class="pf-hero-ctx" id="pf-net-ctx">Year 1 · after CAPEX</div>
+  </div>
+
+  <div class="pf-bars cs-reveal d3" id="pf-bars">
+    <div class="pf-bar-row"><div class="pf-bar-lbl">Revenue</div><div class="pf-bar-track"><div class="pf-bar-fill rev" id="bar-rev"></div></div><div class="pf-bar-val" id="bar-rev-val"></div></div>
+    <div class="pf-bar-row"><div class="pf-bar-lbl">Expenses</div><div class="pf-bar-track"><div class="pf-bar-fill exp" id="bar-exp"></div></div><div class="pf-bar-val" id="bar-exp-val"></div></div>
+    <div class="pf-bar-row"><div class="pf-bar-lbl">Net Income</div><div class="pf-bar-track"><div class="pf-bar-fill net" id="bar-net"></div></div><div class="pf-bar-val" id="bar-net-val"></div></div>
+  </div>
+
+  <div class="pf-table-wrap cs-reveal d4">
+    <table class="pf-table" id="pf-table" data-active="1">
+      <thead><tr>
+        <th style="width:240px;"></th>
+        <th class="col-y1">Year 1</th>
+        <th class="col-y2">Year 2</th>
+        <th class="col-y3">Year 3</th>
+        <th class="th-total col-total">Total</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>Total Contractual Allowance</td><td class="col-y1">$22,971,600</td><td class="col-y2">$27,565,920</td><td class="col-y3">$27,565,920</td><td class="td-total col-total">$78,103,440</td></tr>
+        <tr><td>Less: Uncollected</td><td class="col-y1 neg">($2,297,160)</td><td class="col-y2 neg">($2,756,592)</td><td class="col-y3 neg">($2,756,592)</td><td class="td-total col-total neg">($7,810,344)</td></tr>
+        <tr class="pf-row-highlight"><td>Net Patient Revenue</td><td class="col-y1">$20,674,440</td><td class="col-y2">$24,809,328</td><td class="col-y3">$24,809,328</td><td class="td-total col-total">$70,293,096</td></tr>
+        <tr class="pf-section-gap"><td>Less: Assays &amp; Consumables</td><td class="col-y1 neg">($1,552,980)</td><td class="col-y2 neg">($1,863,576)</td><td class="col-y3 neg">($1,863,576)</td><td class="td-total col-total neg">($5,280,132)</td></tr>
+        <tr><td>Less: Staffing</td><td class="col-y1 neg">($495,000)</td><td class="col-y2 neg">($552,000)</td><td class="col-y3 neg">($552,000)</td><td class="td-total col-total neg">($1,599,000)</td></tr>
+        <tr><td>Less: Courier &amp; Logistics</td><td class="col-y1 neg">($215,250)</td><td class="col-y2 neg">($258,300)</td><td class="col-y3 neg">($258,300)</td><td class="td-total col-total neg">($731,850)</td></tr>
+        <tr><td>Less: Revenue Cycle</td><td class="col-y1 neg">($620,233)</td><td class="col-y2 neg">($744,280)</td><td class="col-y3 neg">($744,280)</td><td class="td-total col-total neg">($2,108,793)</td></tr>
+        <tr class="pf-row-highlight"><td>Total Expenses</td><td class="col-y1 neg">($2,883,463)</td><td class="col-y2 neg">($3,418,156)</td><td class="col-y3 neg">($3,418,156)</td><td class="td-total col-total neg">($9,719,775)</td></tr>
+        <tr class="pf-row-highlight pf-section-gap"><td>EBITDA</td><td class="col-y1">$17,790,977</td><td class="col-y2">$21,391,172</td><td class="col-y3">$21,391,172</td><td class="td-total col-total">$60,573,321</td></tr>
+        <tr class="pf-section-gap"><td>Less: CAPEX</td><td class="col-y1 neg">($339,683)</td><td class="col-y2 zero">$0</td><td class="col-y3 zero">$0</td><td class="td-total col-total neg">($339,638)</td></tr>
+        <tr class="pf-row-income"><td>Net Income</td><td class="col-y1">$17,451,339</td><td class="col-y2">$21,391,172</td><td class="col-y3">$21,391,172</td><td class="td-total col-total">$60,233,683</td></tr>
+      </tbody>
+    </table>
+    <div class="pf-footnote">Based on key financial &amp; operational assumptions for a 27-location hospital system.</div>
   </div>
 </section>
 
@@ -61,5 +203,133 @@
 <script src="site.js"></script>
 <script>initSite('hospital');</script>
 <script>initPageHeroCanvas(['#506c8b','#8f5b3e','#4F695B']);</script>
+<script>
+/* ── Scroll reveal ── */
+(function(){
+  var obs=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target);}});},{threshold:.1});
+  document.querySelectorAll('.cs-reveal').forEach(function(el){obs.observe(el);});
+})();
+
+/* ── Stepper ── */
+(function(){
+  var STEPS=[
+    {num:'01',title:'Hospital Need',stat:'~100%',sub:'of outpatient testing was missed',text:'Facility utilized \'closed PCR systems\' (most common system in hospital) to manage infectious disease testing. Due to the limited capabilities of these PCR platforms, the hospital was missing out on almost 100% of all outpatient testing — testing reimbursed via high dollar CPT rather than inpatient DRG.'},
+    {num:'02',title:'Oriole Solution',stat:'Full-service',sub:'PCR laboratory built from scratch',text:'We built a full-service PCR laboratory that provides testing designed to mirror the current outpatient services required by affiliated providers that have traditionally not been offered by the hospital.'},
+    {num:'03',title:'Stage 1 Proposal',stat:'328',sub:'providers examined in Region 1 of 4',text:'ORIOLE examined 328 providers (region 1 of 4) that included Urology, OBGYN, Pediatrics, Wound Care, and Primary Care providers that send approximately 60,000 tests per year to outside laboratories.'},
+    {num:'04',title:'Average Reimbursement',stat:'120%',sub:'of CMS — weighted average reimbursement',text:'Hospital CPT contracts have a weighted average reimbursement of 120% of CMS.'},
+    {num:'05',title:'Bad Debt Ratio',stat:'17%',sub:'bad debt / uncollected rate',text:'We assumed a bad debt/uncollected rate of 17% based on historical RCM/EPIC collections.'},
+    {num:'06',title:'Staffing',stat:'3 → 6',sub:'staff analyzed needed vs. hired',text:'Staffing was inflated because of the staffing model of the hospital. Analyzed workflow required 3 staff members, we hired 6.'},
+    {num:'07',title:'Consumables & LIS Fees',stat:'$5.20',sub:'per test — consumables + LIS reporting',text:'We budgeted a cost of $5.20 per test for consumables (tips, plates, etc) and LIS reporting fees. Based on volume, this fee will be lower once we have fully analyzed each cost factor.'},
+  ];
+  var cur=0,autoOn=true,timer=null,rafId=null,progStart=null,DURATION=5000;
+  var nav=document.getElementById('stepper-nav');
+  var contents=document.getElementById('stepper-contents');
+  var progFill=document.getElementById('prog-fill');
+  var ctr=document.getElementById('s-ctr');
+  var autoBtn=document.getElementById('s-auto');
+
+  STEPS.forEach(function(s,i){
+    var btn=document.createElement('button');
+    btn.className='stepper-nav-item'+(i===0?' active':'');
+    btn.innerHTML='<span class="sni-num">'+s.num+'</span><span class="sni-label">'+s.title+'</span>';
+    btn.addEventListener('click',function(){pause();goTo(i);});
+    nav.appendChild(btn);
+
+    var div=document.createElement('div');
+    div.className='stepper-content'+(i===0?' active':'');
+    div.innerHTML='<div class="stepper-deco">'+s.num+'</div>'
+      +'<div class="stepper-stat">'+s.stat+'</div>'
+      +'<div class="stepper-stat-sub">'+s.sub+'</div>'
+      +'<div class="stepper-title">'+s.title+'</div>'
+      +'<div class="stepper-text">'+s.text+'</div>';
+    contents.appendChild(div);
+  });
+
+  function goTo(idx){
+    nav.children[cur].classList.remove('active');
+    contents.children[cur].classList.remove('active');
+    cur=((idx%STEPS.length)+STEPS.length)%STEPS.length;
+    nav.children[cur].classList.add('active');
+    contents.children[cur].classList.add('active');
+    ctr.textContent=(cur+1)+' / '+STEPS.length;
+    resetProg();
+    if(autoOn) startProg();
+  }
+
+  function resetProg(){cancelAnimationFrame(rafId);progFill.style.width='0';}
+  function startProg(){
+    progStart=performance.now();
+    (function tick(now){
+      var p=Math.min((now-progStart)/DURATION,1);
+      progFill.style.width=(p*100)+'%';
+      if(p<1){rafId=requestAnimationFrame(tick);}else{goTo(cur+1);}
+    })(performance.now());
+  }
+
+  function pause(){autoOn=false;autoBtn.textContent='▶ Play';autoBtn.classList.add('paused');resetProg();}
+  function play(){autoOn=true;autoBtn.textContent='⏸ Pause';autoBtn.classList.remove('paused');startProg();}
+
+  document.getElementById('s-prev').addEventListener('click',function(){pause();goTo(cur-1);});
+  document.getElementById('s-next').addEventListener('click',function(){pause();goTo(cur+1);});
+  autoBtn.addEventListener('click',function(){autoOn?pause():play();});
+
+  goTo(0);
+  var stepObs=new IntersectionObserver(function(e){if(e[0].isIntersecting&&autoOn)startProg();else resetProg();},{threshold:.3});
+  stepObs.observe(document.getElementById('stepper'));
+})();
+
+/* ── Proforma ── */
+(function(){
+  var DATA={
+    '1':{net:'$17,451,339',netRaw:17451339,ctx:'Year 1 · after CAPEX',rev:'$20,674,440',revPct:100,exp:'($2,883,463)',expPct:14,netPct:84,netLbl:'$17,451,339'},
+    '2':{net:'$21,391,172',netRaw:21391172,ctx:'Year 2 · CAPEX $0',rev:'$24,809,328',revPct:100,exp:'($3,418,156)',expPct:14,netPct:86,netLbl:'$21,391,172'},
+    '3':{net:'$21,391,172',netRaw:21391172,ctx:'Year 3 · CAPEX $0',rev:'$24,809,328',revPct:100,exp:'($3,418,156)',expPct:14,netPct:86,netLbl:'$21,391,172'},
+    'total':{net:'$60,233,683',netRaw:60233683,ctx:'3-Year Total',rev:'$70,293,096',revPct:100,exp:'($9,719,775)',expPct:14,netPct:86,netLbl:'$60,233,683'},
+  };
+  var curRaw=17451339,activeYear='1';
+  var netEl=document.getElementById('pf-net-num');
+  var ctxEl=document.getElementById('pf-net-ctx');
+  var table=document.getElementById('pf-table');
+  var barRev=document.getElementById('bar-rev'),barExp=document.getElementById('bar-exp'),barNet=document.getElementById('bar-net');
+  var barRevV=document.getElementById('bar-rev-val'),barExpV=document.getElementById('bar-exp-val'),barNetV=document.getElementById('bar-net-val');
+
+  function countTo(target){
+    var start=curRaw,dur=600,t0=null;
+    var fmt=new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0});
+    (function tick(now){
+      if(!t0)t0=now;
+      var p=Math.min((now-t0)/dur,1),ease=1-Math.pow(1-p,3);
+      netEl.textContent=fmt.format(Math.round(start+(target-start)*ease));
+      if(p<1)requestAnimationFrame(tick);else curRaw=target;
+    })(performance.now());
+  }
+
+  function updateBars(d){
+    [barRev,barExp,barNet].forEach(function(b){b.style.width='0';});
+    setTimeout(function(){
+      barRev.style.width=d.revPct+'%'; barRevV.textContent=d.rev;
+      barExp.style.width=d.expPct+'%'; barExpV.textContent=d.exp;
+      barNet.style.width=d.netPct+'%'; barNetV.textContent=d.netLbl;
+    },60);
+  }
+
+  function switchYear(yr){
+    var d=DATA[yr]; activeYear=yr;
+    document.querySelectorAll('.pf-year-tab').forEach(function(b){b.classList.remove('active');});
+    document.querySelector('.pf-year-tab[data-year="'+yr+'"]').classList.add('active');
+    ctxEl.textContent=d.ctx;
+    countTo(d.netRaw);
+    table.setAttribute('data-active',yr);
+    updateBars(d);
+  }
+
+  document.querySelectorAll('.pf-year-tab').forEach(function(btn){
+    btn.addEventListener('click',function(){switchYear(btn.getAttribute('data-year'));});
+  });
+
+  var pfObs=new IntersectionObserver(function(e){if(e[0].isIntersecting){updateBars(DATA['1']);pfObs.disconnect();}},{threshold:.2});
+  pfObs.observe(document.getElementById('cs-proforma'));
+})();
+</script>
 </body>
 </html>

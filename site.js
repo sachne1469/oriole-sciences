@@ -28,8 +28,7 @@ function initNav(activePage) {
     <a href="data-analytics.html">Data Analytics</a>
     <a href="workflow-efficiencies.html">Workflow Efficiencies</a>
     <a href="validation-services.html">Validation Services</a>
-    <div class="dropdown-divider"></div>
-    <a href="defensible-pcr.html" class="dd-accent">Payer Strategy →</a>`;
+`;
   const caseStudiesDropdown = `
     <div class="nav-dropdown-header">By Setting</div>
     <a href="reference-lab.html">Reference Laboratory</a>
@@ -83,8 +82,10 @@ function initFooter() {
         <div class="footer-col-title">Solutions</div>
         <a href="lab-build.html">Lab Build &amp; Optimization</a>
         <a href="revenue-cycle.html">Revenue Cycle Recovery</a>
-        <a href="solutions.html">All Programs</a>
-        <a href="defensible-pcr.html">Payer Strategy</a>
+        <a href="assay-strategy.html">Assay Strategy</a>
+        <a href="data-analytics.html">Data Analytics</a>
+        <a href="workflow-efficiencies.html">Workflow Efficiencies</a>
+        <a href="validation-services.html">Validation Services</a>
       </div>
       <div class="footer-col">
         <div class="footer-col-title">Company</div>

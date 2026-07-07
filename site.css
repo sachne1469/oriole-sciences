@@ -642,15 +642,14 @@ body { background: var(--fog); color: var(--carbon); }
 em { font-style: italic; color: var(--gold); }
 
 /* Hero */
-.hero { background: var(--fog); }
+.hero { background: #111 url('uploads/charcoal background.png') center/cover no-repeat; }
 .hero-gradient {
   background:
-    linear-gradient(105deg, rgba(232,231,227,0.97) 0%, rgba(232,231,227,0.86) 45%, rgba(232,231,227,0.32) 75%, rgba(232,231,227,0) 100%),
-    linear-gradient(to top, rgba(232,231,227,0.92) 0%, rgba(232,231,227,0) 22%);
+    linear-gradient(108deg, rgba(10,10,10,0.82) 0%, rgba(10,10,10,0.55) 52%, rgba(10,10,10,0.10) 100%);
 }
-.hero-sub { color: rgba(46,49,53,0.55); }
-.hero-tagline { color: rgba(46,49,53,0.32); }
-.hero h1 { color: var(--carbon); }
+.hero-sub { color: rgba(232,231,227,0.55); }
+.hero-tagline { color: rgba(232,231,227,0.32); }
+.hero h1 { color: var(--fog); }
 .hero-content.intro-mode { opacity: 0; transform: translateY(18px); transition: opacity 1.1s ease, transform 1.1s ease; }
 .hero-content.intro-mode.revealed { opacity: 1; transform: translateY(0); }
 .intro-mode-panel { opacity: 0; transform: translateY(14px); transition: opacity 1.1s ease 0.18s, transform 1.1s ease 0.18s; }
