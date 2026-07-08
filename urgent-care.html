@@ -99,6 +99,21 @@ a{color:inherit;}a:hover{color:var(--gold-lt);}
 .pf-table[data-active="total"] td.col-total{background:rgba(143,91,62,.24);color:var(--fog);}
 .pf-table[data-active="total"] td.col-total.neg{color:rgba(220,100,100,.85);}
 .pf-footnote{font-size:12px;font-style:italic;color:rgba(232,231,227,.18);margin-top:20px;}
+/* ── Proforma v2 ── */
+.pf-kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:36px;}
+@media(max-width:768px){.pf-kpi-row{grid-template-columns:repeat(2,1fr);}}
+.pf-kpi{background:rgba(232,231,227,.05);border:1px solid rgba(232,231,227,.07);border-radius:14px;padding:20px 22px;}
+.pf-kpi-label{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(232,231,227,.28);margin-bottom:8px;}
+.pf-kpi-val{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;line-height:1.1;color:var(--fog);}
+.pf-kpi-val.kpi-neg{color:rgba(220,100,100,.65);}
+.pf-kpi-ctx{font-size:11px;color:rgba(232,231,227,.22);margin-top:6px;}
+.pf-chart-wrap{position:relative;margin-bottom:24px;border-radius:14px;overflow:hidden;background:rgba(232,231,227,.02);border:1px solid rgba(232,231,227,.05);}
+.pf-chart-wrap canvas{display:block;width:100%;height:400px;}
+.pf-tooltip{position:absolute;pointer-events:none;background:rgba(18,21,26,.96);border:1px solid rgba(232,231,227,.12);border-radius:8px;padding:10px 16px;font-size:13px;color:var(--fog);opacity:0;transition:opacity .15s;white-space:nowrap;z-index:10;}
+.pf-detail-btn{display:flex;align-items:center;gap:10px;background:none;border:1px solid rgba(232,231,227,.1);border-radius:8px;padding:10px 20px;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(232,231,227,.3);cursor:pointer;transition:all .2s;margin-bottom:20px;}
+.pf-detail-btn:hover{border-color:rgba(232,231,227,.25);color:rgba(232,231,227,.65);}
+.pf-detail-btn .arr{transition:transform .3s;display:inline-block;}
+.pf-detail-btn.open .arr{transform:rotate(180deg);}
 </style>
 </head>
 <body>
@@ -144,25 +159,59 @@ a{color:inherit;}a:hover{color:var(--gold-lt);}
   <p class="cs-substat cs-reveal d1" style="margin-bottom:36px;">54-location urgent care network — select a year to explore.</p>
 
   <div class="pf-year-tabs cs-reveal d2">
-    <button class="pf-year-tab active" data-year="1">Year 1</button>
+    <button class="pf-year-tab active" data-year="total">3-Year Total</button>
+    <button class="pf-year-tab" data-year="1">Year 1</button>
     <button class="pf-year-tab" data-year="2">Year 2</button>
     <button class="pf-year-tab" data-year="3">Year 3</button>
-    <button class="pf-year-tab" data-year="total">3-Year Total</button>
   </div>
 
-  <div class="pf-hero cs-reveal d2">
-    <div class="pf-hero-label">Net Income</div>
-    <div class="pf-hero-num" id="pf-net-num">$3,724,646</div>
-    <div class="pf-hero-ctx" id="pf-net-ctx">Year 1 · after CAPEX</div>
+  <!-- CEO Hero: margin ring + net income -->
+  <div class="pf-ceo-hero cs-reveal d2">
+    <div class="pf-ceo-left">
+      <div class="pf-ring-wrap">
+        <svg class="pf-ring-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="100" cy="100" r="78" fill="none" stroke="rgba(232,231,227,0.06)" stroke-width="14"></circle>
+          <circle id="pf-ring-arc" cx="100" cy="100" r="78" fill="none" stroke-width="14" stroke-linecap="round" stroke-dasharray="490" stroke-dashoffset="490" transform="rotate(-90 100 100)" style="transition:stroke-dashoffset 1.4s cubic-bezier(.16,1,.3,1)"></circle>
+        </svg>
+        <div class="pf-ring-inner">
+          <div class="pf-ring-pct" id="pf-ring-pct">—</div>
+          <div class="pf-ring-lbl">Net Margin</div>
+        </div>
+      </div>
+    </div>
+    <div class="pf-ceo-right">
+      <div class="pf-ceo-eyebrow">Net Income</div>
+      <div class="pf-ceo-num" id="pf-ceo-num">—</div>
+      <div class="pf-ceo-ctx" id="pf-ceo-ctx">3-Year Total</div>
+      <div class="pf-yr-bars">
+        <div class="pf-yr-row" data-year="1"><div class="pf-yr-name">Year 1</div><div class="pf-yr-track"><div class="pf-yr-fill"></div></div><div class="pf-yr-val">—</div></div>
+        <div class="pf-yr-row" data-year="2"><div class="pf-yr-name">Year 2</div><div class="pf-yr-track"><div class="pf-yr-fill"></div></div><div class="pf-yr-val">—</div></div>
+        <div class="pf-yr-row" data-year="3"><div class="pf-yr-name">Year 3</div><div class="pf-yr-track"><div class="pf-yr-fill"></div></div><div class="pf-yr-val">—</div></div>
+      </div>
+    </div>
   </div>
 
-  <div class="pf-bars cs-reveal d3">
-    <div class="pf-bar-row"><div class="pf-bar-lbl">Revenue</div><div class="pf-bar-track"><div class="pf-bar-fill rev" id="bar-rev"></div></div><div class="pf-bar-val" id="bar-rev-val"></div></div>
-    <div class="pf-bar-row"><div class="pf-bar-lbl">Expenses</div><div class="pf-bar-track"><div class="pf-bar-fill exp" id="bar-exp"></div></div><div class="pf-bar-val" id="bar-exp-val"></div></div>
-    <div class="pf-bar-row"><div class="pf-bar-lbl">Net Income</div><div class="pf-bar-track"><div class="pf-bar-fill net" id="bar-net"></div></div><div class="pf-bar-val" id="bar-net-val"></div></div>
+  <!-- Revenue breakdown bar -->
+  <div class="pf-rev-breakdown cs-reveal d3">
+    <div class="pf-rev-hdr">
+      <span class="pf-rev-lbl">Net Revenue</span>
+      <span class="pf-rev-total-num" id="pf-rev-total">—</span>
+    </div>
+    <div class="pf-rev-bar-track">
+      <div class="pf-rev-income-seg" id="pf-rev-income-seg" style="width:50%">
+        <span id="pf-bar-net-label">—</span>
+        <span class="pf-rev-seg-sub">Net Income</span>
+      </div>
+      <div class="pf-rev-costs-seg">
+        <span id="pf-bar-cost-label">—</span>
+        <span class="pf-rev-seg-sub pf-rev-seg-sub-red">Costs</span>
+      </div>
+    </div>
+    <div class="pf-cost-pills" id="pf-cost-pills"></div>
   </div>
 
-  <div class="pf-table-wrap cs-reveal d4">
+  <button class="pf-detail-btn cs-reveal d4" id="pf-detail-btn"><span>View Full Breakdown</span> <span class="arr">↓</span></button>
+  <div id="pf-detail-wrap" style="display:none"><div class="pf-table-wrap">
     <table class="pf-table" id="pf-table" data-active="1">
       <thead><tr>
         <th style="width:270px;"></th>
@@ -191,7 +240,7 @@ a{color:inherit;}a:hover{color:var(--gold-lt);}
       </tbody>
     </table>
     <div class="pf-footnote">Based on key financial &amp; operational assumptions for a 54-location urgent care network.</div>
-  </div>
+  </div></div></div>
 </section>
 
 <section class="cta-band" id="cta-band"></section>
@@ -238,24 +287,43 @@ a{color:inherit;}a:hover{color:var(--gold-lt);}
   stepObs.observe(document.getElementById('stepper'));
 })();
 
-(function(){
-  var DATA={
-    '1':{net:'$3,724,646',netRaw:3724646,ctx:'Year 1 · after CAPEX',rev:'$6,414,901',revPct:100,exp:'($2,396,319)',expPct:37,netPct:58,netLbl:'$3,724,646'},
-    '2':{net:'$4,812,698',netRaw:4812698,ctx:'Year 2 · CAPEX $0',rev:'$7,697,881',revPct:100,exp:'($2,885,183)',expPct:37,netPct:63,netLbl:'$4,812,698'},
-    '3':{net:'$4,812,698',netRaw:4812698,ctx:'Year 3 · CAPEX $0',rev:'$7,697,881',revPct:100,exp:'($2,886,183)',expPct:37,netPct:63,netLbl:'$4,812,698'},
-    'total':{net:'$13,350,043',netRaw:13350043,ctx:'3-Year Total',rev:'$21,810,664',revPct:100,exp:'($8,166,685)',expPct:37,netPct:61,netLbl:'$13,350,043'},
-  };
-  var curRaw=3724646;
-  var netEl=document.getElementById('pf-net-num'),ctxEl=document.getElementById('pf-net-ctx'),table=document.getElementById('pf-table');
-  var barRev=document.getElementById('bar-rev'),barExp=document.getElementById('bar-exp'),barNet=document.getElementById('bar-net');
-  var barRevV=document.getElementById('bar-rev-val'),barExpV=document.getElementById('bar-exp-val'),barNetV=document.getElementById('bar-net-val');
-  function countTo(target){var start=curRaw,dur=600,t0=null,fmt=new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0});(function tick(now){if(!t0)t0=now;var p=Math.min((now-t0)/dur,1),ease=1-Math.pow(1-p,3);netEl.textContent=fmt.format(Math.round(start+(target-start)*ease));if(p<1)requestAnimationFrame(tick);else curRaw=target;})(performance.now());}
-  function updateBars(d){[barRev,barExp,barNet].forEach(function(b){b.style.width='0';});setTimeout(function(){barRev.style.width=d.revPct+'%';barRevV.textContent=d.rev;barExp.style.width=d.expPct+'%';barExpV.textContent=d.exp;barNet.style.width=d.netPct+'%';barNetV.textContent=d.netLbl;},60);}
-  function switchYear(yr){var d=DATA[yr];document.querySelectorAll('.pf-year-tab').forEach(function(b){b.classList.remove('active');});document.querySelector('.pf-year-tab[data-year="'+yr+'"]').classList.add('active');ctxEl.textContent=d.ctx;countTo(d.netRaw);table.setAttribute('data-active',yr);updateBars(d);}
-  document.querySelectorAll('.pf-year-tab').forEach(function(btn){btn.addEventListener('click',function(){switchYear(btn.getAttribute('data-year'));});});
-  var pfObs=new IntersectionObserver(function(e){if(e[0].isIntersecting){updateBars(DATA['1']);pfObs.disconnect();}},{threshold:.2});
-  pfObs.observe(document.getElementById('cs-proforma'));
-})();
+/* ── Proforma CEO ── */
+initPFCEO({
+  accent:'rgba(176,117,85,.9)',accentRgb:'143,91,62',
+  tableId:'pf-table',startYear:'total',
+  data:{
+    'total':{netIncome:13350044,revenue:21810663,costs:8460619,ctx:'3-Year Total',
+      costsBreakdown:[
+        {label:'Assays & Consumables',amt:4664364},
+        {label:'Staffing',amt:2134000},
+        {label:'Courier & Rent',amt:714000},
+        {label:'Rev Cycle',amt:654319},
+        {label:'CAPEX (Year 1)',amt:293936},
+      ]},
+    '1':{netIncome:3724646,revenue:6414901,costs:2690255,ctx:'Year 1 · after CAPEX',
+      costsBreakdown:[
+        {label:'Assays & Consumables',amt:1371872},
+        {label:'Staffing',amt:622000},
+        {label:'CAPEX',amt:293936},
+        {label:'Courier & Rent',amt:210000},
+        {label:'Rev Cycle',amt:192447},
+      ]},
+    '2':{netIncome:4812699,revenue:7697881,costs:2885182,ctx:'Year 2',
+      costsBreakdown:[
+        {label:'Assays & Consumables',amt:1646246},
+        {label:'Staffing',amt:756000},
+        {label:'Courier & Rent',amt:252000},
+        {label:'Rev Cycle',amt:230936},
+      ]},
+    '3':{netIncome:4812699,revenue:7697881,costs:2885182,ctx:'Year 3',
+      costsBreakdown:[
+        {label:'Assays & Consumables',amt:1646246},
+        {label:'Staffing',amt:756000},
+        {label:'Courier & Rent',amt:252000},
+        {label:'Rev Cycle',amt:230936},
+      ]},
+  }
+});
 </script>
 </body>
 </html>
